@@ -4,7 +4,6 @@
 Um jogo insipirado no design de Stardew Valley e mecânica de pokemon.
 
 O jogo irá se passar no primeiro dia de aula do aluno, durante a introdução dos calouros. 
-
 O aluno será recebido com uma pequena introdução, guiada pelo personagem que representa o reitor da FEI, sobre a FEI e sua história. 
 
 Após a introdução o aluno receberá a missão de conhecer as instalações e os projetos da FEI, para isso o aluno deverá andar pela faculdade onde ele será abordado pelos professores no estilo de uma abordagem pokemon, quando abordado o aluno pode escolher capturar ou derrotar um professor.
