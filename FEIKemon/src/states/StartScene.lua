@@ -2,15 +2,15 @@ local StartScene = {}
 
 local smallFont = nil
 local background, board
-local buttonPlay = { x = 300, y = 200, w = 200, h = 50, text = "Jogar" }
-local buttonExit = { x = 300, y = 270, w = 200, h = 50, text = "Sair" }
+local buttonPlay = { x = 500, y = 550, w = 150, h = 50, text = "Jogar" }
+local buttonExit = { x = 700, y = 550, w = 150, h = 50, text = "Sair" }
 
 function StartScene.load()
-    background = love.graphics.newImage("assets/PredioK.jpg")
+    background = love.graphics.newImage("assets/backgroundInicial.png")
 end
 
 function StartScene.setup()
-    smallFont = love.graphics.newFont('assets/font.ttf', 8)
+    smallFont = love.graphics.newFont('assets/font.ttf', 18)
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     love.graphics.setFont(smallFont)
@@ -23,11 +23,16 @@ function StartScene.setup()
 end
 
 local function drawButton(btn)
-    love.graphics.setColor(0.2, 0.2, 0.2, 0.8)
+    love.graphics.setColor(0.3, 0.2, 0.1, 1) -- Colocando o fundo do botão marrom
     love.graphics.rectangle("fill", btn.x, btn.y, btn.w, btn.h, 5)
-    love.graphics.setColor(1, 1, 1)
+
+    love.graphics.setColor(1, 1, 0) -- Mudando a borda para cor amarela
     love.graphics.rectangle("line", btn.x, btn.y, btn.w, btn.h, 5)
+
+    love.graphics.setColor(1, 1, 0) -- Mudando o texto para amarelo
     love.graphics.printf(btn.text, btn.x, btn.y + 15, btn.w, "center")
+
+    love.graphics.setColor(1, 1, 1, 1) -- Voltando o texto para branco
 end
 
 function StartScene.mousepressed(x, y, button)
@@ -47,7 +52,7 @@ end
 function StartScene.draw()
     StartScene.setup()
 
-    -- drawButton(buttonPlay)
-    -- drawButton(buttonExit)
+    drawButton(buttonPlay)
+    drawButton(buttonExit)
 end
 return StartScene

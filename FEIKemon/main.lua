@@ -3,10 +3,10 @@
 local Push = require 'src.libs.push'
 local StartScene = require 'src.states.StartScene'
 local gameState = "Menu"
-local VIRTUAL_WIDTH = 1280
-local VIRTUAL_HEIGHT = 720
-local WINDOW_WIDTH = 1280
-local WINDOW_HEIGHT = 720
+local VIRTUAL_WIDTH = 1366
+local VIRTUAL_HEIGHT = 768
+local WINDOW_WIDTH = 1366
+local WINDOW_HEIGHT = 768
 
 function love.load()
     StartScene.load()
@@ -14,7 +14,8 @@ function love.load()
         fullscreen = false,
         resizable = true,
         vsync = true,
-        canvas = false
+        canvas = false,
+        highdpi = true
     })
 end
 
@@ -26,10 +27,21 @@ function love.update(dt)
 
 end
 
+function love.mousepressed(x, y, button)
+    if gameState == "Menu" then
+        local action = StartScene.mousepressed(x, y, button)
+        if action == "jogar" then
+            gameState = "jogo"
+        end
+    end
+end
+
 function love.draw()
     Push:start()
     if gameState == "Menu" then
         StartScene.draw()
+    elseif gameState == "jogo" then
+        love.graphics.print("Você está no jogo!", 100, 100)
     end
     Push:finish()
 end
