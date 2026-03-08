@@ -8,7 +8,7 @@ local buttonExit = { x = 700, y = 550, w = 150, h = 50, text = "Sair" }
 
 function StartScene.load()
     background = love.graphics.newImage("assets/images/backgroundInicial.png")
-    smallFont = love.graphics.newFont('assets/fonts/font.ttf', 18)
+    smallFont = love.graphics.newFont('assets/fonts/8bitoperator.ttf', 18)
     clickSound = love.audio.newSource("assets/sounds/mouseClick.mp3", "static")
     music = love.audio.newSource("assets/sounds/backgroundMusicStart.mp3", "stream")
 
@@ -19,7 +19,6 @@ function StartScene.load()
 end
 
 function StartScene.setup()
-
     love.graphics.setDefaultFilter('nearest', 'nearest')
     love.graphics.setFont(smallFont)
 
@@ -65,4 +64,5 @@ function StartScene.draw()
     drawButton(buttonPlay)
     drawButton(buttonExit)
 end
+
 return StartScene
