@@ -36,6 +36,12 @@ function love.mousepressed(x, y, button)
     end
 end
 
+function love.keypressed(key)
+    if key == "escape" then
+        love.event.quit()
+    end
+end
+
 function love.draw()
     Push:start()
     if gameState == "Menu" then

@@ -2,7 +2,7 @@ local StartScene = {}
 
 local smallFont = nil
 local background
-local clickSound
+local clickSound, music
 local buttonPlay = { x = 500, y = 550, w = 150, h = 50, text = "Jogar" }
 local buttonExit = { x = 700, y = 550, w = 150, h = 50, text = "Sair" }
 
@@ -10,6 +10,12 @@ function StartScene.load()
     background = love.graphics.newImage("assets/images/backgroundInicial.png")
     smallFont = love.graphics.newFont('assets/fonts/font.ttf', 18)
     clickSound = love.audio.newSource("assets/sounds/mouseClick.mp3", "static")
+    music = love.audio.newSource("assets/sounds/backgroundMusicStart.mp3", "stream")
+
+    music:setLooping(true)
+    music:setVolume(0.5)
+
+    music:play()
 end
 
 function StartScene.setup()
@@ -39,6 +45,7 @@ end
 
 function StartScene.mousepressed(x, y, button)
     clickSound:play()
+    music:stop()
     if button == 1 then -- Clique com o botão esquerdo
         if x >= buttonPlay.x and x <= buttonPlay.x + buttonPlay.w and
            y >= buttonPlay.y and y <= buttonPlay.y + buttonPlay.h then
