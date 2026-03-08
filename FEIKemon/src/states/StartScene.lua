@@ -1,16 +1,18 @@
 local StartScene = {}
 
 local smallFont = nil
-local background, board
+local background
+local clickSound
 local buttonPlay = { x = 500, y = 550, w = 150, h = 50, text = "Jogar" }
 local buttonExit = { x = 700, y = 550, w = 150, h = 50, text = "Sair" }
 
 function StartScene.load()
-    background = love.graphics.newImage("assets/backgroundInicial.png")
+    background = love.graphics.newImage("assets/images/backgroundInicial.png")
+    smallFont = love.graphics.newFont('assets/fonts/font.ttf', 18)
+    clickSound = love.audio.newSource("assets/sounds/mouseClick.mp3", "static")
 end
 
 function StartScene.setup()
-    smallFont = love.graphics.newFont('assets/font.ttf', 18)
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     love.graphics.setFont(smallFont)
@@ -36,6 +38,7 @@ local function drawButton(btn)
 end
 
 function StartScene.mousepressed(x, y, button)
+    clickSound:play()
     if button == 1 then -- Clique com o botão esquerdo
         if x >= buttonPlay.x and x <= buttonPlay.x + buttonPlay.w and
            y >= buttonPlay.y and y <= buttonPlay.y + buttonPlay.h then
