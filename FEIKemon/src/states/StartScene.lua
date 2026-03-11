@@ -7,7 +7,7 @@ local buttonPlay = { x = 500, y = 550, w = 150, h = 50, text = "Jogar" }
 local buttonExit = { x = 700, y = 550, w = 150, h = 50, text = "Sair" }
 
 function StartScene.load()
-    background = love.graphics.newImage("assets/images/backgroundInicial.png")
+    background = love.graphics.newImage("assets/images/BackgroundInicial.png")
     smallFont = love.graphics.newFont('assets/fonts/8bitoperator.ttf', 18)
     clickSound = love.audio.newSource("assets/sounds/mouseClick.mp3", "static")
     music = love.audio.newSource("assets/sounds/backgroundMusicStart.mp3", "stream")
