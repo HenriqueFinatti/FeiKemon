@@ -1,5 +1,5 @@
 # Introdução
-FEIKEMON é um rpg de aventura baseado nas mecânicas dos jogos de Pokemón e com seu desing inspirado em Stardew Valley.
+FEIKEMON é um rpg de aventura, 2D, pixelado baseado nas mecânicas dos jogos de Pokemón e com seu desing inspirado em Stardew Valley.
 A ideia principal do jogo consiste em um calouro da FEI, que em seu primeiro dia, é convidado a explorar o campus Sâo Bernardo. No início o jogador será apresentado ao 
 Professor Fagner que o explicará um pouco mais sobre os FEIkemóns, a FEI e sua história.
 
