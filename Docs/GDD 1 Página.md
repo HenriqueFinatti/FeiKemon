@@ -4,6 +4,9 @@
 FEIKemon
 
 ## Sistemas do jogo previsto
+**Movimentação no mapa:** O jogador poderá explorar o mapa utilizando botões A, W, S e D
+**Interação com os NPCs:** Chegando perto o bastante e clicando com a barra de espaço
+**Combate:** Quando uma batalha começa o jogador seleciona os golpes com A, W, S e D e confirma com espaço
 
 ## Faixa etária recomendada
 17+
