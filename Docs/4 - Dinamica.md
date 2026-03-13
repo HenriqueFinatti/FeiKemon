@@ -14,3 +14,5 @@
         - Ordens vindas do professor Fagner durante a introdução e sempre disponíveis caso o jogador retorne para ele durante o jogo.
     - Quais os elementos de orientação indireta?
         - Comentários vindos dos professores adversários após derrota-los.
+
+

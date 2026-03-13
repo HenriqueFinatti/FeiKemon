@@ -1,0 +1,23 @@
+### Mecânica
+
+- Apresente os elementos formais do jogo
+    - Qual o padrão de interação do jogador?
+        - Exploração do mapa e batalhas.
+    - Qual o objetivo do jogo?
+        - Quando o jogador ganha?
+            - O jogador ganha ao derrotar o campeão da FEI.
+        - Quando o jogador perde?
+            - Perde caso todos os seus FEIKemons sejam derrotados durante alguma batalha
+    - Quais são as regrsas do jogo?
+        - O jogador acesso a áreas do jogo só será liberado mediante a batalhas, o jogador pode carregar no máximo 6 FEIKemons, o jogador não pode capturar FEIKemons de outros treinadores, as batalhas serão feitas em turnos.
+    - Quais são os procedimentos do jogo?
+        - Treinar seus FEIkemons para avançar, receber missões de professores derrotados para batalhar com outros professores, derrotar os líderes.
+    - Quais os recursos do jogo?
+        - FEIKemons encontrados no jogo.
+    - Quais os limites do jogo?
+        - Limites físicos de paredes do mapa e limites de progressão, limitados por batalhas.
+    - Quais os resultados do jogo?
+        - Como ele termina depois da vitoria
+            - Jogador ganha um certificado de conclusão da introdução dos calouros.
+        - Como ele termina depois da derrota
+            - Jogador desmaia e retorna ao MAC FEI de baixo para recuperar os pokemons.
