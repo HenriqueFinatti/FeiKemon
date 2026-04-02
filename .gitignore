@@ -1,1 +1,14 @@
 .vscode
+
+# gitignore do Latex
+*.aux
+*.log
+*.toc
+*.out
+*.lof
+*.lot
+*.bbl
+*.blg
+*.synctex.gz
+*.fdb_latexmk
+*.fls
