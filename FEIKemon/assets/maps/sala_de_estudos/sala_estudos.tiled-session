@@ -1,0 +1,43 @@
+{
+    "activeFile": "sala_estudos.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "bar_guss.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "sala_estudos.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -43.5,
+                "y": 116.25
+            }
+        },
+        "sala_estudos.tmx#bar_guss": {
+            "scaleInDock": 1
+        }
+    },
+    "last.exportedFilePath": "/home/henrique/Documents/git/FeiKemon/FEIKemon/assets/maps/sala_de_estudos",
+    "last.imagePath": "/home/henrique/Documents/git/FeiKemon/FEIKemon/assets/maps/sala_de_estudos",
+    "map.fixedSize": false,
+    "map.lastUsedExportFilter": "Lua files (*.lua)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "openFiles": [
+        "sala_estudos.tmx",
+        "bar_guss.tsx"
+    ],
+    "project": "sala_estudos.tiled-project",
+    "recentFiles": [
+        "bar_guss.tsx",
+        "sala_estudos.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

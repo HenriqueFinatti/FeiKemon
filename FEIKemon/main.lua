@@ -1,11 +1,12 @@
 ---@diagnostic disable: undefined-global
-
+local sti = require 'src/libs/sti'
 local StartScene = require 'src.states.StartScene'
 local Transition = require 'src.states.Transition'
 local gameState = "Menu"
 
 function love.load()
     StartScene.load()
+    sala_estudos = sti('assets/maps/sala_de_estudos/sala_estudos.lua')
 end
 
 function love.update(dt)
