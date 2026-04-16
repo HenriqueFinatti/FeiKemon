@@ -1,27 +1,11 @@
 ---@diagnostic disable: undefined-global
 
-local Push = require 'src.libs.push'
 local StartScene = require 'src.states.StartScene'
 local Transition = require 'src.states.Transition'
 local gameState = "Menu"
-local VIRTUAL_WIDTH = 1366
-local VIRTUAL_HEIGHT = 768
-local WINDOW_WIDTH = 1366
-local WINDOW_HEIGHT = 768
 
 function love.load()
     StartScene.load()
-    Push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
-        fullscreen = false,
-        resizable = true,
-        vsync = true,
-        canvas = false,
-        highdpi = true
-    })
-end
-
-function love.resize(w, h)
-    Push:resize(w, h)
 end
 
 function love.update(dt)
@@ -53,11 +37,9 @@ function love.keypressed(key)
 end
 
 function love.draw()
-    Push:start()
     if gameState == "Menu" then
         StartScene.draw()
     elseif gameState == "Transition" then
-        Transition.draw(VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
+        Transition.draw()
     end
-    Push:finish()
 end

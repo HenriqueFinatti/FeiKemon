@@ -38,19 +38,20 @@ function Transition.update(dt)
     end
 end
 
-function Transition.draw(vWidth, vHeight)
+function Transition.draw()
+    local w = love.graphics.getWidth()
+    local h = love.graphics.getHeight()
+
     love.graphics.setColor(0, 0, 0, alpha * 0.8)
-    love.graphics.rectangle("fill", 0, 0, vWidth, vHeight)
+    love.graphics.rectangle("fill", 0, 0, w, h)
 
     love.graphics.setColor(1, 1, 1, alpha)
-    love.graphics.printf(displayedText, 100, vHeight / 3, vWidth - 200, "center")
+    love.graphics.printf(displayedText, 100, h / 3, w - 200, "center")
 
     if finishedText then
-        -- Um pequeno efeito de "pisca-pisca" para chamar atenção (opcional)
         local flash = math.abs(math.sin(love.timer.getTime() * 3))
-        love.graphics.setColor(1, 1, 0, flash) -- Amarelo piscando
-
-        love.graphics.printf("Pressione Enter para seguir >>", 0, vHeight - 60, vWidth - 50, "right")
+        love.graphics.setColor(1, 1, 0, flash)
+        love.graphics.printf("Pressione Enter para seguir >>", 0, h - 60, w - 50, "right")
     end
 end
 
