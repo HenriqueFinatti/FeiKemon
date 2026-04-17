@@ -44,9 +44,21 @@ function Gameplay.load()
     player.x         = -16
     player.y         = 165
     player.moving    = false
-    player.collider  = world:newBSGRectangleCollider(player.x, player.y, 15, 30, 1)
+    player.collider  = world:newBSGRectangleCollider(player.x, player.y, 12, 15, 1)
 
     player.collider:setFixedRotation(true)
+
+
+    colliders = {}
+    if sala_estudos.layers["Collision"] then
+        for i, obj in pairs(sala_estudos.layers["Collision"].objects) do
+            print(obj.x, obj.y, obj.width, obj.heigh)
+            local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
+            collider:setType('static')
+
+            table.insert(colliders, collider)
+        end
+    end
 end
 
 function Gameplay.update(dt)
@@ -102,6 +114,7 @@ function Gameplay.draw()
         love.graphics.clear()
         love.graphics.setColor(1, 1, 1, 1)
 
+        sala_estudos:drawLayer(sala_estudos.layers["Collision"])
         sala_estudos:drawLayer(sala_estudos.layers["Ground And Walls"])
         sala_estudos:drawLayer(sala_estudos.layers["Stage"])
         sala_estudos:drawLayer(sala_estudos.layers["Shadows"])
@@ -109,7 +122,7 @@ function Gameplay.draw()
         sala_estudos:drawLayer(sala_estudos.layers["Chairs"])
         sala_estudos:drawLayer(sala_estudos.layers["Decoration"])
 
-        world:draw()
+        -- world:draw()
         player.anim:draw(player.sheet, player.x, player.y, nil, 1.5, nil, 6, 9)
     cam:detach()
 end
