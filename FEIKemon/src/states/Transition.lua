@@ -61,7 +61,7 @@ function Transition.keypressed(key)
             displayedText = fullText
             finishedText = true
         else
-            gameState = "iniciar_gameplay"
+            return "iniciar_gameplay"
         end
     end
 end
