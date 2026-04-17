@@ -37,6 +37,7 @@ function love.keypressed(key)
     if gameState == "Transition" then
         local action = Transition.keypressed(key)
         if action == "iniciar_gameplay" then
+            Gameplay.music()
             gameState = "jogo"
         end
     end
@@ -48,7 +49,6 @@ function love.draw()
     elseif gameState == "Transition" then
         Transition.draw()
     elseif gameState == "jogo" then
-        Gameplay.music()
         Gameplay.draw()
     end
 end
