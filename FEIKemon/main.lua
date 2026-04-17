@@ -5,7 +5,7 @@ local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
 local Gameplay  = require 'src.states.Gameplay'
 
-gameState = "Menu"
+gameState = "jogo"
 
 function love.load()
     Menu.load()

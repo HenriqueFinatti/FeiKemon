@@ -22,22 +22,22 @@ local canvas
 function Gameplay.load()
     sala_estudos = sti('assets/maps/sala_de_estudos/sala_estudos.lua')
 
-    canvas = love.graphics.newCanvas(larguraJogo, alturaJogo)
-
     love.graphics.setDefaultFilter("nearest", "nearest")
+    canvas = love.graphics.newCanvas(larguraJogo, alturaJogo)
 
     local sheet = love.graphics.newImage('assets/player/player-sheet.png')
     local grid = anim8.newGrid(SPRITE_WIDTH, SPRITE_HEIGHT, sheet:getWidth(), sheet:getHeight())
+    local animationSpeed = 0.1
 
-    player.anims = {
-        down  = anim8.newAnimation(grid('1-4', 1), 0.15),
-        left  = anim8.newAnimation(grid('1-4', 2), 0.15),
-        right = anim8.newAnimation(grid('1-4', 3), 0.15),
-        up    = anim8.newAnimation(grid('1-4', 4), 0.15),
+    player.animations = {
+        down  = anim8.newAnimation(grid('1-4', 1), animationSpeed),
+        left  = anim8.newAnimation(grid('1-4', 2), animationSpeed),
+        right = anim8.newAnimation(grid('1-4', 3), animationSpeed),
+        up    = anim8.newAnimation(grid('1-4', 4), animationSpeed),
     }
 
     player.sheet     = sheet
-    player.anim      = player.anims.down
+    player.anim      = player.animations.down
     player.direction = 'down'
     player.x         = 100
     player.y         = 100
@@ -47,14 +47,6 @@ function Gameplay.load()
     camera.mapH = sala_estudos.height * sala_estudos.tileheight
     camera.x    = 0
     camera.y    = 0
-end
-
-local function updateCamera()
-    camera.x = player.x + SPRITE_WIDTH  / 2 - larguraJogo / 2
-    camera.y = player.y + SPRITE_HEIGHT / 2 - alturaJogo / 2
-
-    camera.x = math.max(0, math.min(camera.x, camera.mapW - larguraJogo))
-    camera.y = math.max(0, math.min(camera.y, camera.mapH - alturaJogo))
 end
 
 function Gameplay.update(dt)
@@ -84,7 +76,7 @@ function Gameplay.update(dt)
     player.x = player.x + dx
     player.y = player.y + dy
 
-    local targetAnim = player.anims[player.direction]
+    local targetAnim = player.animations[player.direction]
     if player.anim ~= targetAnim then
         player.anim = targetAnim
         player.anim:resume()
@@ -96,7 +88,6 @@ function Gameplay.update(dt)
         player.anim:gotoFrame(1)
     end
 
-    updateCamera()
     sala_estudos:update(dt)
 end
 
@@ -104,13 +95,14 @@ function Gameplay.draw()
     love.graphics.setCanvas(canvas)
     love.graphics.clear()
     love.graphics.setColor(1, 1, 1, 1)
+
     sala_estudos:draw(-camX, -camY)
 
     love.graphics.push()
     love.graphics.translate(-camX, -camY)
     love.graphics.pop()
 
-    player.anim:draw(player.sheet, player.x, player.y)
+    player.anim:draw(player.sheet, player.x, player.y,  0, 1)
 
     love.graphics.setCanvas()
 
