@@ -1,6 +1,4 @@
 ---@diagnostic disable: undefined-global
-local sti = require 'src/libs/sti'
-
 local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
 local Gameplay  = require 'src.states.Gameplay'

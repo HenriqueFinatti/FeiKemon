@@ -1,9 +1,7 @@
 ---@diagnostic disable: undefined-global
-local anim8 = require 'src/libs/anim8'
+local camera = require 'src/libs/camera'
 local sti = require 'src/libs/sti'
-local canvas
-local camX = -256
-local camY = 0
+local anim8 = require 'src/libs/anim8'
 
 local Gameplay = {}
 
@@ -16,14 +14,17 @@ local SPEED         = 80
 
 local sala_estudos
 local player = {}
-local camera = {}
-local canvas
 
 function Gameplay.load()
+    cam = camera()
     sala_estudos = sti('assets/maps/sala_de_estudos/sala_estudos.lua')
 
     love.graphics.setDefaultFilter("nearest", "nearest")
-    canvas = love.graphics.newCanvas(larguraJogo, alturaJogo)
+
+    local escalaX = love.graphics.getWidth()  / larguraJogo
+    local escalaY = love.graphics.getHeight() / alturaJogo
+
+    cam:zoomTo(math.min(escalaX, escalaY) + 2.5)
 
     local sheet = love.graphics.newImage('assets/player/player-sheet.png')
     local grid = anim8.newGrid(SPRITE_WIDTH, SPRITE_HEIGHT, sheet:getWidth(), sheet:getHeight())
@@ -39,14 +40,9 @@ function Gameplay.load()
     player.sheet     = sheet
     player.anim      = player.animations.down
     player.direction = 'down'
-    player.x         = 100
-    player.y         = 100
+    player.x         = -16
+    player.y         = 165
     player.moving    = false
-
-    camera.mapW = sala_estudos.width  * sala_estudos.tilewidth
-    camera.mapH = sala_estudos.height * sala_estudos.tileheight
-    camera.x    = 0
-    camera.y    = 0
 end
 
 function Gameplay.update(dt)
@@ -88,36 +84,19 @@ function Gameplay.update(dt)
         player.anim:gotoFrame(1)
     end
 
+    cam:lookAt(player.x, player.y)
     sala_estudos:update(dt)
 end
 
 function Gameplay.draw()
-    love.graphics.setCanvas(canvas)
-    love.graphics.clear()
-    love.graphics.setColor(1, 1, 1, 1)
+    cam:attach()
+        love.graphics.clear()
+        love.graphics.setColor(1, 1, 1, 1)
 
-    sala_estudos:draw(-camX, -camY)
+        sala_estudos:drawLayer(sala_estudos.layers["Ground And Walls"])
 
-    love.graphics.push()
-    love.graphics.translate(-camX, -camY)
-    love.graphics.pop()
-
-    player.anim:draw(player.sheet, player.x, player.y,  0, 1)
-
-    love.graphics.setCanvas()
-
-    local larguraMonitor = love.graphics.getWidth()
-    local alturaMonitor = love.graphics.getHeight()
-
-    local escalaX = larguraMonitor / larguraJogo
-    local escalaY = alturaMonitor / alturaJogo
-
-    local escalaFinal = math.min(escalaX, escalaY)
-
-    local offsetX = (larguraMonitor - (larguraJogo * escalaFinal)) / 2
-    local offsetY = (alturaMonitor - (alturaJogo * escalaFinal)) / 2
-
-    love.graphics.draw(canvas, offsetX, offsetY, 0, escalaFinal, escalaFinal)
+        player.anim:draw(player.sheet, player.x, player.y, nil, 1.5, nil, 6, 9)
+    cam:detach()
 end
 
 return Gameplay
