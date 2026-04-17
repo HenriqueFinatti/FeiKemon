@@ -94,6 +94,12 @@ function Gameplay.draw()
         love.graphics.setColor(1, 1, 1, 1)
 
         sala_estudos:drawLayer(sala_estudos.layers["Ground And Walls"])
+        sala_estudos:drawLayer(sala_estudos.layers["Stage"])
+        sala_estudos:drawLayer(sala_estudos.layers["Shadows"])
+        sala_estudos:drawLayer(sala_estudos.layers["Desks"])
+        sala_estudos:drawLayer(sala_estudos.layers["Chairs"])
+        sala_estudos:drawLayer(sala_estudos.layers["Decoration"])
+
 
         player.anim:draw(player.sheet, player.x, player.y, nil, 1.5, nil, 6, 9)
     cam:detach()

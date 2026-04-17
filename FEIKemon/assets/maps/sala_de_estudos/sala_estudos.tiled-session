@@ -7,6 +7,18 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "crafttables.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "ilha.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "interiors.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "sala_estudos.tmx": {
             "scale": 1,
             "selectedLayer": 0,
@@ -33,6 +45,9 @@
     "project": "sala_estudos.tiled-project",
     "recentFiles": [
         "bar_guss.tsx",
+        "ilha.tsx",
+        "crafttables.tsx",
+        "interiors.tsx",
         "sala_estudos.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
