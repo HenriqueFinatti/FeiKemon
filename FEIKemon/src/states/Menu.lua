@@ -45,7 +45,7 @@ end
 function StartScene.mousepressed(x, y, button)
     clickSound:play()
     music:stop()
-    if button == 1 then -- Clique com o botão esquerdo
+    if button == 1 then
         if x >= buttonPlay.x and x <= buttonPlay.x + buttonPlay.w and
            y >= buttonPlay.y and y <= buttonPlay.y + buttonPlay.h then
             return "jogar"

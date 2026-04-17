@@ -52,7 +52,6 @@ function Gameplay.load()
     colliders = {}
     if sala_estudos.layers["Collision"] then
         for i, obj in pairs(sala_estudos.layers["Collision"].objects) do
-            print(obj.x, obj.y, obj.width, obj.heigh)
             local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
             collider:setType('static')
 
@@ -127,4 +126,12 @@ function Gameplay.draw()
     cam:detach()
 end
 
+function Gameplay.music()
+    music = love.audio.newSource("assets/sounds/Cloud Country.mp3", "stream")
+
+    music:setLooping(true)
+    music:setVolume(0.5)
+
+    music:play()
+end
 return Gameplay

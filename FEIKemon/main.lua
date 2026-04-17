@@ -2,7 +2,7 @@
 local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
 local Gameplay  = require 'src.states.Gameplay'
-gameState = "jogo"
+gameState = "Menu"
 
 function love.load()
     Menu.load()
@@ -48,6 +48,7 @@ function love.draw()
     elseif gameState == "Transition" then
         Transition.draw()
     elseif gameState == "jogo" then
+        Gameplay.music()
         Gameplay.draw()
     end
 end
