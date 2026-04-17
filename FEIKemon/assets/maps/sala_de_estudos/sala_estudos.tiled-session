@@ -1,6 +1,7 @@
 {
     "activeFile": "sala_estudos.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
         "bar_guss.tsx": {
@@ -21,13 +22,22 @@
         },
         "sala_estudos.tmx": {
             "scale": 1,
-            "selectedLayer": 0,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": -105,
-                "y": 0.5
+                "x": -177,
+                "y": -9.5
             }
         },
         "sala_estudos.tmx#bar_guss": {
+            "scaleInDock": 1
+        },
+        "sala_estudos.tmx#crafttables": {
+            "scaleInDock": 1
+        },
+        "sala_estudos.tmx#ilha": {
+            "scaleInDock": 1
+        },
+        "sala_estudos.tmx#interiors": {
             "scaleInDock": 1
         }
     },
@@ -39,16 +49,15 @@
     "map.tileHeight": 16,
     "map.tileWidth": 16,
     "openFiles": [
-        "sala_estudos.tmx",
-        "bar_guss.tsx"
+        "sala_estudos.tmx"
     ],
     "project": "sala_estudos.tiled-project",
     "recentFiles": [
+        "sala_estudos.tmx",
         "bar_guss.tsx",
         "ilha.tsx",
         "crafttables.tsx",
-        "interiors.tsx",
-        "sala_estudos.tmx"
+        "interiors.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
