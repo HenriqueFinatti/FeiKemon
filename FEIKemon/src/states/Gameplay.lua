@@ -2,54 +2,34 @@
 local camera = require 'src/libs/camera'
 local sti = require 'src/libs/sti'
 local windfield = require 'src/libs/windfield'
-local anim8 = require 'src/libs/anim8'
 
+local player = nil
+local Player = require 'src/entities/Player'
 local Gameplay = {}
 
-local larguraJogo     = 512
-local alturaJogo     = 216
-
-local SPRITE_WIDTH  = 12
-local SPRITE_HEIGHT = 18
-local SPEED         = 80
+local larguraJogo = 512
+local alturaJogo = 216
 
 local sala_estudos
-local player = {}
+local world, cam
 
 function Gameplay.load()
-    world = windfield.newWorld(0, 0)
-    cam = camera()
-    sala_estudos = sti('assets/maps/sala_de_estudos/sala_estudos.lua')
-
     love.graphics.setDefaultFilter("nearest", "nearest")
 
     local escalaX = love.graphics.getWidth()  / larguraJogo
     local escalaY = love.graphics.getHeight() / alturaJogo
+    local sheet = love.graphics.newImage('assets/player/player-sheet.png')
+
+    world = windfield.newWorld(0, 0)
+    cam = camera()
+    sala_estudos = sti('assets/maps/sala_de_estudos/sala_estudos.lua')
+
+    player = Player(-16, 165, world)
 
     cam:zoomTo(math.min(escalaX, escalaY) + 2.5)
+    player:setAnimations(sheet)
 
-    local sheet = love.graphics.newImage('assets/player/player-sheet.png')
-    local grid = anim8.newGrid(SPRITE_WIDTH, SPRITE_HEIGHT, sheet:getWidth(), sheet:getHeight())
-    local animationSpeed = 0.1
-
-    player.animations = {
-        down  = anim8.newAnimation(grid('1-4', 1), animationSpeed),
-        left  = anim8.newAnimation(grid('1-4', 2), animationSpeed),
-        right = anim8.newAnimation(grid('1-4', 3), animationSpeed),
-        up    = anim8.newAnimation(grid('1-4', 4), animationSpeed),
-    }
-    player.sheet     = sheet
-    player.anim      = player.animations.down
-    player.direction = 'down'
-    player.x         = -16
-    player.y         = 165
-    player.moving    = false
-    player.collider  = world:newBSGRectangleCollider(player.x, player.y, 12, 15, 1)
-
-    player.collider:setFixedRotation(true)
-
-
-    colliders = {}
+    local colliders = {}
     if sala_estudos.layers["Collision"] then
         for i, obj in pairs(sala_estudos.layers["Collision"].objects) do
             local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
@@ -61,47 +41,7 @@ function Gameplay.load()
 end
 
 function Gameplay.update(dt)
-    local dx, dy = 0, 0
-
-    player.moving = false
-    if love.keyboard.isDown('w') or love.keyboard.isDown('up') then
-        dy = -SPEED
-        player.direction = 'up'
-        player.moving    = true
-    elseif love.keyboard.isDown('s') or love.keyboard.isDown('down') then
-        dy = SPEED
-        player.direction = 'down'
-        player.moving    = true
-    end
-
-    if love.keyboard.isDown('a') or love.keyboard.isDown('left') then
-        dx = -SPEED
-        player.direction = 'left'
-        player.moving    = true
-    elseif love.keyboard.isDown('d') or love.keyboard.isDown('right') then
-        dx = SPEED
-        player.direction = 'right'
-        player.moving    = true
-    end
-
-    player.x = player.x + dx
-    player.y = player.y + dy
-
-    local targetAnim = player.animations[player.direction]
-    if player.anim ~= targetAnim then
-        player.anim = targetAnim
-        player.anim:resume()
-    end
-
-    if player.moving then
-        player.anim:update(dt)
-    else
-        player.anim:gotoFrame(1)
-    end
-
-    player.x = player.collider:getX()
-    player.y = player.collider:getY()
-    player.collider:setLinearVelocity(dx, dy)
+    player:update(dt)
 
     world:update(dt)
     cam:lookAt(player.x, player.y)
@@ -127,11 +67,12 @@ function Gameplay.draw()
 end
 
 function Gameplay.music()
-    music = love.audio.newSource("assets/sounds/Cloud Country.mp3", "stream")
+    local music = love.audio.newSource("assets/sounds/Cloud Country.mp3", "stream")
 
     music:setLooping(true)
     music:setVolume(0.5)
 
     music:play()
 end
+
 return Gameplay

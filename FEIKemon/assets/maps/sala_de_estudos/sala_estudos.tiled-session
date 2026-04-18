@@ -21,11 +21,11 @@
             "scaleInEditor": 1
         },
         "sala_estudos.tmx": {
-            "scale": 1,
-            "selectedLayer": 5,
+            "scale": 3,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": -177,
-                "y": -9.5
+                "x": -73,
+                "y": 194.16666666666669
             }
         },
         "sala_estudos.tmx#bar_guss": {
