@@ -74,4 +74,8 @@ function Player:update(dt)
     end
 end
 
+function Player:draw()
+    self.anim:draw(self.sheet, self.x, self.y, nil, 1.5, nil, 6, 9)
+end
+
 return Player
