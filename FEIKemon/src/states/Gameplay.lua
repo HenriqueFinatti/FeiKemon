@@ -7,12 +7,15 @@ local player = nil
 local Player = require 'src/entities/Player'
 local sala_de_estudos = nil
 local SalaDeEstudos = require 'src/maps/SalaDeEstudos'
+local onboarding = nil
+local Onboarding = require 'src/scenes/Onboarding'
 
 local Gameplay = {}
 
 local larguraJogo = 512
 local alturaJogo = 216
-local cam
+
+GamePhase = "Onboarding"
 
 function Gameplay.load()
     local sheet, escalaX, escalaY
@@ -24,33 +27,43 @@ function Gameplay.load()
     escalaX = love.graphics.getWidth()  / larguraJogo
     escalaY = love.graphics.getHeight() / alturaJogo
 
-    cam = camera()
-    cam:zoomTo(math.min(escalaX, escalaY) + 2.5)
+    Cam = camera()
+    Cam:zoomTo(math.min(escalaX, escalaY) + 2.5)
 
+    onboarding = Onboarding()
     sala_de_estudos = SalaDeEstudos()
     sala_de_estudos:setColliders()
 
     player = Player(-16, 165, World)
     player:setAnimations(sheet)
-
 end
 
 function Gameplay.update(dt)
-    player:update(dt)
 
-    World:update(dt)
-    cam:lookAt(player.x, player.y)
-    sala_de_estudos.map:update(dt)
+    if GamePhase == "Onboarding" then
+        onboarding:update(dt)
+    end
+    if GamePhase == "Gameplay" then
+        player:update(dt)
+    
+        World:update(dt)
+        Cam:lookAt(player.x, player.y)
+        sala_de_estudos.map:update(dt)
+    end
 end
 
 function Gameplay.draw()
-    cam:attach()
+    Cam:attach()
         love.graphics.clear()
         love.graphics.setColor(1, 1, 1, 1)
 
-        sala_de_estudos:draw()
-        player:draw()
-    cam:detach()
+        if GamePhase == "Onboarding" then
+            onboarding:draw() 
+        elseif GamePhase == "Gameplay" then
+            sala_de_estudos:draw()
+            player:draw()
+        end
+    Cam:detach()
 end
 
 function Gameplay.music()
