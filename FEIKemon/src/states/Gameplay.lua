@@ -48,6 +48,7 @@ function Gameplay.update(dt)
     
         World:update(dt)
         Cam:lookAt(player.x, player.y)
+        -- print(player.x, player.y)
         sala_de_estudos.map:update(dt)
     end
 end
