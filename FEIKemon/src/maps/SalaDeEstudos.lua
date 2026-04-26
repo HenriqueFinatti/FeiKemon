@@ -27,6 +27,7 @@ function SalaDeEstudos:draw()
     self.map:drawLayer(self.map.layers["Desks"])
     self.map:drawLayer(self.map.layers["Chairs"])
     self.map:drawLayer(self.map.layers["Decoration"])
+    self.map:drawLayer(self.map.layers["NPCs"])
 end
 
 return SalaDeEstudos
