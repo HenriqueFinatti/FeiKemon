@@ -1,6 +1,5 @@
 local Class = require 'src/utils/Class'
 local SalaDeEstudos = require 'src/maps/SalaDeEstudos' 
-
 local sala_de_estudos = nil
 local Onboarding = Class {}
 
@@ -13,6 +12,10 @@ local Luciano = require 'src/entities/Luciano'
 local Plinio = require 'src/entities/Plinio'
 local Fagner = require 'src/entities/Fagner'
 
+local falas = {
+    { nome = "Charles", texto = "Olá! Seja bem-vindo à sala de estudos.", retrato = love.graphics.newImage('assets/PixelArtsFeiKemon/Fagner.png') },
+}
+
 function Onboarding:init()
     self.sala_de_estudos = SalaDeEstudos()
     self.camX = -16
@@ -21,6 +24,7 @@ function Onboarding:init()
     self.targetY = -107
     self.speed = 80
     self.step = "moveX"
+
 
     charles = Charles()
     danilo = Danilo()
@@ -42,17 +46,22 @@ function Onboarding:update(dt)
             self.camX = self.targetX 
             self.step = "moveY"
         end
+   
     elseif self.step == "moveY" then
         local direcao = (self.targetY > self.camY) and 1 or -1
         self.camY = self.camY + (direcao * self.speed * dt)
         
         if math.abs(self.targetY - self.camY) < 1 then
             self.camY = self.targetY
-            GamePhase = "Gameplay"
+            TextBoxManager.dialogoAtivo = true
         end
     end
 
-    Cam:lookAt(self.camX, self.camY)
+    if not self.dialogoAtivo then
+        Cam:lookAt(self.camX, self.camY)
+    end
+
+    TextBoxManager:update(dt, falas[1].texto)
 end
 
 
@@ -66,6 +75,8 @@ function Onboarding:draw()
     leo:draw(-258, -155)
     luciano:draw(-242, -155)
     plinio:draw(-146, -155)
+
+    TextBoxManager:draw(falas)
 end
 
 return Onboarding 

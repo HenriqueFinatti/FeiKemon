@@ -3,13 +3,15 @@ local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
 local Gameplay  = require 'src.states.Gameplay'
 local gameState = "Jogo"
+TextBoxManager = nil
+local TextBoxManagerClass = require 'src/utils/TextBoxManager'
 
 function love.load()
     Menu.load()
     Transition.load()
     Gameplay.load()
-
     love.window.setMode(0, 0, {fullscreen = true})
+    TextBoxManager = TextBoxManagerClass()
 end
 
 function love.update(dt)

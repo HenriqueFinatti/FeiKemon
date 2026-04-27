@@ -1,0 +1,14 @@
+local Class = require 'src/utils/Class'
+
+local class_name = Class {}
+
+function class_name:init()
+end
+
+function class_name:update(dt)
+end
+
+function class_name:draw()
+end
+
+return class_name
