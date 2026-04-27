@@ -32,19 +32,41 @@ function TextBoxManager:init()
     self.corFonte = {0.25, 0.15, 0.08}
 end
 
-function TextBoxManager:update(dt, textoCompleto)
+function TextBoxManager:setFalas(falas)
+    self.falas = falas
+    self.falaAtual = 1
+end
+
+function TextBoxManager:update(dt)
+    textoCompleto = self.falas[self.falaAtual].texto
     if self.dialogoAtivo then
-        
         if self.caracteresExibidos < #textoCompleto then
             self.caracteresExibidos = self.caracteresExibidos + (self.velocidadeTexto * dt)
         end
     end
 end
 
-function TextBoxManager:draw(falas)
+function TextBoxManager:interagir()
+    if self.dialogoAtivo then
+        local textoCompleto = self.falas[self.falaAtual].texto
+        
+        if self.caracteresExibidos < #textoCompleto then
+            self.caracteresExibidos = #textoCompleto
+        else
+            self.falaAtual = self.falaAtual + 1
+            self.caracteresExibidos = 0
+            
+            if self.falaAtual > #self.falas then
+                self.dialogoAtivo = false
+            end
+        end
+    end
+end
+
+function TextBoxManager:draw()
     if self.dialogoAtivo then
         Cam:detach()
-        local dialogo = falas[1]
+        local dialogo = self.falas[self.falaAtual]
         local textoCompleto = dialogo.texto
         
         local numCaracteres = math.floor(self.caracteresExibidos)

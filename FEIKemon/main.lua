@@ -3,15 +3,16 @@ local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
 local Gameplay  = require 'src.states.Gameplay'
 local gameState = "Jogo"
-TextBoxManager = nil
-local TextBoxManagerClass = require 'src/utils/TextBoxManager'
+
+TextBoxManagerGlobal = nil
+TextBoxManager = require 'src/utils/TextBoxManager'
 
 function love.load()
+    love.window.setMode(0, 0, {fullscreen = true})
+    TextBoxManagerGlobal = TextBoxManager()
     Menu.load()
     Transition.load()
     Gameplay.load()
-    love.window.setMode(0, 0, {fullscreen = true})
-    TextBoxManager = TextBoxManagerClass()
 end
 
 function love.update(dt)
@@ -36,6 +37,10 @@ function love.keypressed(key)
         love.event.quit()
     end
 
+    if key == "return" then
+        TextBoxManagerGlobal:interagir()
+    end
+    
     if gameState == "Transition" then
         local action = Transition.keypressed(key)
         if action == "iniciar_gameplay" then

@@ -12,9 +12,7 @@ local Luciano = require 'src/entities/Luciano'
 local Plinio = require 'src/entities/Plinio'
 local Fagner = require 'src/entities/Fagner'
 
-local falas = {
-    { nome = "Charles", texto = "Olá! Seja bem-vindo à sala de estudos.", retrato = love.graphics.newImage('assets/PixelArtsFeiKemon/Fagner.png') },
-}
+local falasDanilo
 
 function Onboarding:init()
     self.sala_de_estudos = SalaDeEstudos()
@@ -25,7 +23,6 @@ function Onboarding:init()
     self.speed = 80
     self.step = "moveX"
 
-
     charles = Charles()
     danilo = Danilo()
     fagner = Fagner()
@@ -33,6 +30,14 @@ function Onboarding:init()
     leo = Leo()
     luciano = Luciano()
     plinio = Plinio()
+
+    falasDanilo = {
+        { nome = "Danilo", texto = "Olá, sejam todos bem vindos a FEI! A melhor faculdade de todas.", retrato = danilo.retrato },
+        { nome = "Danilo", texto = "E vocês sabem por que somos a melhor? Por que temos FEIKemons!!!", retrato = danilo.retrato },
+        { nome = "Danilo", texto = "FEIKemons são monstrinhos estudados aqui na faculdade, cada FEIKemon pode possuir até dois tipos", retrato = danilo.retrato },
+    }
+
+    TextBoxManagerGlobal:setFalas(falasDanilo)
 end
 
 function Onboarding:update(dt)
@@ -53,15 +58,15 @@ function Onboarding:update(dt)
         
         if math.abs(self.targetY - self.camY) < 1 then
             self.camY = self.targetY
-            TextBoxManager.dialogoAtivo = true
+            TextBoxManagerGlobal.dialogoAtivo = true
         end
     end
 
-    if not self.dialogoAtivo then
+    if not TextBoxManagerGlobal.dialogoAtivo then
         Cam:lookAt(self.camX, self.camY)
     end
 
-    TextBoxManager:update(dt, falas[1].texto)
+    TextBoxManagerGlobal:update(dt)
 end
 
 
@@ -76,7 +81,7 @@ function Onboarding:draw()
     luciano:draw(-242, -155)
     plinio:draw(-146, -155)
 
-    TextBoxManager:draw(falas)
+    TextBoxManagerGlobal:draw()
 end
 
 return Onboarding 
