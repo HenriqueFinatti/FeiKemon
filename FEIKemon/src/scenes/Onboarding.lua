@@ -52,10 +52,6 @@ function Onboarding:update(dt)
         end
     end
 
-    -- PARA DEBUG DA CENA
-    -- self.camY = self.targetY
-    -- self.camX = self.targetX 
-
     Cam:lookAt(self.camX, self.camY)
 end
 

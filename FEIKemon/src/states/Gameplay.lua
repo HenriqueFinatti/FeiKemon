@@ -18,12 +18,11 @@ local alturaJogo = 216
 GamePhase = "Onboarding"
 
 function Gameplay.load()
-    local sheet, escalaX, escalaY
+    local escalaX, escalaY
     World = windfield.newWorld(0, 0)
 
     love.graphics.setDefaultFilter("nearest", "nearest")
 
-    sheet = love.graphics.newImage('assets/player/player-sheet.png')
     escalaX = love.graphics.getWidth()  / larguraJogo
     escalaY = love.graphics.getHeight() / alturaJogo
 
@@ -35,7 +34,6 @@ function Gameplay.load()
     sala_de_estudos:setColliders()
 
     player = Player(-16, 165, World)
-    player:setAnimations(sheet)
 end
 
 function Gameplay.update(dt)
