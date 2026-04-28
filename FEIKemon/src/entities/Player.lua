@@ -15,9 +15,8 @@ function Player:init(playerX, playerY, world)
 
     self.collider  = world:newBSGRectangleCollider(self.x, self.y, 12, 15, 1)
     self.collider:setFixedRotation(true)
-end
 
-function Player:setAnimations(sheet)
+    local sheet = love.graphics.newImage('assets/player/player-sheet.png')
     local grid = anim8.newGrid(SPRITE_WIDTH, SPRITE_HEIGHT, sheet:getWidth(), sheet:getHeight())
     local animationSpeed = 0.1
 

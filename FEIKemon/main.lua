@@ -2,20 +2,28 @@
 local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
 local Gameplay  = require 'src.states.Gameplay'
-local gameState = "Menu"
+local gameState = "Jogo"
+
+TextBoxManagerGlobal = nil
+TextBoxManager = require 'src/utils/TextBoxManager'
 
 function love.load()
+    love.window.setMode(0, 0, {fullscreen = true})
+    TextBoxManagerGlobal = TextBoxManager()
     Menu.load()
     Transition.load()
     Gameplay.load()
+<<<<<<< HEAD
 
     love.window.setMode(0, 0, {fullscreen = false})
+=======
+>>>>>>> 5bb1e8ba6bdb16ded22b5b948d0c4f280e674c10
 end
 
 function love.update(dt)
     if gameState == "Transition" then
         Transition.update(dt)
-    elseif gameState == "jogo" then
+    elseif gameState == "Jogo" then
         Gameplay.update(dt)
     end
 end
@@ -34,11 +42,15 @@ function love.keypressed(key)
         love.event.quit()
     end
 
+    if key == "return" then
+        TextBoxManagerGlobal:interagir()
+    end
+    
     if gameState == "Transition" then
         local action = Transition.keypressed(key)
         if action == "iniciar_gameplay" then
             Gameplay.music()
-            gameState = "jogo"
+            gameState = "Jogo"
         end
     end
 end
@@ -48,7 +60,7 @@ function love.draw()
         Menu.draw()
     elseif gameState == "Transition" then
         Transition.draw()
-    elseif gameState == "jogo" then
+    elseif gameState == "Jogo" then
         Gameplay.draw()
     end
 end
