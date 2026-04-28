@@ -13,11 +13,6 @@ function love.load()
     Menu.load()
     Transition.load()
     Gameplay.load()
-<<<<<<< HEAD
-
-    love.window.setMode(0, 0, {fullscreen = false})
-=======
->>>>>>> 5bb1e8ba6bdb16ded22b5b948d0c4f280e674c10
 end
 
 function love.update(dt)
