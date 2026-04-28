@@ -9,7 +9,7 @@ function love.load()
     Transition.load()
     Gameplay.load()
 
-    love.window.setMode(0, 0, {fullscreen = true})
+    love.window.setMode(0, 0, {fullscreen = false})
 end
 
 function love.update(dt)
