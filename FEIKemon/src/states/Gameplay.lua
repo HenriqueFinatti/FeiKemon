@@ -15,7 +15,7 @@ local Gameplay = {}
 local larguraJogo = 512
 local alturaJogo = 216
 
-GamePhase = "Onboarding"
+GamePhase = "Gameplay"
 
 function Gameplay.load()
     local escalaX, escalaY
