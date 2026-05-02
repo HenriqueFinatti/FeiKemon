@@ -4,13 +4,13 @@ local sti = require 'src/libs/sti'
 local SalaDeEstudos = Class {}
 
 function SalaDeEstudos:init()
-    self.map = sti('assets/maps/sala_de_estudos/sala_estudos.lua')
+    self.map = sti('assets/maps/igreja/igreja_fei.lua')
 end
 
 function SalaDeEstudos:setColliders()
     local colliders = {}
-    if self.map.layers["Collision"] then
-        for i, obj in pairs(self.map.layers["Collision"].objects) do
+    if self.map.layers["Colisao"] then
+        for i, obj in pairs(self.map.layers["Colisao"].objects) do
             local collider = World:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
             collider:setType('static')
 
@@ -20,14 +20,14 @@ function SalaDeEstudos:setColliders()
 end
 
 function SalaDeEstudos:draw()
-    self.map:drawLayer(self.map.layers["Collision"])
-    self.map:drawLayer(self.map.layers["Ground And Walls"])
-    self.map:drawLayer(self.map.layers["Stage"])
-    self.map:drawLayer(self.map.layers["Shadows"])
-    self.map:drawLayer(self.map.layers["Desks"])
-    self.map:drawLayer(self.map.layers["Chairs"])
-    self.map:drawLayer(self.map.layers["Decoration"])
-    self.map:drawLayer(self.map.layers["NPCs"])
+    self.map:drawLayer(self.map.layers["Colisao"])
+    self.map:drawLayer(self.map.layers["Piso"])
+    self.map:drawLayer(self.map.layers["Parede"])
+    self.map:drawLayer(self.map.layers["Banco"])
+    self.map:drawLayer(self.map.layers["Itens_Igreja"])
+    -- self.map:drawLayer(self.map.layers["Chairs"])
+    -- self.map:drawLayer(self.map.layers["Decoration"])
+    -- self.map:drawLayer(self.map.layers["NPCs"])
 end
 
 return SalaDeEstudos
