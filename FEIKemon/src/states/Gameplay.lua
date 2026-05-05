@@ -7,6 +7,7 @@ local player = nil
 local Player = require 'src/entities/Player'
 local sala_de_estudos = nil
 local SalaDeEstudos = require 'src/maps/SalaDeEstudos'
+-- SalaDeEstudos = require 'src/maps/AreaExterna'
 local onboarding = nil
 local Onboarding = require 'src/scenes/Onboarding'
 
