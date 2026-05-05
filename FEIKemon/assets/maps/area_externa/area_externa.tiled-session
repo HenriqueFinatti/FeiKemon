@@ -1,0 +1,10 @@
+{
+    "last.exportedFilePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/area_externa",
+    "last.imagePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sprites/images",
+    "map.lastUsedExportFilter": "Arquivos Lua (*.lua)",
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
