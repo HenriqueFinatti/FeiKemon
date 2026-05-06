@@ -12,8 +12,9 @@ function Player:init(playerX, playerY, world)
     self.y = playerY
     self.speed = SPEED
     self.moving = false
-
+    self.currentMap = "sala de estudos"
     self.collider  = world:newBSGRectangleCollider(self.x, self.y, 12, 15, 1)
+    self.collider:setCollisionClass('Player')
     self.collider:setFixedRotation(true)
 
     local sheet = love.graphics.newImage('assets/player/player-sheet.png')

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="79">
+<map version="1.10" tiledversion="1.12.1-8-g449813058" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="80">
  <editorsettings>
   <export target="sala_estudos.lua" format="lua"/>
  </editorsettings>
@@ -628,5 +628,12 @@
   <object id="76" x="-335.333" y="34.6667" width="15.3333" height="29.3333"/>
   <object id="77" x="-383.333" y="-93.3333" width="12" height="26.6667"/>
   <object id="78" x="-350" y="162.667" width="11.3333" height="26.6667"/>
+ </objectgroup>
+ <objectgroup id="11" name="Portas">
+  <object id="79" name="Porta" x="0" y="160" width="16" height="32">
+   <properties>
+    <property name="destino" value="area externa"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

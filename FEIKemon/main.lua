@@ -1,4 +1,5 @@
 ---@diagnostic disable: undefined-global
+local wf = require 'src/libs/windfield'
 local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
 local Gameplay  = require 'src.states.Gameplay'
@@ -10,9 +11,15 @@ TextBoxManager = require 'src/utils/TextBoxManager'
 function love.load()
     love.window.setMode(0, 0, {fullscreen = true})
     TextBoxManagerGlobal = TextBoxManager()
+    World = wf.newWorld(0, 0, true)
+
+    World:addCollisionClass('Player')
+    World:addCollisionClass('Portas')
+    World:addCollisionClass('Obstaculo')
     Menu.load()
     Transition.load()
     Gameplay.load()
+
 end
 
 function love.update(dt)
