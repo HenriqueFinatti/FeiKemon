@@ -31,7 +31,7 @@ function Gameplay.load()
 
     onboarding = Onboarding()
     sala_de_estudos = SalaDeEstudos()
-    sala_de_estudos:setColliders()
+    -- sala_de_estudos:setColliders()
 
     player = Player(-16, 165, World)
 end
