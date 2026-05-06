@@ -3,9 +3,8 @@ local StartScene = {}
 local smallFont = nil
 local background
 local clickSound, music
--- local buttonPlay = { x = 500, y = 550, w = 150, h = 50, text = "Jogar" }
+
 local buttonPlay = { x = love.graphics.getWidth()*(30/100), y = love.graphics.getHeight()*(70/100), w = 150, h = 50, text = "Jogar" }
--- local buttonExit = { x = 700, y = 550, w = 150, h = 50, text = "Sair" }
 local buttonExit = { x = love.graphics.getWidth()*(50/100), y = love.graphics.getHeight()*(70/100), w = 150, h = 50, text = "Sair" }
 
 function StartScene.load()

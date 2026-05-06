@@ -40,7 +40,7 @@ function love.keypressed(key)
     if key == "return" then
         TextBoxManagerGlobal:interagir()
     end
-    
+
     if gameState == "Transition" then
         local action = Transition.keypressed(key)
         if action == "iniciar_gameplay" then

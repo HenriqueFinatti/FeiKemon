@@ -7,7 +7,7 @@ local player = nil
 local Player = require 'src/entities/Player'
 local sala_de_estudos = nil
 local SalaDeEstudos = require 'src/maps/SalaDeEstudos'
--- SalaDeEstudos = require 'src/maps/AreaExterna'
+
 local onboarding = nil
 local Onboarding = require 'src/scenes/Onboarding'
 
@@ -16,7 +16,7 @@ local Gameplay = {}
 local larguraJogo = 512
 local alturaJogo = 216
 
-GamePhase = "Gameplay"
+GamePhase = "Onboarding"
 
 function Gameplay.load()
     local escalaX, escalaY
@@ -44,7 +44,7 @@ function Gameplay.update(dt)
     end
     if GamePhase == "Gameplay" then
         player:update(dt)
-    
+
         World:update(dt)
         Cam:lookAt(player.x, player.y)
         -- print(player.x, player.y)
@@ -58,7 +58,7 @@ function Gameplay.draw()
         love.graphics.setColor(1, 1, 1, 1)
 
         if GamePhase == "Onboarding" then
-            onboarding:draw() 
+            onboarding:draw()
         elseif GamePhase == "Gameplay" then
             sala_de_estudos:draw()
             player:draw()

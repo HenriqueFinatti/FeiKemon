@@ -26,22 +26,27 @@ function TextBoxManager:init()
 
     self.textX = self.boxX + self.portraitSize + (self.padding * 2)
     self.textW = self.boxW - self.portraitSize - (self.padding * 4)
-    
-    self.corBorda = {0.35, 0.22, 0.12}  
-    self.corFundo = {0.85, 0.75, 0.55}  
+
+    self.corBorda = {0.35, 0.22, 0.12}
+    self.corFundo = {0.85, 0.75, 0.55}
     self.corFonte = {0.25, 0.15, 0.08}
 end
 
-function TextBoxManager:setFalas(falas)
+function TextBoxManager:setFalas(falas, numeroDefalas)
     self.falas = falas
     self.falaAtual = 1
+    self.numeroDefalas = numeroDefalas
 end
 
 function TextBoxManager:update(dt)
-    textoCompleto = self.falas[self.falaAtual].texto
-    if self.dialogoAtivo then
-        if self.caracteresExibidos < #textoCompleto then
-            self.caracteresExibidos = self.caracteresExibidos + (self.velocidadeTexto * dt)
+    if self.falaAtual == self.numeroDefalas + 1 then
+        GamePhase = "Gameplay"
+    else
+        textoCompleto = self.falas[self.falaAtual].texto
+        if self.dialogoAtivo then
+            if self.caracteresExibidos < #textoCompleto then
+                self.caracteresExibidos = self.caracteresExibidos + (self.velocidadeTexto * dt)
+            end
         end
     end
 end
@@ -49,13 +54,13 @@ end
 function TextBoxManager:interagir()
     if self.dialogoAtivo then
         local textoCompleto = self.falas[self.falaAtual].texto
-        
+
         if self.caracteresExibidos < #textoCompleto then
             self.caracteresExibidos = #textoCompleto
         else
             self.falaAtual = self.falaAtual + 1
             self.caracteresExibidos = 0
-            
+
             if self.falaAtual > #self.falas then
                 self.dialogoAtivo = false
             end
@@ -68,13 +73,13 @@ function TextBoxManager:draw()
         Cam:detach()
         local dialogo = self.falas[self.falaAtual]
         local textoCompleto = dialogo.texto
-        
+
         local numCaracteres = math.floor(self.caracteresExibidos)
-        
+
         local textoParcial = ""
         if numCaracteres > 0 then
             local byteOffset = utf8.offset(textoCompleto, numCaracteres + 1)
-            
+
             if byteOffset then
                 textoParcial = string.sub(textoCompleto, 1, byteOffset - 1)
             else
@@ -88,7 +93,7 @@ function TextBoxManager:draw()
 end
 
 function TextBoxManager:drawDialogue(retrato, nome, texto)
-    
+
     love.graphics.setFont(self.font)
 
     love.graphics.setColor(self.corFundo)
@@ -99,9 +104,9 @@ function TextBoxManager:drawDialogue(retrato, nome, texto)
     love.graphics.rectangle("line", self.boxX, self.boxY, self.boxW, self.boxH)
 
     if retrato then
-        love.graphics.setColor(1, 1, 1) 
-        love.graphics.draw(retrato, self.boxX + self.padding, self.boxY + self.padding, 0, 
-            self.portraitSize / retrato:getWidth(), 
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.draw(retrato, self.boxX + self.padding, self.boxY + self.padding, 0,
+            self.portraitSize / retrato:getWidth(),
             self.portraitSize / retrato:getHeight())
     end
 
