@@ -7,17 +7,17 @@ function SalaDeEstudos:init()
     self.map = sti('assets/maps/macfei/macfei.lua')
 end
 
--- function SalaDeEstudos:setColliders()
---     local colliders = {}
---     if self.map.layers["Colisao"] then
---         for i, obj in pairs(self.map.layers["Colisao"].objects) do
---             local collider = World:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
---             collider:setType('static')
+function SalaDeEstudos:setColliders()
+    local colliders = {}
+    if self.map.layers["Colisao"] then
+        for i, obj in pairs(self.map.layers["Colisao"].objects) do
+            local collider = World:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
+            collider:setType('static')
 
---             table.insert(colliders, collider)
---         end
---     end
--- end
+            table.insert(colliders, collider)
+        end
+    end
+end
 
 function SalaDeEstudos:draw()
     -- self.map:drawLayer(self.map.layers["Colisao"])
