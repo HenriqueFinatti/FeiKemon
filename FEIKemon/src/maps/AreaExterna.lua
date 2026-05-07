@@ -5,6 +5,7 @@ local AreaExterna = Class {}
 
 function AreaExterna:init()
     self.map = sti('assets/maps/area_externa/area_externa.lua')
+    self.name = "area externa"
 end
 
 function AreaExterna:setColliders()

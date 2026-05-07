@@ -5,6 +5,7 @@ local SalaDeEstudos = Class {}
 
 function SalaDeEstudos:init()
     self.map = sti('assets/maps/sala_de_estudos/sala_estudos.lua')
+    self.name = "sala de estudos"
 end
 
 function SalaDeEstudos:setColliders()

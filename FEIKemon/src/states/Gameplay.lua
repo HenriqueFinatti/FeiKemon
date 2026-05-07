@@ -2,6 +2,7 @@
 local camera = require 'src/libs/camera'
 local Player = require 'src/entities/Player'
 local Onboarding = require 'src/scenes/Onboarding'
+local feikedex = require 'src/utils/feikedex'
 
 local player = nil
 local onboarding = nil
@@ -59,6 +60,17 @@ function Gameplay.update(dt)
         Gameplay.player:update(dt)
         Cam:lookAt(Gameplay.player.x, Gameplay.player.y)
     end
+
+    if GamePhase == "Gameplay" and Gameplay.mapaAtual.name == "area externa" then
+        local vx, vy = Gameplay.player.collider:getLinearVelocity()
+        local estaMovendo = math.abs(vx) > 0 or math.abs(vy) > 0
+
+        if estaMovendo then
+            if math.random() < 0.005 then
+                batalhaSelvagem()
+            end
+        end
+    end
 end
 
 function Gameplay.draw()
@@ -75,6 +87,23 @@ function Gameplay.draw()
     Cam:detach()
 
     Gameplay.drawTransition()
+end
+
+function batalhaSelvagem()
+    local index = math.random(1, #feikedex.feikemons)
+    local selvagem = feikedex.feikemons[index]
+
+    print("------------------------------------------")
+    print("Nome: " .. selvagem.nome)
+    print("Tipo: " .. selvagem.tipo)
+    print("HP: " .. selvagem.hp_max)
+    print("Ataques:")
+
+    for i, nomeAtaque in ipairs(selvagem.ataques) do
+        local dados = feikedex.ataques[nomeAtaque]
+        print("  " .. i .. ". " .. nomeAtaque .. " (Dano: " .. dados.dano .. ")")
+    end
+    print("------------------------------------------")
 end
 
 function Gameplay.mudarMapa(nome, sx, sy)
