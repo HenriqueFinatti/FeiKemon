@@ -5,7 +5,9 @@ local AreaExterna = Class {}
 
 function AreaExterna:init()
     self.map = sti('assets/maps/area_externa/area_externa.lua')
+end
 
+function AreaExterna:setColliders()
     local colliders = {}
     if self.map.layers["Collision"] then
         for i, obj in pairs(self.map.layers["Collision"].objects) do
@@ -20,10 +22,10 @@ function AreaExterna:init()
 end
 
 function AreaExterna:draw()
+    self.map:drawLayer(self.map.layers["Collision"])
     self.map:drawLayer(self.map.layers["Base"])
     self.map:drawLayer(self.map.layers["Predios"])
     self.map:drawLayer(self.map.layers["Decoracao"])
-    self.map:drawLayer(self.map.layers["Collision"])
 end
 
 return AreaExterna

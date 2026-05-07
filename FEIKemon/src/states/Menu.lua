@@ -1,4 +1,4 @@
-local StartScene = {}
+local Menu = {}
 
 local smallFont = nil
 local background
@@ -7,11 +7,11 @@ local clickSound, music
 local buttonPlay = { x = love.graphics.getWidth()*(30/100), y = love.graphics.getHeight()*(70/100), w = 150, h = 50, text = "Jogar" }
 local buttonExit = { x = love.graphics.getWidth()*(50/100), y = love.graphics.getHeight()*(70/100), w = 150, h = 50, text = "Sair" }
 
-function StartScene.load()
+function Menu.load()
     background = love.graphics.newImage("assets/images/BackgroundInicial.png")
     smallFont = love.graphics.newFont('assets/fonts/8bitoperator.ttf', 18)
     clickSound = love.audio.newSource("assets/sounds/mouseClick.mp3", "static")
-    music = love.audio.newSource("assets/sounds/backgroundMusicStart.mp3", "stream")
+    music = love.audio.newSource("assets/sounds/Cloud Country.mp3", "stream")
 
     music:setLooping(true)
     music:setVolume(0.5)
@@ -19,7 +19,7 @@ function StartScene.load()
     music:play()
 end
 
-function StartScene.setup()
+function Menu.setup()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     love.graphics.setFont(smallFont)
 
@@ -43,7 +43,7 @@ local function drawButton(btn)
     love.graphics.setColor(1, 1, 1, 1) -- Voltando o texto para branco
 end
 
-function StartScene.mousepressed(x, y, button)
+function Menu.mousepressed(x, y, button)
     clickSound:play()
     music:stop()
     if button == 1 then
@@ -59,11 +59,11 @@ function StartScene.mousepressed(x, y, button)
     end
 end
 
-function StartScene.draw()
-    StartScene.setup()
+function Menu.draw()
+    Menu.setup()
 
     drawButton(buttonPlay)
     drawButton(buttonExit)
 end
 
-return StartScene
+return Menu

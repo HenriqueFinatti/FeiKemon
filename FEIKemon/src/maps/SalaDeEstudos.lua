@@ -5,7 +5,9 @@ local SalaDeEstudos = Class {}
 
 function SalaDeEstudos:init()
     self.map = sti('assets/maps/sala_de_estudos/sala_estudos.lua')
+end
 
+function SalaDeEstudos:setColliders()
     self.colliders = {}
 
     if self.map.layers["Collision"] then
@@ -32,7 +34,7 @@ function SalaDeEstudos:init()
     end
 end
 
-function SalaDeEstudos:destruirFisica()
+function SalaDeEstudos:removeColliders()
     for _, c in ipairs(self.colliders) do
         if not c:isDestroyed() then
             c:destroy()
@@ -42,6 +44,7 @@ function SalaDeEstudos:destruirFisica()
 end
 
 function SalaDeEstudos:draw()
+    self.map:drawLayer(self.map.layers["Collision"])
     self.map:drawLayer(self.map.layers["Portas"])
     self.map:drawLayer(self.map.layers["Ground And Walls"])
     self.map:drawLayer(self.map.layers["Stage"])
@@ -50,7 +53,6 @@ function SalaDeEstudos:draw()
     self.map:drawLayer(self.map.layers["Chairs"])
     self.map:drawLayer(self.map.layers["Decoration"])
     self.map:drawLayer(self.map.layers["NPCs"])
-    self.map:drawLayer(self.map.layers["Collision"])
 end
 
 return SalaDeEstudos

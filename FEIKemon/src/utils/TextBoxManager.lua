@@ -41,6 +41,7 @@ end
 function TextBoxManager:update(dt)
     if self.falaAtual == self.numeroDefalas + 1 then
         GamePhase = "Gameplay"
+        self.dialogoAtivo = false
     else
         textoCompleto = self.falas[self.falaAtual].texto
         if self.dialogoAtivo then
