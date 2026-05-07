@@ -37,10 +37,11 @@ function Gameplay.update(dt)
         if Gameplay.player.collider:enter('Portas') then
             local porta = Gameplay.player.collider:getEnterCollisionData('Portas')
             local p = porta.collider
-            Gameplay.mudarMapa(p.destino, p.spawn_x or -16, p.spawn_y or 165)
+            Gameplay.mudarMapa(p.destino, p.x, p.y)
         end
 
         Gameplay.player:update(dt)
+        print(Gameplay.player.x, Gameplay.player.y)
         Cam:lookAt(Gameplay.player.x, Gameplay.player.y)
     end
 end

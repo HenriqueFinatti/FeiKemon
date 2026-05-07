@@ -633,6 +633,8 @@
   <object id="79" name="Porta" x="0" y="160" width="16" height="32">
    <properties>
     <property name="destino" value="area externa"/>
+    <property name="x" value="-392"/>
+    <property name="y" value="384"/>
    </properties>
   </object>
  </objectgroup>

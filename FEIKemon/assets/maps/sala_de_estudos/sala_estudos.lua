@@ -1778,7 +1778,9 @@ return {
           opacity = 1,
           visible = true,
           properties = {
-            ["destino"] = "area externa"
+            ["destino"] = "area externa",
+            ["x"] = "-392",
+            ["y"] = "384"
           }
         }
       }

@@ -28,6 +28,8 @@ function SalaDeEstudos:setColliders()
             item:setObject(obj)
 
             item.destino = obj.properties["destino"]
+            item.x = obj.properties["x"]
+            item.y = obj.properties["y"]
 
             table.insert(self.colliders, item)
         end
@@ -44,8 +46,6 @@ function SalaDeEstudos:removeColliders()
 end
 
 function SalaDeEstudos:draw()
-    self.map:drawLayer(self.map.layers["Collision"])
-    self.map:drawLayer(self.map.layers["Portas"])
     self.map:drawLayer(self.map.layers["Ground And Walls"])
     self.map:drawLayer(self.map.layers["Stage"])
     self.map:drawLayer(self.map.layers["Shadows"])
