@@ -16,10 +16,7 @@ function Player:init(playerX, playerY, feikemonInicial)
     self.equipe = {}
     self.maxEquipe = 6
 
-    if feikemonInicial then
-        table.insert(self.equipe, feikemonInicial)
-        print("Equipe: " .. feikemonInicial.nome .. " entrou no time!")
-    end
+    table.insert(self.equipe, feikemonInicial)
 
     self.currentMap = "sala de estudos"
 

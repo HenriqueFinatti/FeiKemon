@@ -2,27 +2,14 @@
 local camera = require 'src/libs/camera'
 local Player = require 'src/entities/Player'
 local Onboarding = require 'src/scenes/Onboarding'
-local feikedex = require 'src/utils/Feikedex'
-local onboarding = nil
-
-local mapas = {
-    ["sala de estudos"] = require 'src/maps/SalaDeEstudos',
-    ["area externa"]    = require 'src/maps/AreaExterna'
-}
+local Transition = require 'src/utils/Transition'
+local BattleManager = require 'src/managers/BattleManager'
+local MapManager = require 'src/managers/MapManager'
 
 local Gameplay = {}
 
 local VIRTUAL_WIDTH = 512
 local VIRTUAL_HEIGHT = 216
-
-local transition = {
-    alpha = 0,
-    state = "none",
-    speed = 3,
-    nextMap = nil,
-    nextX = 0,
-    nextY = 0
-}
 
 GamePhase = "Gameplay"
 
@@ -31,14 +18,19 @@ function Gameplay.load()
     Gameplay.loadCamera()
     Gameplay.onboarding = Onboarding()
 
-    local inicial = captura(feikedex.feikemons[1])
+    local inicial = BattleManager.captura(1)
+    local portaInicial = {
+        destino = "sala de estudos",
+        x = -16,
+        y = 165
+    }
+
     Gameplay.player = Player(-16, 165, inicial)
-    Gameplay.mudarMapa("sala de estudos", -16, 165)
+    MapManager.mudarMapa(portaInicial, Gameplay)
 end
 
 function Gameplay.update(dt)
-
-    Gameplay.transition(dt)
+    Transition.update(dt)
 
     if GamePhase == "Onboarding" then
         Gameplay.onboarding:update(dt)
@@ -46,30 +38,17 @@ function Gameplay.update(dt)
     elseif GamePhase == "Gameplay" then
         World:update(dt)
 
-        if transition.state == "none" and Gameplay.player.collider:enter('Portas') then
-            local porta = Gameplay.player.collider:getEnterCollisionData('Portas')
-            local p = porta.collider
-
-            transition.nextMap = p.destino
-            transition.nextX = p.x
-            transition.nextY = p.y
-            transition.state = "out"
+        local collider = Gameplay.player.collider
+        if Transition.state == "none" and collider:enter('Portas') then
+            local porta = collider:getEnterCollisionData('Portas').collider
+            Transition.start(3, function() MapManager.mudarMapa(porta, Gameplay) end)
         end
 
         Gameplay.player:update(dt)
         Cam:lookAt(Gameplay.player.x, Gameplay.player.y)
     end
 
-    if GamePhase == "Gameplay" and Gameplay.mapaAtual.name == "area externa" then
-        local vx, vy = Gameplay.player.collider:getLinearVelocity()
-        local estaMovendo = math.abs(vx) > 0 or math.abs(vy) > 0
-
-        if estaMovendo then
-            if math.random() < 0.05 then
-                batalhaSelvagem()
-            end
-        end
-    end
+    BattleManager.check(dt, Gameplay)
 end
 
 function Gameplay.draw()
@@ -85,76 +64,7 @@ function Gameplay.draw()
         end
     Cam:detach()
 
-    Gameplay.drawTransition()
-end
-
-function batalhaSelvagem()
-    local index = math.random(1, #feikedex.feikemons)
-    local selvagem = feikedex.feikemons[index]
-
-    print("------------------------------------------")
-    print("Nome: " .. selvagem.nome)
-    print("Tipo: " .. selvagem.tipo)
-    print("HP: " .. selvagem.hp_atual)
-    print("Ataques:")
-
-    for i, nomeAtaque in ipairs(selvagem.ataques) do
-        local dados = feikedex.ataques[nomeAtaque]
-        print("  " .. i .. ". " .. nomeAtaque .. " (Dano: " .. dados.dano .. ")")
-    end
-    print("------------------------------------------")
-
-
-    Gameplay.player:mostrarEquipe()
-end
-
-function Gameplay.mudarMapa(nome, sx, sy)
-    if Gameplay.mapaAtual and Gameplay.mapaAtual.removeColliders then
-        Gameplay.mapaAtual:removeColliders()
-    end
-
-    local MapaClasse = mapas[nome]
-    if MapaClasse then
-        Gameplay.mapaAtual = MapaClasse()
-        Gameplay.mapaAtual:setColliders()
-    end
-
-    Gameplay.player.collider:setPosition(sx, sy)
-end
-
-function captura(dadosBase)
-    return {
-        nome = dadosBase.nome,
-        tipo = dadosBase.tipo,
-        hp_max = dadosBase.hp_max,
-        hp_atual = dadosBase.hp_max,
-        ataques = dadosBase.ataques
-    }
-end
-
-function Gameplay.drawTransition()
-    if transition.alpha > 0 then
-        love.graphics.setColor(0, 0, 0, transition.alpha)
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-        love.graphics.setColor(1, 1, 1, 1)
-    end
-end
-
-function Gameplay.transition(dt)
-    if transition.state == "out" then
-        transition.alpha = math.min(transition.alpha + transition.speed * dt, 1)
-        if transition.alpha >= 1 then
-            Gameplay.mudarMapa(transition.nextMap, transition.nextX, transition.nextY)
-            transition.state = "in"
-        end
-        return
-
-    elseif transition.state == "in" then
-        transition.alpha = math.max(transition.alpha - transition.speed * dt, 0)
-        if transition.alpha <= 0 then
-            transition.state = "none"
-        end
-    end
+    Transition.draw()
 end
 
 function Gameplay.loadCamera()
@@ -165,14 +75,6 @@ function Gameplay.loadCamera()
 
     Cam = camera()
     Cam:zoomTo(escala + 2.5)
-end
-
-function Gameplay.music()
-    local music = love.audio.newSource("assets/sounds/Cloud Country.mp3", "stream")
-
-    music:setLooping(true)
-    music:setVolume(0.5)
-    music:play()
 end
 
 return Gameplay

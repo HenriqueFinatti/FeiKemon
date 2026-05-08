@@ -6,7 +6,7 @@ local Gameplay  = require 'src.states.Gameplay'
 local gameState = "Jogo"
 
 TextBoxManagerGlobal = nil
-TextBoxManager = require 'src/utils/TextBoxManager'
+TextBoxManager = require 'src/managers/TextBoxManager'
 
 function love.load()
     love.window.setMode(0, 0, {fullscreen = true})
@@ -51,7 +51,7 @@ function love.keypressed(key)
     if gameState == "Transition" then
         local action = Transition.keypressed(key)
         if action == "iniciar_gameplay" then
-            Gameplay.music()
+            music()
             gameState = "Jogo"
         end
     end
@@ -65,4 +65,12 @@ function love.draw()
     elseif gameState == "Jogo" then
         Gameplay.draw()
     end
+end
+
+function music()
+    local music = love.audio.newSource("assets/sounds/Cloud Country.mp3", "stream")
+
+    music:setLooping(true)
+    music:setVolume(0.5)
+    music:play()
 end
