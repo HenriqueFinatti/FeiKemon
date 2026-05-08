@@ -42,7 +42,7 @@ end
 function Player:mostrarEquipe()
     print("\n========= SUA EQUIPE (" .. #self.equipe .. "/6) =========")
     for i, f in ipairs(self.equipe) do
-        print(i .. ". " .. f.nome .. " | Tipo: " .. f.tipo .. " | HP: " .. f.hp_atual)
+        print(i .. ". " .. f.nome .. " | Tipo: " .. f.tipo[1] .. " | HP: " .. f.hp_atual)
     end
     print("==========================================\n")
 

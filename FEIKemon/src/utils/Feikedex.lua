@@ -77,10 +77,10 @@ local feikedex = {
             hp_max      = 120,
             hp_atual    = 120,
             ataques = {
-                { nome = "Compilar",           level = 1  },
-                { nome = "Kernel Panic",       level = 10 },
-                { nome = "Segmentation Fault", level = 20 },
-                { nome = "Deploy em Producao", level = 30 },
+                "Compilar",
+                "Kernel Panic",
+                "Segmentation Fault",
+                "Deploy em Producao",
             }
         },
 
@@ -93,10 +93,10 @@ local feikedex = {
             hp_max      = 110,
             hp_atual    = 110,
             ataques = {
-                { nome = "Compilar",       level = 1  },
-                { nome = "Tela Azul",      level = 5  },
-                { nome = "Bug Critico",    level = 10 },
-                { nome = "Stack Overflow", level = 20 },
+                "Compilar",
+                "Tela Azul",
+                "Bug Critico",
+                "Stack Overflow",
             }
         },
 
@@ -109,10 +109,10 @@ local feikedex = {
             hp_max      = 100,
             hp_atual    = 100,
             ataques = {
-                { nome = "Compilar",           level = 1  },
-                { nome = "Bug Critico",        level = 5  },
-                { nome = "Stack Overflow",     level = 10 },
-                { nome = "Deploy em Producao", level = 20 },
+                "Compilar",
+                "Bug Critico",
+                "Stack Overflow",
+                "Deploy em Producao",
             }
         },
 
@@ -125,10 +125,10 @@ local feikedex = {
             hp_max      = 95,
             hp_atual    = 95,
             ataques = {
-                { nome = "Compilar",       level = 1  },
-                { nome = "Stack Overflow", level = 5  },
-                { nome = "Bug Critico",    level = 10 },
-                { nome = "Kernel Panic",   level = 25 },
+                "Compilar",
+                "Stack Overflow",
+                "Bug Critico",
+                "Kernel Panic",
             }
         },
 
@@ -141,10 +141,10 @@ local feikedex = {
             hp_max      = 90,
             hp_atual    = 90,
             ataques = {
-                { nome = "Compilar",           level = 1  },
-                { nome = "Segmentation Fault", level = 5  },
-                { nome = "Stack Overflow",     level = 10 },
-                { nome = "Kernel Panic",       level = 20 },
+                "Compilar",
+                "Segmentation Fault",
+                "Stack Overflow",
+                "Kernel Panic",
             }
         },
 
@@ -157,10 +157,10 @@ local feikedex = {
             hp_max      = 105,
             hp_atual    = 105,
             ataques = {
-                { nome = "Clique Duplo",  level = 1  },
-                { nome = "Ping Flood",    level = 5  },
-                { nome = "Latencia Alta", level = 10 },
-                { nome = "DDoS",          level = 25 },
+                "Clique Duplo",
+                "Ping Flood",
+                "Latencia Alta",
+                "DDoS",
             }
         },
 
@@ -173,10 +173,10 @@ local feikedex = {
             hp_max      = 100,
             hp_atual    = 100,
             ataques = {
-                { nome = "Clique Duplo", level = 1  },
-                { nome = "Compilar",     level = 5  },
-                { nome = "Overclocking", level = 10 },
-                { nome = "Tela Azul",    level = 20 },
+                "Clique Duplo",
+                "Compilar",
+                "Overclocking",
+                "Tela Azul",
             }
         },
 
@@ -189,9 +189,9 @@ local feikedex = {
             hp_max      = 85,
             hp_atual    = 85,
             ataques = {
-                { nome = "Clique Duplo",  level = 1  },
-                { nome = "Curto Circuito",level = 5  },
-                { nome = "Tela Azul",     level = 15 },
+                "Clique Duplo",
+                "Curto Circuito",
+                "Tela Azul",
             }
         },
 
@@ -204,9 +204,9 @@ local feikedex = {
             hp_max      = 80,
             hp_atual    = 80,
             ataques = {
-                { nome = "Clique Duplo",  level = 1  },
-                { nome = "Curto Circuito",level = 5  },
-                { nome = "Overclocking",  level = 15 },
+                "Clique Duplo",
+                "Curto Circuito",
+                "Overclocking",
             }
         },
 
@@ -219,10 +219,10 @@ local feikedex = {
             hp_max      = 95,
             hp_atual    = 95,
             ataques = {
-                { nome = "Clique Duplo",       level = 1  },
-                { nome = "Bug Critico",        level = 5  },
-                { nome = "Tela Azul",          level = 10 },
-                { nome = "Deploy em Producao", level = 20 },
+                "Clique Duplo",
+                "Bug Critico",
+                "Tela Azul",
+                "Deploy em Producao",
             }
         },
 
@@ -235,10 +235,10 @@ local feikedex = {
             hp_max      = 110,
             hp_atual    = 110,
             ataques = {
-                { nome = "Rush de Cafeina",     level = 1  },
-                { nome = "Tremor Nervoso",      level = 5  },
-                { nome = "Overdose Energetica", level = 15 },
-                { nome = "Pico de Adrenalina",  level = 25 },
+                "Rush de Cafeina",
+                "Tremor Nervoso",
+                "Overdose Energetica",
+                "Pico de Adrenalina",
             }
         },
 
@@ -251,10 +251,10 @@ local feikedex = {
             hp_max      = 100,
             hp_atual    = 100,
             ataques = {
-                { nome = "Zero Caloria",        level = 1  },
-                { nome = "Rush de Cafeina",     level = 5  },
-                { nome = "Efeito Cascata",      level = 15 },
-                { nome = "Overdose Energetica", level = 25 },
+                "Zero Caloria",
+                "Rush de Cafeina",
+                "Efeito Cascata",
+                "Overdose Energetica",
             }
         },
 
@@ -267,10 +267,10 @@ local feikedex = {
             hp_max      = 115,
             hp_atual    = 115,
             ataques = {
-                { nome = "Rush de Cafeina",    level = 1  },
-                { nome = "Tremor Nervoso",     level = 5  },
-                { nome = "Efeito Cascata",     level = 10 },
-                { nome = "Pico de Adrenalina", level = 20 },
+                "Rush de Cafeina",
+                "Tremor Nervoso",
+                "Efeito Cascata",
+                "Pico de Adrenalina",
             }
         },
 
@@ -283,10 +283,10 @@ local feikedex = {
             hp_max      = 105,
             hp_atual    = 105,
             ataques = {
-                { nome = "Zero Caloria",       level = 1  },
-                { nome = "Rush de Cafeina",    level = 5  },
-                { nome = "Tremor Nervoso",     level = 10 },
-                { nome = "Efeito Cascata",     level = 20 },
+                "Zero Caloria",
+                "Rush de Cafeina",
+                "Tremor Nervoso",
+                "Efeito Cascata",
             }
         },
 
@@ -299,10 +299,10 @@ local feikedex = {
             hp_max      = 130,
             hp_atual    = 130,
             ataques = {
-                { nome = "Molho Especial",     level = 1  },
-                { nome = "Empanado Crocante",  level = 5  },
-                { nome = "Indigestao",         level = 15 },
-                { nome = "Pico de Adrenalina", level = 25 },
+                "Molho Especial",
+                "Empanado Crocante",
+                "Indigestao",
+                "Pico de Adrenalina",
             }
         },
     }

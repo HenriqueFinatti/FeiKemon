@@ -1,7 +1,7 @@
 local feikedex = require 'src/utils/Feikedex'
 
 local BattleManager = {
-    chance = 0.005
+    chance = 0.05
 }
 
 function BattleManager.captura(id)
@@ -35,7 +35,7 @@ function BattleManager.startBattle(player)
 
     print("\n------------------------------------------")
     print("!!! UM " .. selvagem.nome:upper() .. " SELVAGEM APARECEU !!!")
-    print("Tipo: " .. selvagem.tipo .. " | HP: " .. selvagem.hp_atual)
+    print("Tipo: " .. selvagem.tipo[1] .. " | HP: " .. selvagem.hp_atual)
     print("------------------------------------------")
 
     player:mostrarEquipe()
