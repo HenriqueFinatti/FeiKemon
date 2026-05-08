@@ -10,9 +10,10 @@ local feikedex = {
         {
             nome = "Linux",
             tipo = "Não lembro",
-            foto_frente = '...'
-            foto_verso = '...'
+            foto_frente = '...',
+            foto_verso = '...',
             hp_max = 100,
+            hp_atual = 100,
             ataques = {"Ataque 1", "Ataque 2"}
         }
     }

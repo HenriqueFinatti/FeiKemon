@@ -7,13 +7,23 @@ local SPRITE_WIDTH  = 12
 local SPRITE_HEIGHT = 18
 local SPEED         = 80
 
-function Player:init(playerX, playerY, world)
+function Player:init(playerX, playerY, feikemonInicial)
     self.x = playerX
     self.y = playerY
     self.speed = SPEED
     self.moving = false
+
+    self.equipe = {}
+    self.maxEquipe = 6
+
+    if feikemonInicial then
+        table.insert(self.equipe, feikemonInicial)
+        print("Equipe: " .. feikemonInicial.nome .. " entrou no time!")
+    end
+
     self.currentMap = "sala de estudos"
-    self.collider  = world:newBSGRectangleCollider(self.x, self.y, 12, 15, 1)
+
+    self.collider  = World:newBSGRectangleCollider(self.x, self.y, 12, 15, 1)
     self.collider:setCollisionClass('Player')
     self.collider:setFixedRotation(true)
 
@@ -30,6 +40,16 @@ function Player:init(playerX, playerY, world)
     self.sheet     = sheet
     self.anim      = self.animations.down
     self.direction = 'down'
+end
+
+function Player:mostrarEquipe()
+    print("\n========= SUA EQUIPE (" .. #self.equipe .. "/6) =========")
+    for i, f in ipairs(self.equipe) do
+        print(i .. ". " .. f.nome .. " | Tipo: " .. f.tipo .. " | HP: " .. f.hp_atual)
+    end
+    print("==========================================\n")
+
+    self.equipe[1].hp_atual = self.equipe[1].hp_atual - 10
 end
 
 function Player:update(dt)

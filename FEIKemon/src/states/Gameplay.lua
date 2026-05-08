@@ -2,9 +2,7 @@
 local camera = require 'src/libs/camera'
 local Player = require 'src/entities/Player'
 local Onboarding = require 'src/scenes/Onboarding'
-local feikedex = require 'src/utils/feikedex'
-
-local player = nil
+local feikedex = require 'src/utils/Feikedex'
 local onboarding = nil
 
 local mapas = {
@@ -33,7 +31,8 @@ function Gameplay.load()
     Gameplay.loadCamera()
     Gameplay.onboarding = Onboarding()
 
-    Gameplay.player = Player(-16, 165, World)
+    local inicial = captura(feikedex.feikemons[1])
+    Gameplay.player = Player(-16, 165, inicial)
     Gameplay.mudarMapa("sala de estudos", -16, 165)
 end
 
@@ -66,7 +65,7 @@ function Gameplay.update(dt)
         local estaMovendo = math.abs(vx) > 0 or math.abs(vy) > 0
 
         if estaMovendo then
-            if math.random() < 0.005 then
+            if math.random() < 0.05 then
                 batalhaSelvagem()
             end
         end
@@ -96,7 +95,7 @@ function batalhaSelvagem()
     print("------------------------------------------")
     print("Nome: " .. selvagem.nome)
     print("Tipo: " .. selvagem.tipo)
-    print("HP: " .. selvagem.hp_max)
+    print("HP: " .. selvagem.hp_atual)
     print("Ataques:")
 
     for i, nomeAtaque in ipairs(selvagem.ataques) do
@@ -104,6 +103,9 @@ function batalhaSelvagem()
         print("  " .. i .. ". " .. nomeAtaque .. " (Dano: " .. dados.dano .. ")")
     end
     print("------------------------------------------")
+
+
+    Gameplay.player:mostrarEquipe()
 end
 
 function Gameplay.mudarMapa(nome, sx, sy)
@@ -118,6 +120,16 @@ function Gameplay.mudarMapa(nome, sx, sy)
     end
 
     Gameplay.player.collider:setPosition(sx, sy)
+end
+
+function captura(dadosBase)
+    return {
+        nome = dadosBase.nome,
+        tipo = dadosBase.tipo,
+        hp_max = dadosBase.hp_max,
+        hp_atual = dadosBase.hp_max,
+        ataques = dadosBase.ataques
+    }
 end
 
 function Gameplay.drawTransition()
