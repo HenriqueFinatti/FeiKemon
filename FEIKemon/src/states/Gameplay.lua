@@ -18,14 +18,15 @@ function Gameplay.load()
     Gameplay.loadCamera()
     Gameplay.onboarding = Onboarding()
 
-    local inicial = BattleManager.captura(1)
+    local inicial = BattleManager.montaFeiKemon(1)
     local portaInicial = {
         destino = "sala de estudos",
         x = -16,
         y = 165
     }
 
-    Gameplay.player = Player(-16, 165, inicial)
+    Gameplay.player = Player(-16, 165)
+    Gameplay.player:captura(inicial)
     MapManager.mudarMapa(portaInicial, Gameplay)
 end
 
@@ -46,9 +47,20 @@ function Gameplay.update(dt)
 
         Gameplay.player:update(dt)
         Cam:lookAt(Gameplay.player.x, Gameplay.player.y)
+        BattleManager.check(dt, Gameplay)
     end
 
-    BattleManager.check(dt, Gameplay)
+end
+
+function love.keypressed(key)
+    if GamePhase == "Battle" then
+        BattleManager.controles(key)
+    end
+    
+    -- Atalho para ver equipe que já tínhamos
+    if key == "e" and GamePhase == "Gameplay" then
+        Gameplay.player:mostrarEquipe()
+    end
 end
 
 function Gameplay.draw()

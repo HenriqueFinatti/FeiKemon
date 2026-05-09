@@ -16,8 +16,6 @@ function Player:init(playerX, playerY, feikemonInicial)
     self.equipe = {}
     self.maxEquipe = 6
 
-    table.insert(self.equipe, feikemonInicial)
-
     self.currentMap = "sala de estudos"
 
     self.collider  = World:newBSGRectangleCollider(self.x, self.y, 12, 15, 1)
@@ -47,6 +45,22 @@ function Player:mostrarEquipe()
     print("==========================================\n")
 
     self.equipe[1].hp_atual = self.equipe[1].hp_atual - 10
+end
+
+function Player:captura(feikemon)
+    if #self.equipe < self.maxEquipe then
+        local copia = {
+            nome = feikemon.nome,
+            tipo = feikemon.tipo,
+            hp_max = feikemon.hp_max,
+            hp_atual = feikemon.hp_max,
+            ataques = feikemon.ataques
+        }
+        table.insert(self.equipe, copia)
+        print(">> " .. feikemon.nome .. " adicionado à equipe!")
+    else
+        print(">> Equipe cheia!")
+    end
 end
 
 function Player:update(dt)

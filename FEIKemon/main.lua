@@ -4,12 +4,12 @@ local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
 local Gameplay  = require 'src.states.Gameplay'
 local gameState = "Jogo"
+local BattleManager = require 'src/managers/BattleManager'
 
 TextBoxManagerGlobal = nil
 TextBoxManager = require 'src/managers/TextBoxManager'
 
 function love.load()
-    love.window.setMode(0, 0, {fullscreen = true})
     World = wf.newWorld(0, 0, true)
 
     World:addCollisionClass('Player')
@@ -40,6 +40,10 @@ function love.mousepressed(x, y, button)
 end
 
 function love.keypressed(key)
+    if GamePhase == "Battle" then
+        BattleManager.controles(key)
+    end
+
     if key == "escape" then
         love.event.quit()
     end
