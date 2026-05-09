@@ -6,7 +6,7 @@ local Transition = require 'src/utils/Transition'
 local BattleManager = require 'src/managers/BattleManager'
 local MapManager = require 'src/managers/MapManager'
 
-local Gameplay = {}
+Gameplay = {}
 
 local VIRTUAL_WIDTH = 512
 local VIRTUAL_HEIGHT = 216
@@ -50,17 +50,6 @@ function Gameplay.update(dt)
         BattleManager.check(dt, Gameplay)
     end
 
-end
-
-function love.keypressed(key)
-    if GamePhase == "Battle" then
-        BattleManager.controles(key)
-    end
-    
-    -- Atalho para ver equipe que já tínhamos
-    if key == "e" and GamePhase == "Gameplay" then
-        Gameplay.player:mostrarEquipe()
-    end
 end
 
 function Gameplay.draw()

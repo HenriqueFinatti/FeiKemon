@@ -44,6 +44,10 @@ function love.keypressed(key)
         BattleManager.controles(key)
     end
 
+    if key == "e" and GamePhase == "Gameplay" then
+        Gameplay.player:mostrarEquipe()
+    end
+
     if key == "escape" then
         love.event.quit()
     end

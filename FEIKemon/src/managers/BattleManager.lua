@@ -74,7 +74,7 @@ function BattleManager.controles(key)
             print("Você fugiu com segurança!")
             GamePhase = "Gameplay"
         elseif key == "3" then
-            BattleManager.playerRef:adicionarFeikemon(BattleManager.inimigo)
+            BattleManager.playerRef:captura(BattleManager.inimigo)
             GamePhase = "Gameplay"
         end
 
