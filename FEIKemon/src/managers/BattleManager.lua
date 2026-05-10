@@ -6,7 +6,7 @@ local BattleManager = {
     inimigo = nil,
     playerRef = nil,
     menuAberto = "principal",
-    indiceAtivo = 1, -- NOVO: Rastreia qual FeiKemon da equipe está na luta
+    indiceAtivo = 1,
 }
 
 function BattleManager.montaFeiKemon(id)
@@ -28,12 +28,9 @@ function BattleManager.check(dt, gameplay)
     if gameplay.mapaAtual.name == "area externa" then
         local vx, vy = gameplay.player.collider:getLinearVelocity()
         if math.abs(vx) > 0 or math.abs(vy) > 0 then
-            -- AJUSTE: Só tenta iniciar batalha se houver alguém vivo
             if math.random() < BattleManager.chance then
                 if gameplay.player:obterPrimeiroVivo() then
                     BattleManager.startBattle(gameplay.player)
-                else
-                    -- Opcional: print("Você não tem FeiKemons conscientes para lutar!")
                 end
             end
         end
@@ -44,8 +41,7 @@ function BattleManager.startBattle(player)
     if TeamMenu.isVisible then TeamMenu.toggle() end
     GamePhase = "Battle"
     BattleManager.playerRef = player
-    
-    -- Define quem começa lutando
+
     BattleManager.indiceAtivo = player:obterPrimeiroVivo()
 
     local randomID = math.random(1, #feikedex.feikemons)
@@ -111,7 +107,6 @@ function BattleManager.executarTurno(ataqueNome)
         return
     end
 
-    -- Turno do Inimigo
     local ataqueInimigoNome = eFeikemon.ataques[math.random(1, #eFeikemon.ataques)]
     local dadosAtaqueInimigo = feikedex.ataques[ataqueInimigoNome]
     pFeikemon.hp_atual = math.max(0, pFeikemon.hp_atual - dadosAtaqueInimigo.dano)
@@ -119,10 +114,9 @@ function BattleManager.executarTurno(ataqueNome)
     print(">> " .. eFeikemon.nome .. " selvagem usou " .. ataqueInimigoNome .. "!")
     print(">> " .. pFeikemon.nome .. " tem " .. pFeikemon.hp_atual .. " HP restante.")
 
-    -- Lógica de Troca ou Derrota
     if pFeikemon.hp_atual <= 0 then
         print("!! " .. pFeikemon.nome .. " desmaiou !!")
-        
+
         local proximo = BattleManager.playerRef:obterPrimeiroVivo()
         if proximo then
             BattleManager.indiceAtivo = proximo
