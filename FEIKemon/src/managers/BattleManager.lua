@@ -13,7 +13,6 @@ local BattleManager = {
     imgPlayer = nil,
     fonte = love.graphics.newFont('assets/fonts/8bitoperator.ttf', 18),
 
-    -- Estilização (Igual ao TeamMenu)
     corFundo = {0.7, 0.55, 0.4},
     corBorda = {0.4, 0.23, 0.12},
     corTexto = {0.2, 0.1, 0.05}
@@ -64,30 +63,11 @@ function BattleManager.startBattle(player)
     BattleManager.imgPlayer = love.graphics.newImage(pFeikemon.foto_verso)
 end
 
-function BattleManager.exibirMenuPrincipal()
-    BattleManager.menuAberto = "principal"
-    local pFeikemon = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
-    print("\nO que " .. pFeikemon.nome .. " deve fazer?")
-    print("1. Lutar | 2. Fugir | 3. Aprender")
-    print("==========================================")
-end
-
-function BattleManager.exibirMenuGolpes()
-    BattleManager.menuAberto = "golpes"
-    local pFeikemon = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
-    print("\nGolpes de " .. pFeikemon.nome .. ":")
-    for i, nomeAtaque in ipairs(pFeikemon.ataques) do
-        print(i .. ". " .. nomeAtaque)
-    end
-    print("5. Voltar")
-end
-
 function BattleManager.controles(key)
     if BattleManager.menuAberto == "principal" then
         if key == "1" then
-            BattleManager.exibirMenuGolpes()
+            BattleManager.menuAberto = "golpes"
         elseif key == "2" then
-            print("Você fugiu!")
             GamePhase = "Gameplay"
         elseif key == "3" then
             BattleManager.playerRef:captura(BattleManager.inimigo)
@@ -99,7 +79,7 @@ function BattleManager.controles(key)
         if num and num >= 1 and num <= #pFeikemon.ataques then
             BattleManager.executarTurno(pFeikemon.ataques[num])
         elseif key == "5" then
-            BattleManager.exibirMenuPrincipal()
+            BattleManager.menuAberto = "principal"
         end
     end
 end

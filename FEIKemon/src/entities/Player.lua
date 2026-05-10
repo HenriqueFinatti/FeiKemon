@@ -58,9 +58,6 @@ function Player:captura(feikemon)
             ataques = feikemon.ataques
         }
         table.insert(self.equipe, copia)
-        print(">> " .. feikemon.nome .. " adicionado à equipe!")
-    else
-        print(">> Equipe cheia!")
     end
 end
 
