@@ -1,7 +1,7 @@
 local feikedex = require 'src/utils/Feikedex'
 
 local BattleManager = {
-    chance = 0.05,
+    chance = 0, --0.005,
     inimigo = nil,
     player = nil,
     menuAberto = "principal",

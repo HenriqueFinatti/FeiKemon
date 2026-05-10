@@ -3,7 +3,8 @@ local MapManager = {}
 
 local mapas = {
     ["sala de estudos"] = require 'src/maps/SalaDeEstudos',
-    ["area externa"]    = require 'src/maps/AreaExterna'
+    ["area externa"]    = require 'src/maps/AreaExterna',
+    ["macfei"]    = require 'src/maps/MacFEI'
 }
 
 function MapManager.mudarMapa(porta, gameplay)

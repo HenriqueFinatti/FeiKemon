@@ -89,7 +89,7 @@ function Player:update(dt)
 
     self.x = self.collider:getX()
     self.y = self.collider:getY()
-
+    print(self.x, self.y)
     local targetAnim = self.animations[self.direction]
     if self.anim ~= targetAnim then
         self.anim = targetAnim

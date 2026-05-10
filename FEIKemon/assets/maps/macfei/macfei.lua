@@ -1059,8 +1059,8 @@ return {
           visible = true,
           properties = {
             ["destino"] = "area externa",
-            ["x"] = "0",
-            ["y "] = "0"
+            ["x"] = "677",
+            ["y"] = "323"
           }
         }
       }
