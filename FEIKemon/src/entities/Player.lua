@@ -7,11 +7,12 @@ local SPRITE_WIDTH  = 12
 local SPRITE_HEIGHT = 18
 local SPEED         = 80
 
-function Player:init(playerX, playerY)
-    self.x = playerX
-    self.y = playerY
+function Player:init()
+    self.x = 0
+    self.y = 0
     self.speed = SPEED
     self.moving = false
+    self.healTimer = 0
 
     self.equipe = {}
     self.maxEquipe = 6
@@ -43,7 +44,7 @@ function Player:obterPrimeiroVivo()
             return i
         end
     end
-    return nil -- Ninguém vivo
+    return nil
 end
 
 function Player:captura(feikemon)
@@ -61,9 +62,25 @@ function Player:captura(feikemon)
     end
 end
 
+function Player:healTeam(dt)
+    self.healTimer = self.healTimer + dt
+
+    if self.healTimer >= 1 then
+        self.healTimer = self.healTimer - 1
+
+        for _, feikemon in ipairs(self.equipe) do
+            feikemon.hp_atual = math.min(feikemon.hp_max, feikemon.hp_atual + 10)
+        end
+    end
+end
+
 function Player:update(dt)
     local dx, dy = 0, 0
     self.moving = false
+
+    if self.currentMap == "macfei" then
+        self:healTeam(dt)
+    end
 
     if love.keyboard.isDown('w', 'up') then
         dy = -self.speed
@@ -89,7 +106,7 @@ function Player:update(dt)
 
     self.x = self.collider:getX()
     self.y = self.collider:getY()
-    print(self.x, self.y)
+    -- print(self.x, self.y)
     local targetAnim = self.animations[self.direction]
     if self.anim ~= targetAnim then
         self.anim = targetAnim

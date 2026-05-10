@@ -21,12 +21,12 @@ function Gameplay.load()
 
     local inicial = BattleManager.montaFeiKemon(1)
     local portaInicial = {
-        destino = "sala de estudos",
-        x = -16,
-        y = 165
+        destino = "area externa",
+        x = 725,
+        y = 319
     }
 
-    Gameplay.player = Player(-16, 165)
+    Gameplay.player = Player()
     Gameplay.player:captura(inicial)
     MapManager.mudarMapa(portaInicial, Gameplay)
 end

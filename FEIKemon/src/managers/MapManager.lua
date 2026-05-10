@@ -21,6 +21,7 @@ function MapManager.mudarMapa(porta, gameplay)
     if MapaClasse then
         gameplay.mapaAtual = MapaClasse()
         gameplay.mapaAtual:setColliders()
+        gameplay.player.currentMap = gameplay.mapaAtual.name
     end
 
     gameplay.player.collider:setPosition(x, y)

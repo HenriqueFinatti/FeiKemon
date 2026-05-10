@@ -1,7 +1,7 @@
 local feikedex = require 'src/utils/Feikedex'
 
 local BattleManager = {
-    chance = 0, --0.005,
+    chance = 0.05,
     inimigo = nil,
     player = nil,
     menuAberto = "principal",
@@ -206,6 +206,7 @@ function BattleManager.draw()
 
     if BattleManager.battleEnd then
         os.execute("sleep 1")
+        BattleManager.menuAberto = "principal"
         GamePhase = "Gameplay"
     end
     love.graphics.setColor(1, 1, 1)
