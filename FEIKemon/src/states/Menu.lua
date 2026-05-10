@@ -2,15 +2,41 @@ local Menu = {}
 
 local smallFont = nil
 local background
-local clickSound, music
+local clickSound
 
-local buttonPlay = { x = love.graphics.getWidth()*(30/100), y = love.graphics.getHeight()*(70/100), w = 150, h = 50, text = "Jogar" }
-local buttonExit = { x = love.graphics.getWidth()*(50/100), y = love.graphics.getHeight()*(70/100), w = 150, h = 50, text = "Sair" }
+local buttonPlay, buttonExit
 
 function Menu.load()
     background = love.graphics.newImage("assets/images/BackgroundInicial.png")
     smallFont = love.graphics.newFont('assets/fonts/8bitoperator.ttf', 18)
     clickSound = love.audio.newSource("assets/sounds/mouseClick.mp3", "static")
+
+    local screenWidth = love.graphics.getWidth()
+    local screenHeight = love.graphics.getHeight()
+
+    local buttonWidth = 150
+    local buttonHeight = 50
+    local spacing = 20
+
+    local totalWidth = buttonWidth * 2 + spacing
+    local startX = (screenWidth - totalWidth) / 2
+    local posY = (screenHeight - buttonHeight) / 2 + screenHeight / 4
+
+    buttonPlay = {
+        x = startX,
+        y = posY,
+        w = buttonWidth,
+        h = buttonHeight,
+        text = "Jogar"
+    }
+
+    buttonExit = {
+        x = startX + buttonWidth + spacing,
+        y = posY,
+        w = buttonWidth,
+        h = buttonHeight,
+        text = "Sair"
+    }
 end
 
 function Menu.setup()
@@ -39,7 +65,7 @@ end
 
 function Menu.mousepressed(x, y, button)
     clickSound:play()
-    music:stop()
+    BackgroundMusic:stop()
     if button == 1 then
         if x >= buttonPlay.x and x <= buttonPlay.x + buttonPlay.w and
            y >= buttonPlay.y and y <= buttonPlay.y + buttonPlay.h then

@@ -11,7 +11,7 @@ function Danilo:init()
     local grid = anim8.newGrid(16, 32, self.sheet:getWidth(), self.sheet:getHeight())
     
     self.anim = anim8.newAnimation(grid('1-4', 1), 0.1)
-    self.retrato = love.graphics.newImage('assets/PixelArtsFeiKemon/Fagner.png')
+    self.retrato = love.graphics.newImage('assets/professores/DaniloPerfil.png')
 end
 
 function Danilo:update(dt)

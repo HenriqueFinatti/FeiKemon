@@ -12,7 +12,7 @@ Gameplay = {}
 local VIRTUAL_WIDTH = 512
 local VIRTUAL_HEIGHT = 216
 
-GamePhase = "Gameplay"
+GamePhase = "Onboarding"
 
 function Gameplay.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
@@ -21,7 +21,7 @@ function Gameplay.load()
 
     local inicial = BattleManager.montaFeiKemon(1)
     local portaInicial = {
-        destino = "area externa",
+        destino = "sala de estudos",
         x = -16,
         y = 165
     }
