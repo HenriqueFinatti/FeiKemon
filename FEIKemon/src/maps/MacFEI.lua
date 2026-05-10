@@ -52,7 +52,6 @@ function MacFEI:draw()
     self.map:drawLayer(self.map.layers["Cozinha"])
     self.map:drawLayer(self.map.layers["Mesas"])
     self.map:drawLayer(self.map.layers["Auxiliares"])
-    self.map:drawLayer(self.map.layers["Colisao"])
 end
 
 return MacFEI

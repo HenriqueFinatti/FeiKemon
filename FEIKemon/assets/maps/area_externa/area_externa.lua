@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 87,
+  nextobjectid = 88,
   properties = {},
   tilesets = {
     {
@@ -3912,6 +3912,24 @@ return {
             ["destino"] = "sala de estudos",
             ["x"] = "-16",
             ["y"] = "165"
+          }
+        },
+        {
+          id = 87,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 656,
+          y = 304,
+          width = 16,
+          height = 48,
+          rotation = 0,
+          opacity = 1,
+          visible = true,
+          properties = {
+            ["destino"] = "macfei",
+            ["x"] = "-50",
+            ["y"] = "186"
           }
         }
       }
