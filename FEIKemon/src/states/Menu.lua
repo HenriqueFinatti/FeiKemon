@@ -11,12 +11,6 @@ function Menu.load()
     background = love.graphics.newImage("assets/images/BackgroundInicial.png")
     smallFont = love.graphics.newFont('assets/fonts/8bitoperator.ttf', 18)
     clickSound = love.audio.newSource("assets/sounds/mouseClick.mp3", "static")
-    music = love.audio.newSource("assets/sounds/Cloud Country.mp3", "stream")
-
-    music:setLooping(true)
-    music:setVolume(0.5)
-
-    music:play()
 end
 
 function Menu.setup()

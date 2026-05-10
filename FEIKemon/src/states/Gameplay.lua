@@ -22,8 +22,8 @@ function Gameplay.load()
     local inicial = BattleManager.montaFeiKemon(1)
     local portaInicial = {
         destino = "area externa",
-        x = 725,
-        y = 319
+        x = -16,
+        y = 165
     }
 
     Gameplay.player = Player()
@@ -48,8 +48,8 @@ function Gameplay.update(dt)
 
         Gameplay.player:update(dt)
         Cam:lookAt(Gameplay.player.x, Gameplay.player.y)
-        BattleManager.check(dt, Gameplay)
     end
+    BattleManager.check(dt, Gameplay)
 
 end
 

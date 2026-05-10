@@ -19,7 +19,24 @@ local BattleManager = {
     corTexto = {0.2, 0.1, 0.05},
 
     battleEnd = false,
+    battleHappening = false,
+    somAtivo = nil,
+    sounds = {
+        vitoria = love.audio.newSource("assets/sounds/vitoria.mp3", "static"),
+        derrota = love.audio.newSource("assets/sounds/derrota.mp3", "static"),
+        captura = love.audio.newSource("assets/sounds/captura.mp3", "static"),
+        fuga    = love.audio.newSource("assets/sounds/fuga.mp3", "static"),
+        musicaBatalha = love.audio.newSource("assets/sounds/backgroundBatalha.mp3", "stream")
+    }
 }
+
+function BattleManager.encerrarComSom(tipoSom)
+    BattleManager.sounds.musicaBatalha:stop()
+
+    BattleManager.battleEnd = true
+    BattleManager.somAtivo = BattleManager.sounds[tipoSom]
+    BattleManager.somAtivo:play()
+end
 
 function BattleManager.addLog(msg)
     table.insert(BattleManager.logs, msg)
@@ -40,11 +57,25 @@ function BattleManager.montaFeiKemon(id)
 end
 
 function BattleManager.check(dt, gameplay)
-    if gameplay.mapaAtual.name == "area externa" then
+    if BattleManager.battleEnd then
+        if not BattleManager.somAtivo:isPlaying() then
+            BattleManager.battleEnd = false
+            BattleManager.battleHappening = false
+            BattleManager.somAtivo = nil
+            BattleManager.menuAberto = "principal"
+            GamePhase = "Gameplay"
+
+            BackgroundMusic:play()
+        end
+        return
+    end
+
+    if gameplay.mapaAtual.name == "area externa" and not BattleManager.battleHappening then
         local vx, vy = gameplay.player.collider:getLinearVelocity()
         if math.abs(vx) > 0 or math.abs(vy) > 0 then
             if math.random() < BattleManager.chance then
                 if gameplay.player:obterPrimeiroVivo() then
+                    BattleManager.battleHappening = true
                     BattleManager.startBattle(gameplay.player)
                 end
             end
@@ -53,6 +84,11 @@ function BattleManager.check(dt, gameplay)
 end
 
 function BattleManager.startBattle(player)
+    love.audio.stop()
+
+    BattleManager.sounds.musicaBatalha:setLooping(true)
+    BattleManager.sounds.musicaBatalha:play()
+
     local randomID = math.random(1, #feikedex.feikemons)
     BattleManager.battleEnd = false
     GamePhase = "Battle"
@@ -75,12 +111,13 @@ function BattleManager.controles(key)
         if key == "1" then
             BattleManager.menuAberto = "golpes"
         elseif key == "2" then
-            BattleManager.battleEnd = true
+            BattleManager.addLog("Você fugiu!")
+            BattleManager.encerrarComSom("fuga")
         elseif key == "3" then
             BattleManager.player:captura(BattleManager.inimigo)
-            BattleManager.battleEnd = true
+            BattleManager.addLog("Capturado com sucesso!")
+            BattleManager.encerrarComSom("captura")
         end
-
     elseif BattleManager.menuAberto == "golpes" then
         local num = tonumber(key)
         local feikemon_player = BattleManager.player.equipe[BattleManager.id_feikemon]
@@ -97,15 +134,18 @@ function BattleManager.executarTurno(ataque)
     local feikemon_player = BattleManager.player.equipe[BattleManager.id_feikemon]
     local feikemon_enemy = BattleManager.inimigo
 
+    -- Turno do Player
     local dadosAtaque = feikedex.ataques[ataque]
     feikemon_enemy.hp_atual = math.max(0, feikemon_enemy.hp_atual - dadosAtaque.dano)
     BattleManager.addLog(feikemon_player.nome .. " usou " .. ataque .. "!")
 
     if feikemon_enemy.hp_atual <= 0 then
-        BattleManager.battleEnd = true
+        BattleManager.addLog(feikemon_enemy.nome .. " desmaiou!")
+        BattleManager.encerrarComSom("vitoria")
         return
     end
 
+    -- Turno do Inimigo
     local atkInimigo = feikemon_enemy.ataques[math.random(1, #feikemon_enemy.ataques)]
     local dadosAtkInimigo = feikedex.ataques[atkInimigo]
     feikemon_player.hp_atual = math.max(0, feikemon_player.hp_atual - dadosAtkInimigo.dano)
@@ -118,7 +158,8 @@ function BattleManager.executarTurno(ataque)
             BattleManager.imgPlayer = love.graphics.newImage(BattleManager.player.equipe[proximo].foto_verso)
             BattleManager.addLog("Vai, " .. BattleManager.player.equipe[proximo].nome .. "!")
         else
-            BattleManager.battleEnd = true
+            BattleManager.addLog("Você foi derrotado...")
+            BattleManager.encerrarComSom("derrota")
         end
     end
 end
@@ -204,11 +245,6 @@ function BattleManager.draw()
         end
     end
 
-    if BattleManager.battleEnd then
-        os.execute("sleep 1")
-        BattleManager.menuAberto = "principal"
-        GamePhase = "Gameplay"
-    end
     love.graphics.setColor(1, 1, 1)
 end
 

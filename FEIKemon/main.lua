@@ -24,6 +24,7 @@ function love.load()
     Transition.load()
     Gameplay.load()
     TeamMenu.load()
+    music()
 end
 
 function love.update(dt)
@@ -80,9 +81,9 @@ function love.draw()
 end
 
 function music()
-    local music = love.audio.newSource("assets/sounds/Cloud Country.mp3", "stream")
+    BackgroundMusic = love.audio.newSource("assets/sounds/Background.mp3", "stream")
 
-    music:setLooping(true)
-    music:setVolume(0.5)
-    music:play()
+    BackgroundMusic:setLooping(true)
+    BackgroundMusic:setVolume(0.5)
+    BackgroundMusic:play()
 end
