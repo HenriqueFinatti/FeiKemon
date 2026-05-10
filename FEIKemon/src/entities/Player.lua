@@ -7,7 +7,7 @@ local SPRITE_WIDTH  = 12
 local SPRITE_HEIGHT = 18
 local SPEED         = 80
 
-function Player:init(playerX, playerY, feikemonInicial)
+function Player:init(playerX, playerY)
     self.x = playerX
     self.y = playerY
     self.speed = SPEED
@@ -51,6 +51,8 @@ function Player:captura(feikemon)
         local copia = {
             nome = feikemon.nome,
             tipo = feikemon.tipo,
+            foto_frente = feikemon.foto_frente,
+            foto_verso = feikemon.foto_verso,
             hp_max = feikemon.hp_max,
             hp_atual = feikemon.hp_max,
             ataques = feikemon.ataques

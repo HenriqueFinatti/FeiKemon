@@ -54,20 +54,25 @@ function Gameplay.update(dt)
 end
 
 function Gameplay.draw()
-    Cam:attach()
-        love.graphics.clear()
-        love.graphics.setColor(1,1,1,1)
+    love.graphics.clear()
+    if GamePhase == "Battle" then
+        -- Se estiver em batalha, desenha apenas a UI da batalha ocupando tudo
+        BattleManager.draw()
+    else
+        -- Desenho normal do mapa e player
+        Cam:attach()
+            love.graphics.setColor(1,1,1,1)
+            if GamePhase == "Onboarding" then
+                Gameplay.onboarding:draw()
+            else
+                if Gameplay.mapaAtual then Gameplay.mapaAtual:draw() end
+                if Gameplay.player then Gameplay.player:draw() end
+            end
+        Cam:detach()
 
-        if GamePhase == "Onboarding" then
-            Gameplay.onboarding:draw()
-        else
-            if Gameplay.mapaAtual then Gameplay.mapaAtual:draw() end
-            if Gameplay.player then Gameplay.player:draw() end
+        if GamePhase == "Gameplay" then
+            TeamMenu.draw(Gameplay.player.equipe)
         end
-    Cam:detach()
-
-    if GamePhase == "Gameplay" then
-        TeamMenu.draw(Gameplay.player.equipe)
     end
 
     Transition.draw()
