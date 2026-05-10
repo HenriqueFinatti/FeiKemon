@@ -37,14 +37,13 @@ function Player:init(playerX, playerY, feikemonInicial)
     self.direction = 'down'
 end
 
-function Player:mostrarEquipe()
-    print("\n========= SUA EQUIPE (" .. #self.equipe .. "/6) =========")
+function Player:obterPrimeiroVivo()
     for i, f in ipairs(self.equipe) do
-        print(i .. ". " .. f.nome .. " | Tipo: " .. f.tipo[1] .. " | HP: " .. f.hp_atual)
+        if f.hp_atual > 0 then
+            return i
+        end
     end
-    print("==========================================\n")
-
-    self.equipe[1].hp_atual = self.equipe[1].hp_atual - 10
+    return nil -- Ninguém vivo
 end
 
 function Player:captura(feikemon)

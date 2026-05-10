@@ -1,10 +1,12 @@
 local feikedex = require 'src/utils/Feikedex'
+local TeamMenu = require 'src/ui/TeamMenu'
 
 local BattleManager = {
-    chance = 0.05, -- Diminuído para não triggar toda hora
+    chance = 0.05,
     inimigo = nil,
     playerRef = nil,
-    menuAberto = "principal", -- "principal" ou "golpes"
+    menuAberto = "principal",
+    indiceAtivo = 1, -- NOVO: Rastreia qual FeiKemon da equipe está na luta
 }
 
 function BattleManager.montaFeiKemon(id)
@@ -21,22 +23,30 @@ function BattleManager.montaFeiKemon(id)
 end
 
 function BattleManager.check(dt, gameplay)
-    -- Só checa encontro se estivermos explorando
     if GamePhase ~= "Gameplay" then return end
 
     if gameplay.mapaAtual.name == "area externa" then
         local vx, vy = gameplay.player.collider:getLinearVelocity()
         if math.abs(vx) > 0 or math.abs(vy) > 0 then
+            -- AJUSTE: Só tenta iniciar batalha se houver alguém vivo
             if math.random() < BattleManager.chance then
-                BattleManager.startBattle(gameplay.player)
+                if gameplay.player:obterPrimeiroVivo() then
+                    BattleManager.startBattle(gameplay.player)
+                else
+                    -- Opcional: print("Você não tem FeiKemons conscientes para lutar!")
+                end
             end
         end
     end
 end
 
 function BattleManager.startBattle(player)
+    if TeamMenu.isVisible then TeamMenu.toggle() end
     GamePhase = "Battle"
     BattleManager.playerRef = player
+    
+    -- Define quem começa lutando
+    BattleManager.indiceAtivo = player:obterPrimeiroVivo()
 
     local randomID = math.random(1, #feikedex.feikemons)
     BattleManager.inimigo = BattleManager.montaFeiKemon(randomID)
@@ -48,17 +58,16 @@ end
 
 function BattleManager.exibirMenuPrincipal()
     BattleManager.menuAberto = "principal"
-    print("\nO que " .. BattleManager.playerRef.equipe[1].nome .. " deve fazer?")
-    print("1. Lutar")
-    print("2. Fugir")
-    print("3. Aprender (Capturar)")
+    local pFeikemon = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
+    print("\nO que " .. pFeikemon.nome .. " deve fazer?")
+    print("1. Lutar | 2. Fugir | 3. Aprender")
     print("==========================================")
 end
 
 function BattleManager.exibirMenuGolpes()
     BattleManager.menuAberto = "golpes"
-    local pFeikemon = BattleManager.playerRef.equipe[1]
-    print("\nEscolha um golpe:")
+    local pFeikemon = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
+    print("\nGolpes de " .. pFeikemon.nome .. ":")
     for i, nomeAtaque in ipairs(pFeikemon.ataques) do
         print(i .. ". " .. nomeAtaque)
     end
@@ -68,20 +77,17 @@ end
 function BattleManager.controles(key)
     if BattleManager.menuAberto == "principal" then
         if key == "1" then
-            print("Esta aqui")
             BattleManager.exibirMenuGolpes()
         elseif key == "2" then
-            print("Você fugiu com segurança!")
+            print("Você fugiu!")
             GamePhase = "Gameplay"
         elseif key == "3" then
             BattleManager.playerRef:captura(BattleManager.inimigo)
             GamePhase = "Gameplay"
         end
-
     elseif BattleManager.menuAberto == "golpes" then
-        local pFeikemon = BattleManager.playerRef.equipe[1]
+        local pFeikemon = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
         local num = tonumber(key)
-
         if num and num >= 1 and num <= #pFeikemon.ataques then
             BattleManager.executarTurno(pFeikemon.ataques[num])
         elseif key == "5" then
@@ -91,14 +97,13 @@ function BattleManager.controles(key)
 end
 
 function BattleManager.executarTurno(ataqueNome)
-    local pFeikemon = BattleManager.playerRef.equipe[1]
+    local pFeikemon = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
     local eFeikemon = BattleManager.inimigo
 
     -- Turno do Player
     local dadosAtaque = feikedex.ataques[ataqueNome]
     eFeikemon.hp_atual = math.max(0, eFeikemon.hp_atual - dadosAtaque.dano)
     print("\n>> " .. pFeikemon.nome .. " usou " .. ataqueNome .. "!")
-    print(">> " .. eFeikemon.nome .. " selvagem tem " .. eFeikemon.hp_atual .. " HP restante.")
 
     if eFeikemon.hp_atual <= 0 then
         print(">> O " .. eFeikemon.nome .. " selvagem desmaiou!")
@@ -106,17 +111,29 @@ function BattleManager.executarTurno(ataqueNome)
         return
     end
 
-    -- Turno do Inimigo (IA Simples)
+    -- Turno do Inimigo
     local ataqueInimigoNome = eFeikemon.ataques[math.random(1, #eFeikemon.ataques)]
     local dadosAtaqueInimigo = feikedex.ataques[ataqueInimigoNome]
     pFeikemon.hp_atual = math.max(0, pFeikemon.hp_atual - dadosAtaqueInimigo.dano)
 
     print(">> " .. eFeikemon.nome .. " selvagem usou " .. ataqueInimigoNome .. "!")
-    print(">> Seu " .. pFeikemon.nome .. " tem " .. pFeikemon.hp_atual .. " HP restante.")
+    print(">> " .. pFeikemon.nome .. " tem " .. pFeikemon.hp_atual .. " HP restante.")
 
+    -- Lógica de Troca ou Derrota
     if pFeikemon.hp_atual <= 0 then
-        print(">> Seu FeiKemon desmaiou! Você correu para o hospital da faculdade.")
-        GamePhase = "Gameplay"
+        print("!! " .. pFeikemon.nome .. " desmaiou !!")
+        
+        local proximo = BattleManager.playerRef:obterPrimeiroVivo()
+        if proximo then
+            BattleManager.indiceAtivo = proximo
+            local novoFeikemon = BattleManager.playerRef.equipe[proximo]
+            print(">> Vai, " .. novoFeikemon.nome .. "!")
+            BattleManager.exibirMenuPrincipal()
+        else
+            print(">> Você não tem mais FeiKemons em condições de lutar!")
+            print(">> Você correu para o Centro Acadêmico para descansar...")
+            GamePhase = "Gameplay"
+        end
     else
         BattleManager.exibirMenuPrincipal()
     end

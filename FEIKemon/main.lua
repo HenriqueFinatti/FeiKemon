@@ -5,7 +5,7 @@ local Transition = require 'src.states.Transition'
 local Gameplay  = require 'src.states.Gameplay'
 local gameState = "Jogo"
 local BattleManager = require 'src/managers/BattleManager'
-
+local TeamMenu = require 'src/ui/TeamMenu'
 TextBoxManagerGlobal = nil
 TextBoxManager = require 'src/managers/TextBoxManager'
 
@@ -20,6 +20,7 @@ function love.load()
     Menu.load()
     Transition.load()
     Gameplay.load()
+    TeamMenu.load()
 end
 
 function love.update(dt)
@@ -45,7 +46,7 @@ function love.keypressed(key)
     end
 
     if key == "e" and GamePhase == "Gameplay" then
-        Gameplay.player:mostrarEquipe()
+        TeamMenu.toggle()
     end
 
     if key == "escape" then

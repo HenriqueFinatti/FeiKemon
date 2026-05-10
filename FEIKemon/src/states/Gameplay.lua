@@ -5,6 +5,7 @@ local Onboarding = require 'src/scenes/Onboarding'
 local Transition = require 'src/utils/Transition'
 local BattleManager = require 'src/managers/BattleManager'
 local MapManager = require 'src/managers/MapManager'
+local TeamMenu = require 'src/ui/TeamMenu'
 
 Gameplay = {}
 
@@ -64,6 +65,10 @@ function Gameplay.draw()
             if Gameplay.player then Gameplay.player:draw() end
         end
     Cam:detach()
+
+    if GamePhase == "Gameplay" then
+        TeamMenu.draw(Gameplay.player.equipe)
+    end
 
     Transition.draw()
 end
