@@ -11,6 +11,7 @@ TextBoxManager = require 'src/managers/TextBoxManager'
 
 function love.load()
     love.window.setFullscreen(true, "desktop")
+    math.randomseed(os.time())
     World = wf.newWorld(0, 0, true)
 
     World:addCollisionClass('Player')
@@ -18,6 +19,7 @@ function love.load()
     World:addCollisionClass('Obstaculo')
 
     TextBoxManagerGlobal = TextBoxManager()
+
     Menu.load()
     Transition.load()
     Gameplay.load()

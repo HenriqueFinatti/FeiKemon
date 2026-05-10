@@ -1,21 +1,24 @@
 local feikedex = require 'src/utils/Feikedex'
-local TeamMenu = require 'src/ui/TeamMenu'
 
 local BattleManager = {
     chance = 0.05,
     inimigo = nil,
-    playerRef = nil,
+    player = nil,
     menuAberto = "principal",
-    indiceAtivo = 1,
+    id_feikemon = 1,
 
-    logs = {"Uma batalha iniciou!"},
+    logs = nil,
     imgInimigo = nil,
     imgPlayer = nil,
+
     fonte = love.graphics.newFont('assets/fonts/8bitoperator.ttf', 18),
+    imgFundo = love.graphics.newImage("assets/images/BackgroundBatalha.png"),
 
     corFundo = {0.7, 0.55, 0.4},
     corBorda = {0.4, 0.23, 0.12},
-    corTexto = {0.2, 0.1, 0.05}
+    corTexto = {0.2, 0.1, 0.05},
+
+    battleEnd = false,
 }
 
 function BattleManager.addLog(msg)
@@ -25,17 +28,18 @@ end
 
 function BattleManager.montaFeiKemon(id)
     local base = feikedex.feikemons[id]
-    if not base then return nil end
     return {
-        nome = base.nome, tipo = base.tipo, hp_max = base.hp_max,
-        hp_atual = base.hp_max, ataques = base.ataques,
-        foto_frente = base.foto_frente, foto_verso = base.foto_verso
+        nome = base.nome,
+        tipo = base.tipo,
+        hp_max = base.hp_max,
+        hp_atual = base.hp_max,
+        ataques = base.ataques,
+        foto_frente = base.foto_frente,
+        foto_verso = base.foto_verso
     }
 end
 
 function BattleManager.check(dt, gameplay)
-    if GamePhase ~= "Gameplay" then return end
-
     if gameplay.mapaAtual.name == "area externa" then
         local vx, vy = gameplay.player.collider:getLinearVelocity()
         if math.abs(vx) > 0 or math.abs(vy) > 0 then
@@ -49,164 +53,162 @@ function BattleManager.check(dt, gameplay)
 end
 
 function BattleManager.startBattle(player)
-    GamePhase = "Battle"
-    BattleManager.playerRef = player
-    BattleManager.indiceAtivo = player:obterPrimeiroVivo()
-    BattleManager.logs = {"Um encontro selvagem!"}
-
     local randomID = math.random(1, #feikedex.feikemons)
+    BattleManager.battleEnd = false
+    GamePhase = "Battle"
+
+    BattleManager.player = player
+    BattleManager.logs = {"Um encontro selvagem!"}
 
     BattleManager.inimigo = BattleManager.montaFeiKemon(randomID)
     BattleManager.imgInimigo = love.graphics.newImage(BattleManager.inimigo.foto_frente)
 
-    local pFeikemon = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
-    BattleManager.imgPlayer = love.graphics.newImage(pFeikemon.foto_verso)
+    BattleManager.id_feikemon = player:obterPrimeiroVivo()
+    local feikemon_player = BattleManager.player.equipe[BattleManager.id_feikemon]
+    BattleManager.imgPlayer = love.graphics.newImage(feikemon_player.foto_verso)
 end
 
 function BattleManager.controles(key)
+    if BattleManager.battleEnd then return end
+
     if BattleManager.menuAberto == "principal" then
         if key == "1" then
             BattleManager.menuAberto = "golpes"
         elseif key == "2" then
-            GamePhase = "Gameplay"
+            BattleManager.battleEnd = true
         elseif key == "3" then
-            BattleManager.playerRef:captura(BattleManager.inimigo)
-            GamePhase = "Gameplay"
+            BattleManager.player:captura(BattleManager.inimigo)
+            BattleManager.battleEnd = true
         end
+
     elseif BattleManager.menuAberto == "golpes" then
-        local pFeikemon = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
         local num = tonumber(key)
-        if num and num >= 1 and num <= #pFeikemon.ataques then
-            BattleManager.executarTurno(pFeikemon.ataques[num])
+        local feikemon_player = BattleManager.player.equipe[BattleManager.id_feikemon]
+
+        if num and num >= 1 and num <= #feikemon_player.ataques then
+            BattleManager.executarTurno(feikemon_player.ataques[num])
         elseif key == "5" then
             BattleManager.menuAberto = "principal"
         end
     end
 end
 
-function BattleManager.executarTurno(ataqueNome)
-    local pFeikemon = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
-    local eFeikemon = BattleManager.inimigo
+function BattleManager.executarTurno(ataque)
+    local feikemon_player = BattleManager.player.equipe[BattleManager.id_feikemon]
+    local feikemon_enemy = BattleManager.inimigo
 
-    -- Player ataca
-    local dadosAtaque = feikedex.ataques[ataqueNome]
-    eFeikemon.hp_atual = math.max(0, eFeikemon.hp_atual - dadosAtaque.dano)
-    BattleManager.addLog(pFeikemon.nome .. " usou " .. ataqueNome .. "!")
+    local dadosAtaque = feikedex.ataques[ataque]
+    feikemon_enemy.hp_atual = math.max(0, feikemon_enemy.hp_atual - dadosAtaque.dano)
+    BattleManager.addLog(feikemon_player.nome .. " usou " .. ataque .. "!")
 
-    if eFeikemon.hp_atual <= 0 then
-        BattleManager.addLog(eFeikemon.nome .. " desmaiou!")
-        GamePhase = "Gameplay"
+    if feikemon_enemy.hp_atual <= 0 then
+        BattleManager.battleEnd = true
         return
     end
 
-    -- Inimigo ataca
-    local atkInimigo = eFeikemon.ataques[math.random(1, #eFeikemon.ataques)]
+    local atkInimigo = feikemon_enemy.ataques[math.random(1, #feikemon_enemy.ataques)]
     local dadosAtkInimigo = feikedex.ataques[atkInimigo]
-    pFeikemon.hp_atual = math.max(0, pFeikemon.hp_atual - dadosAtkInimigo.dano)
+    feikemon_player.hp_atual = math.max(0, feikemon_player.hp_atual - dadosAtkInimigo.dano)
     BattleManager.addLog("Inimigo usou " .. atkInimigo .. "!")
 
-    if pFeikemon.hp_atual <= 0 then
-        local proximo = BattleManager.playerRef:obterPrimeiroVivo()
+    if feikemon_player.hp_atual <= 0 then
+        local proximo = BattleManager.player:obterPrimeiroVivo()
         if proximo then
-            BattleManager.indiceAtivo = proximo
-            BattleManager.imgPlayer = love.graphics.newImage(BattleManager.playerRef.equipe[proximo].foto_verso)
-            BattleManager.addLog("Vai, " .. BattleManager.playerRef.equipe[proximo].nome .. "!")
+            BattleManager.id_feikemon = proximo
+            BattleManager.imgPlayer = love.graphics.newImage(BattleManager.player.equipe[proximo].foto_verso)
+            BattleManager.addLog("Vai, " .. BattleManager.player.equipe[proximo].nome .. "!")
         else
-            GamePhase = "Gameplay"
+            BattleManager.battleEnd = true
         end
     end
 end
 
 function BattleManager.draw()
     local w, h = love.graphics.getWidth(), love.graphics.getHeight()
-
-    -- 1. Definições de Dimensões (Baseadas no seu TextBoxManager)
     local MARGIN = 15
-    local uiH = h * 0.28
-    local uiW = w - (MARGIN * 2)
-    local uiX = MARGIN
-    local uiY = h - uiH - MARGIN
 
-    -- Tamanho da "moldura" do FeiKemon baseado na altura da UI
-    local portraitSize = uiH - (20 * 2) -- padding de 20
-
-    -- 2. Fundo da Arena
-    love.graphics.setColor(0.3, 0.3, 0.3) -- Cinza
-    love.graphics.rectangle("fill", 0, 0, w, h)
-
-    -- 3. Desenho dos FeiKemons (Nítidos e Posicionados)
+    -- 1. Fundo
     love.graphics.setColor(1, 1, 1)
-
-    -- INIMIGO: Canto superior direito da tela
-    -- Ajuste este valor para controlar o tamanho (1.0 = tamanho original da UI, 1.5 = 50% maior)
-    local multiplicadorVisual = 1.4
-
-    -- INIMIGO: Canto superior direito
-    if BattleManager.imgInimigo then
-        local img = BattleManager.imgInimigo
-        -- Calculamos a escala base e aplicamos o multiplicador
-        local scaleE = (portraitSize / img:getWidth()) * multiplicadorVisual
-
-        -- Ajustamos a posição X para que ele não saia da tela ao crescer
-        local enemyX = w - (img:getWidth() * scaleE) - MARGIN
-        local enemyY = MARGIN + 10
-
-        love.graphics.draw(img, enemyX, enemyY, 0, scaleE, scaleE)
+    if BattleManager.imgFundo then
+        local bgW, bgH = BattleManager.imgFundo:getDimensions()
+        love.graphics.draw(BattleManager.imgFundo, 0, 0, 0, w / bgW, h / bgH)
     end
 
-    -- PLAYER: Acima da metade esquerda
-    if BattleManager.imgPlayer then
-        local img = BattleManager.imgPlayer
-        local scaleP = (portraitSize / img:getWidth()) * multiplicadorVisual
+    -- 2. Quadro de Status (Vida) - Superior Esquerdo
+    local statusW, statusH = 300, 100
+    local statusX, statusY = MARGIN, MARGIN
 
-        local playerX = uiX + 20
-        -- Subtraímos o tamanho real da imagem escalada para ele flutuar perfeitamente
-        local playerY = uiY - (img:getHeight() * scaleP) - 10
-
-        love.graphics.draw(img, playerX, playerY, 0, scaleP, scaleP)
-    end
-
-    -- 4. UI de Batalha (Estilo rústico)
-    -- Borda (Marrom Escuro)
+    -- Desenho do Quadro de Status
     love.graphics.setColor(BattleManager.corBorda)
-    love.graphics.rectangle("fill", uiX, uiY, uiW, uiH)
-
-    -- Fundo (Marrom Claro)
+    love.graphics.rectangle("fill", statusX, statusY, statusW, statusH)
     love.graphics.setColor(BattleManager.corFundo)
-    local bSize = 6 -- Espessura da borda
-    love.graphics.rectangle("fill", uiX + bSize, uiY + bSize, uiW - (bSize * 2), uiH - (bSize * 2))
+    love.graphics.rectangle("fill", statusX + 4, statusY + 4, statusW - 8, statusH - 8)
 
-    -- 5. Conteúdo da UI
     love.graphics.setFont(BattleManager.fonte)
     love.graphics.setColor(BattleManager.corTexto)
 
-    -- Divisória Central
+    local pAtivo = BattleManager.player.equipe[BattleManager.id_feikemon]
+    local eAtivo = BattleManager.inimigo
+
+    -- Texto da Vida
+    love.graphics.print(pAtivo.nome .. ". HP: " .. pAtivo.hp_atual .. "/" .. pAtivo.hp_max, statusX + 15, statusY + 15)
+    love.graphics.print(eAtivo.nome .. ". HP: " .. eAtivo.hp_atual .. "/" .. eAtivo.hp_max, statusX + 15, statusY + 55)
+
+    -- 3. Desenho dos FeiKemons
+    local uiH = h * 0.28
+    local uiY = h - uiH - MARGIN
+    local portraitSize = uiH - 40
+    local mult = 1.4
+
+    love.graphics.setColor(1, 1, 1)
+    if BattleManager.imgInimigo then
+        local img = BattleManager.imgInimigo
+        local s = (portraitSize / img:getWidth()) * mult
+        love.graphics.draw(img, w - (img:getWidth() * s) - MARGIN - 300, MARGIN + 10, 0, s, s)
+    end
+
+    if BattleManager.imgPlayer then
+        local img = BattleManager.imgPlayer
+        local s = (portraitSize / img:getWidth()) * mult
+        love.graphics.draw(img, MARGIN + 180, uiY - (img:getHeight() * s) + 130, 0, s, s)
+    end
+
+    -- 4. UI de Batalha (Inferior)
+    local uiW, uiX = w - (MARGIN * 2), MARGIN
+    love.graphics.setColor(BattleManager.corBorda)
+    love.graphics.rectangle("fill", uiX, uiY, uiW, uiH)
+    love.graphics.setColor(BattleManager.corFundo)
+    love.graphics.rectangle("fill", uiX + 6, uiY + 6, uiW - 12, uiH - 12)
+
+    love.graphics.setColor(BattleManager.corTexto)
     local meiaTela = uiX + (uiW / 2)
     love.graphics.line(meiaTela, uiY + 10, meiaTela, uiY + uiH - 10)
 
-    -- METADE ESQUERDA: Logs de Batalha
-    local logX = uiX + 20
+    -- Logs
     for i, log in ipairs(BattleManager.logs) do
-        love.graphics.print(log, logX, uiY + 15 + (i-1)*22)
+        love.graphics.print(log, uiX + 20, uiY + 15 + (i-1)*22)
     end
 
-    -- METADE DIREITA: Menu de Ações
-    local menuX = meiaTela + 30
-    if BattleManager.menuAberto == "principal" then
-        love.graphics.print("1. LUTAR", menuX, uiY + 30)
-        love.graphics.print("2. FUGIR", menuX, uiY + 60)
-        love.graphics.print("3. APRENDER", menuX, uiY + 90)
-    elseif BattleManager.menuAberto == "golpes" then
-        local pAtivo = BattleManager.playerRef.equipe[BattleManager.indiceAtivo]
-        for i, atk in ipairs(pAtivo.ataques) do
-            if i <= 4 then -- Garante que não quebre o layout
-                love.graphics.print(i .. ". " .. atk, menuX, uiY + 20 + (i-1)*25)
+    -- Menu
+    if not BattleManager.battleEnd then
+        local menuX = meiaTela + 30
+        if BattleManager.menuAberto == "principal" then
+            love.graphics.print("1. LUTAR", menuX, uiY + 30)
+            love.graphics.print("2. FUGIR", menuX, uiY + 60)
+            love.graphics.print("3. APRENDER", menuX, uiY + 90)
+        elseif BattleManager.menuAberto == "golpes" then
+            for i, atk in ipairs(pAtivo.ataques) do
+                if i <= 4 then love.graphics.print(i .. ". " .. atk, menuX, uiY + 20 + (i-1)*25) end
             end
+            love.graphics.print("5. VOLTAR", menuX, uiY + uiH - 35)
         end
-        love.graphics.print("5. VOLTAR", menuX, uiY + uiH - 35)
     end
 
-    love.graphics.setColor(1, 1, 1) -- Reset final
+    if BattleManager.battleEnd then
+        os.execute("sleep 1")
+        GamePhase = "Gameplay"
+    end
+    love.graphics.setColor(1, 1, 1)
 end
 
 return BattleManager
