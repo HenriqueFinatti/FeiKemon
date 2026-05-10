@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.12.1",
+  tiledversion = "1.12.1-8-g449813058",
   class = "",
   orientation = "orthogonal",
   renderorder = "right-down",
@@ -9,8 +9,8 @@ return {
   height = 20,
   tilewidth = 16,
   tileheight = 16,
-  nextlayerid = 9,
-  nextobjectid = 39,
+  nextlayerid = 10,
+  nextobjectid = 40,
   properties = {},
   tilesets = {
     {
@@ -1028,6 +1028,40 @@ return {
           opacity = 1,
           visible = true,
           properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 9,
+      name = "Portas",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 39,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -208,
+          y = 224,
+          width = 304,
+          height = 16,
+          rotation = 0,
+          opacity = 1,
+          visible = true,
+          properties = {
+            ["destino"] = "area externa",
+            ["x"] = "0",
+            ["y "] = "0"
+          }
         }
       }
     }
