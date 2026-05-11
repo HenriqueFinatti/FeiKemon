@@ -128,7 +128,7 @@
   <object id="7" x="-104" y="-512" width="224" height="24"/>
   <object id="8" x="-100" y="-488" width="12" height="20"/>
  </objectgroup>
- <objectgroup id="3" name="Porta">
+ <objectgroup id="3" name="Portas">
   <object id="10" x="12" y="-164" width="72" height="24">
    <properties>
     <property name="destino" value="area externa"/>

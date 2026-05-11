@@ -322,7 +322,7 @@ return {
       type = "objectgroup",
       draworder = "topdown",
       id = 3,
-      name = "Porta",
+      name = "Portas",
       class = "",
       visible = true,
       opacity = 1,
