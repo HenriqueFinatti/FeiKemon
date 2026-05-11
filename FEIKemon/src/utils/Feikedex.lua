@@ -56,6 +56,38 @@ local feikedex = {
     },
 
     -- ---------------------------------------------------------
+    -- EFETIVIDADE DE TIPOS
+    -- linha = tipo do ataque, coluna = tipo do alvo
+    -- valores: 2.0 = super efetivo, 1.0 = normal, 0.5 = pouco efetivo
+    -- ---------------------------------------------------------
+    efetividade = {
+        ["Software"] = {
+            ["Software"] = 1.0,
+            ["Hardware"] = 2.0,
+            ["Rede"]     = 0.5,
+            ["Energia"]  = 1.0,
+        },
+        ["Hardware"] = {
+            ["Software"] = 0.5,
+            ["Hardware"] = 1.0,
+            ["Rede"]     = 1.0,
+            ["Energia"]  = 2.0,
+        },
+        ["Rede"] = {
+            ["Software"] = 2.0,
+            ["Hardware"] = 1.0,
+            ["Rede"]     = 1.0,
+            ["Energia"]  = 0.5,
+        },
+        ["Energia"] = {
+            ["Software"] = 1.0,
+            ["Hardware"] = 0.5,
+            ["Rede"]     = 2.0,
+            ["Energia"]  = 1.0,
+        },
+    },
+
+    -- ---------------------------------------------------------
     -- FEIKEMONS
     -- campos:
     --   nome        : nome do feikemon
@@ -307,5 +339,22 @@ local feikedex = {
         },
     }
 }
+
+function feikedex.calcularMultiplicador(tiposAtaque, tiposAlvo)
+    local multiplicador = 1.0
+    for _, tipoAtk in ipairs(tiposAtaque) do
+        for _, tipoAlvo in ipairs(tiposAlvo) do
+            local efet = feikedex.efetividade[tipoAtk] and feikedex.efetividade[tipoAtk][tipoAlvo] or 1.0
+            multiplicador = multiplicador * efet
+        end
+    end
+    return multiplicador
+end
+
+function feikedex.obterCorTipo(nomeTipo)
+    local tipo = feikedex.tipos[nomeTipo]
+    if tipo then return tipo.cor end
+    return {1, 1, 1}
+end
 
 return feikedex

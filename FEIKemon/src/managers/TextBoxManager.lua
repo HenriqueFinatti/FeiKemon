@@ -32,16 +32,21 @@ function TextBoxManager:init()
     self.corFonte = {0.25, 0.15, 0.08}
 end
 
-function TextBoxManager:setFalas(falas, numeroDefalas)
+function TextBoxManager:setFalas(falas, numeroDefalas, onComplete)
     self.falas = falas
     self.falaAtual = 1
-    self.numeroDefalas = numeroDefalas
+    self.numeroDefalas = numeroDefalas or #falas
+    self.onComplete = onComplete
 end
 
 function TextBoxManager:update(dt)
     if self.falaAtual == self.numeroDefalas + 1 then
         GamePhase = "Gameplay"
         self.dialogoAtivo = false
+        if self.onComplete then
+            self.onComplete()
+            self.onComplete = nil
+        end
     else
         textoCompleto = self.falas[self.falaAtual].texto
         if self.dialogoAtivo then

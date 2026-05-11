@@ -1,10 +1,12 @@
+local SaveManager = require 'src/managers/SaveManager'
 
 local MapManager = {}
 
 local mapas = {
     ["sala de estudos"] = require 'src/maps/SalaDeEstudos',
     ["area externa"]    = require 'src/maps/AreaExterna',
-    ["macfei"]    = require 'src/maps/MacFEI'
+    ["macfei"]          = require 'src/maps/MacFEI',
+    ["k"]               = require 'src/maps/PredioK'
 }
 
 function MapManager.mudarMapa(porta, gameplay)
@@ -22,6 +24,9 @@ function MapManager.mudarMapa(porta, gameplay)
         gameplay.mapaAtual = MapaClasse()
         gameplay.mapaAtual:setColliders()
         gameplay.player.currentMap = gameplay.mapaAtual.name
+
+        -- Aplica estado salvo dos treinadores se houver
+        SaveManager.aplicarEstadoTreinadores(gameplay.mapaAtual)
     end
 
     gameplay.player.collider:setPosition(x, y)

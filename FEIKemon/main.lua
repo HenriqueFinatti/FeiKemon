@@ -2,10 +2,11 @@
 local wf = require 'src/libs/windfield'
 local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
-local Gameplay  = require 'src.states.Gameplay'
+Gameplay  = require 'src.states.Gameplay'
 local gameState = "Jogo"
 local BattleManager = require 'src/managers/BattleManager'
 local TeamMenu = require 'src/ui/TeamMenu'
+local PauseMenu = require 'src/ui/PauseMenu'
 TextBoxManagerGlobal = nil
 TextBoxManager = require 'src/managers/TextBoxManager'
 
@@ -24,6 +25,7 @@ function love.load()
     Transition.load()
     Gameplay.load()
     TeamMenu.load()
+    PauseMenu.load()
     music()
 end
 
@@ -33,6 +35,7 @@ function love.update(dt)
     elseif gameState == "Jogo" then
         Gameplay.update(dt)
     end
+    PauseMenu.update(dt)
 end
 
 function love.mousepressed(x, y, button)
@@ -49,16 +52,29 @@ function love.keypressed(key)
         BattleManager.controles(key)
     end
 
-    if key == "e" and GamePhase == "Gameplay" then
+    if key == "e" and (GamePhase == "Gameplay" or GamePhase == "Dialogo") then
         TeamMenu.toggle()
     end
 
     if key == "escape" then
-        love.event.quit()
+        if GamePhase == "Pause" then
+            PauseMenu.toggle()
+        elseif GamePhase ~= "Battle" and GamePhase ~= "Onboarding" then
+            PauseMenu.toggle()
+        end
     end
 
-    if key == "return" then
+    if PauseMenu.ativo then
+        PauseMenu.controles(key)
+        return
+    end
+
+    if key == "return" or key == "space" then
         TextBoxManagerGlobal:interagir()
+    end
+
+    if key == "space" and GamePhase == "Gameplay" then
+        Gameplay.tentarInteragir()
     end
 
     if gameState == "Transition" then
@@ -78,6 +94,8 @@ function love.draw()
     elseif gameState == "Jogo" then
         Gameplay.draw()
     end
+
+    PauseMenu.draw()
 end
 
 function music()
