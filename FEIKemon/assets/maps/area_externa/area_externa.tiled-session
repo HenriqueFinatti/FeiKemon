@@ -4,6 +4,26 @@
     ],
     "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/igreja/igreja_fei.tmx": {
+            "expandedObjectLayers": [
+                7
+            ],
+            "scale": 0.957421875,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": -0.52223582211343,
+                "y": -128.47001223990208
+            }
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/igreja/igreja_fei.tmx#Craftables": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/igreja/igreja_fei.tmx#bancos_igreja": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/igreja/igreja_fei.tmx#piso_igreja": {
+            "scaleInDock": 1
+        },
         "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/predio_k/predio_k.tmx": {
             "expandedObjectLayers": [
                 3,
@@ -52,8 +72,8 @@
             "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 979.25,
-                "y": -153.5
+                "x": 89.75,
+                "y": -217.5
             }
         },
         "area_externa.tmx#Craftables": {
@@ -69,7 +89,7 @@
             "scaleInDock": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/predio_k",
+    "last.exportedFilePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/igreja",
     "last.imagePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sprites/images",
     "map.lastUsedExportFilter": "Arquivos Lua (*.lua)",
     "openFiles": [

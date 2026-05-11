@@ -1,4 +1,5 @@
 local feikedex = require 'src/utils/Feikedex'
+local SaveManager = require 'src/managers/SaveManager'
 
 local BattleManager = {
     chance = 0.001,
@@ -152,6 +153,7 @@ function BattleManager.check(dt, gameplay)
             BattleManager.inimigoAtualIndex = nil
             GamePhase = "Gameplay"
 
+            SaveManager.salvar(gameplay)
             BackgroundMusic:play()
         end
         return
@@ -219,7 +221,9 @@ function BattleManager.startTrainerBattle(player, trainer)
             hp_atual = feikemon.hp_atual,
             ataques = feikemon.ataques,
             foto_frente = feikemon.foto_frente,
-            foto_verso = feikemon.foto_verso
+            foto_verso = feikemon.foto_verso,
+            level = feikemon.level or 1,
+            xp = feikemon.xp or 0
         })
     end
     BattleManager.inimigoAtualIndex = 1
@@ -308,6 +312,7 @@ function BattleManager.controles(key)
 end
 
 function BattleManager.calcularDano(danoBase, tiposAtaque, tiposAlvo, levelAtacante)
+    levelAtacante = levelAtacante or 1
     local multTipo = feikedex.calcularMultiplicador(tiposAtaque, tiposAlvo)
     -- Bonus de level: 5% por nivel acima do 1
     local multLevel = 1 + (levelAtacante - 1) * 0.05

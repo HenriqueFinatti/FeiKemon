@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 90,
+  nextobjectid = 92,
   properties = {},
   tilesets = {
     {
@@ -3948,6 +3948,24 @@ return {
             ["destino"] = "k",
             ["x"] = 48,
             ["y"] = -164
+          }
+        },
+        {
+          id = 90,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -60,
+          y = -208,
+          width = 24,
+          height = 24,
+          rotation = 0,
+          opacity = 1,
+          visible = true,
+          properties = {
+            ["destino"] = "igreja",
+            ["x"] = 18,
+            ["y"] = 142
           }
         }
       }

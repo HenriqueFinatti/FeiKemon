@@ -9,8 +9,8 @@ return {
   height = 20,
   tilewidth = 16,
   tileheight = 16,
-  nextlayerid = 7,
-  nextobjectid = 99,
+  nextlayerid = 8,
+  nextobjectid = 101,
   properties = {},
   tilesets = {
     {
@@ -1066,6 +1066,54 @@ return {
           y = 80,
           width = 48,
           height = 16,
+          rotation = 0,
+          opacity = 1,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 7,
+      name = "Portas",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 99,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -144,
+          y = 148,
+          width = 320,
+          height = 12,
+          rotation = 0,
+          opacity = 1,
+          visible = true,
+          properties = {
+            ["destino"] = "area externa",
+            ["x"] = -47,
+            ["y"] = -176
+          }
+        },
+        {
+          id = 100,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -236,
+          y = -4,
+          width = 0,
+          height = 0,
           rotation = 0,
           opacity = 1,
           visible = true,

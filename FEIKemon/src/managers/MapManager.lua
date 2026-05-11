@@ -6,7 +6,8 @@ local mapas = {
     ["sala de estudos"] = require 'src/maps/SalaDeEstudos',
     ["area externa"]    = require 'src/maps/AreaExterna',
     ["macfei"]          = require 'src/maps/MacFEI',
-    ["k"]               = require 'src/maps/PredioK'
+    ["k"]               = require 'src/maps/PredioK',
+    ["igreja"]          = require 'src/maps/IgrejaFEI'
 }
 
 function MapManager.mudarMapa(porta, gameplay)
