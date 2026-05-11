@@ -55,8 +55,10 @@ function Player:captura(feikemon)
             foto_frente = feikemon.foto_frente,
             foto_verso = feikemon.foto_verso,
             hp_max = feikemon.hp_max,
-            hp_atual = feikemon.hp_max,
-            ataques = feikemon.ataques
+            hp_atual = feikemon.hp_atual,
+            ataques = feikemon.ataques,
+            level = feikemon.level or 1,
+            xp = feikemon.xp or 0,
         }
         table.insert(self.equipe, copia)
     end

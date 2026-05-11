@@ -49,22 +49,99 @@ function BattleManager.addLog(msg)
     if #BattleManager.logs > 6 then table.remove(BattleManager.logs, 1) end
 end
 
-function BattleManager.montaFeiKemon(id)
+function BattleManager.montaFeiKemon(id, level)
+    level = level or 1
     local base = feikedex.feikemons[id]
+    -- Escala stats pelo level (10% por nivel acima do 1)
+    local scale = 1 + (level - 1) * 0.1
+    local hp_max = math.floor(base.hp_max * scale)
     return {
         nome = base.nome,
         tipo = base.tipo,
-        hp_max = base.hp_max,
-        hp_atual = base.hp_max,
+        hp_max = hp_max,
+        hp_atual = hp_max,
         ataques = base.ataques,
         foto_frente = base.foto_frente,
-        foto_verso = base.foto_verso
+        foto_verso = base.foto_verso,
+        level = level,
+        xp = 0,
     }
+end
+
+function BattleManager.obterMelhorLevelEquipe(player)
+    local maxLevel = 1
+    for _, f in ipairs(player.equipe) do
+        if f.level and f.level > maxLevel then
+            maxLevel = f.level
+        end
+    end
+    return maxLevel
+end
+
+function BattleManager.gerarLevelSelvagem(player)
+    local melhorLevel = BattleManager.obterMelhorLevelEquipe(player)
+    local minLevel = math.max(1, melhorLevel - 5)
+    local maxLevel = melhorLevel + 10
+    return math.random(minLevel, maxLevel)
+end
+
+function BattleManager.distribuirXp(xpBase, idVencedor)
+    local xpParticipante = xpBase * 3
+    local xpEquipe = xpBase
+
+    for i, f in ipairs(BattleManager.player.equipe) do
+        if f.hp_atual > 0 then
+            local xpGanho = xpEquipe
+            if i == idVencedor then
+                xpGanho = xpParticipante
+            end
+            f.xp = f.xp + xpGanho
+            BattleManager.addLog(f.nome .. " ganhou " .. xpGanho .. " XP!")
+            BattleManager.tentarLevelUp(f)
+        end
+    end
+end
+
+function BattleManager.tentarLevelUp(feikemon)
+    local xpNecessario = feikedex.xpParaUpar(feikemon.level)
+    while feikemon.xp >= xpNecessario do
+        feikemon.xp = feikemon.xp - xpNecessario
+        feikemon.level = feikemon.level + 1
+        -- Aumenta HP max em 10%
+        local hpBonus = math.floor(feikemon.hp_max * 0.1)
+        feikemon.hp_max = feikemon.hp_max + hpBonus
+        -- Cura o HP bonus ganho
+        feikemon.hp_atual = feikemon.hp_atual + hpBonus
+        BattleManager.addLog(feikemon.nome .. " subiu para o level " .. feikemon.level .. "!")
+        xpNecessario = feikedex.xpParaUpar(feikemon.level)
+    end
+end
+
+function BattleManager.teleportarMacFEI()
+    BattleManager.addLog("Todos os seus FeiKemons desmaiaram...")
+    BattleManager.addLog("Voce foi levado ao MacFEI para recuperar!")
+    BattleManager._teleportarAposDerrota = true
 end
 
 function BattleManager.check(dt, gameplay)
     if BattleManager.battleEnd then
         if not BattleManager.somAtivo:isPlaying() then
+            -- Teleporta para MacFEI se necessario
+            if BattleManager._teleportarAposDerrota then
+                BattleManager._teleportarAposDerrota = nil
+                local MapManager = require 'src/managers/MapManager'
+                local porta = {
+                    destino = "macfei",
+                    x = 0,
+                    y = 0,
+                }
+                MapManager.mudarMapa(porta, gameplay)
+                -- Recupera todos os FeiKemons
+                for _, f in ipairs(gameplay.player.equipe) do
+                    f.hp_atual = f.hp_max
+                end
+            end
+
             BattleManager.battleEnd = false
             BattleManager.battleHappening = false
             BattleManager.somAtivo = nil
@@ -100,6 +177,7 @@ function BattleManager.startBattle(player)
     BattleManager.sounds.musicaBatalha:play()
 
     local randomID = math.random(1, #feikedex.feikemons)
+    local levelSelvagem = BattleManager.gerarLevelSelvagem(player)
     BattleManager.battleEnd = false
     GamePhase = "Battle"
 
@@ -109,9 +187,9 @@ function BattleManager.startBattle(player)
     BattleManager.inimigoAtualIndex = nil
 
     BattleManager.player = player
-    BattleManager.logs = {"Um encontro selvagem!"}
+    BattleManager.logs = {"Um encontro selvagem! (Lv. " .. levelSelvagem .. ")"}
 
-    BattleManager.inimigo = BattleManager.montaFeiKemon(randomID)
+    BattleManager.inimigo = BattleManager.montaFeiKemon(randomID, levelSelvagem)
     BattleManager.imgInimigo = love.graphics.newImage(BattleManager.inimigo.foto_frente)
 
     BattleManager.id_feikemon = player:obterPrimeiroVivo()
@@ -183,6 +261,9 @@ function BattleManager.controles(key)
                 if math.random() < chanceCaptura then
                     BattleManager.player:captura(inimigo)
                     BattleManager.addLog("Capturado com sucesso!")
+                    -- Da XP pela captura (mesmo que derrotar)
+                    local xpGanho = feikedex.calcularXpGanho(inimigo)
+                    BattleManager.distribuirXp(xpGanho, BattleManager.id_feikemon)
                     BattleManager.encerrarComSom("captura")
                 else
                     BattleManager.addLog("A Feikebola falhou! O " .. inimigo.nome .. " escapou!")
@@ -190,7 +271,7 @@ function BattleManager.controles(key)
                     local atkInimigo = inimigo.ataques[math.random(1, #inimigo.ataques)]
                     local dadosAtkInimigo = feikedex.ataques[atkInimigo]
                     local feikemon_player = BattleManager.player.equipe[BattleManager.id_feikemon]
-                    local danoCaptura, multCaptura = BattleManager.calcularDano(dadosAtkInimigo.dano, dadosAtkInimigo.tipo, feikemon_player.tipo)
+                    local danoCaptura, multCaptura = BattleManager.calcularDano(dadosAtkInimigo.dano, dadosAtkInimigo.tipo, feikemon_player.tipo, inimigo.level)
                     feikemon_player.hp_atual = math.max(0, feikemon_player.hp_atual - danoCaptura)
                     BattleManager.addLog("Inimigo usou " .. atkInimigo .. "!")
                     if multCaptura > 1 then
@@ -207,6 +288,7 @@ function BattleManager.controles(key)
                             BattleManager.addLog("Vai, " .. BattleManager.player.equipe[proximo].nome .. "!")
                         else
                             BattleManager.addLog("Voce foi derrotado...")
+                            BattleManager.teleportarMacFEI()
                             BattleManager.encerrarComSom("derrota")
                         end
                     end
@@ -225,9 +307,12 @@ function BattleManager.controles(key)
     end
 end
 
-function BattleManager.calcularDano(danoBase, tiposAtaque, tiposAlvo)
-    local mult = feikedex.calcularMultiplicador(tiposAtaque, tiposAlvo)
-    return math.floor(danoBase * mult), mult
+function BattleManager.calcularDano(danoBase, tiposAtaque, tiposAlvo, levelAtacante)
+    local multTipo = feikedex.calcularMultiplicador(tiposAtaque, tiposAlvo)
+    -- Bonus de level: 5% por nivel acima do 1
+    local multLevel = 1 + (levelAtacante - 1) * 0.05
+    local danoTotal = math.floor(danoBase * multTipo * multLevel)
+    return danoTotal, multTipo
 end
 
 function BattleManager.executarTurno(ataque)
@@ -236,7 +321,7 @@ function BattleManager.executarTurno(ataque)
 
     -- Turno do Player
     local dadosAtaque = feikedex.ataques[ataque]
-    local dano, mult = BattleManager.calcularDano(dadosAtaque.dano, dadosAtaque.tipo, feikemon_enemy.tipo)
+    local dano, mult = BattleManager.calcularDano(dadosAtaque.dano, dadosAtaque.tipo, feikemon_enemy.tipo, feikemon_player.level)
     feikemon_enemy.hp_atual = math.max(0, feikemon_enemy.hp_atual - dano)
     BattleManager.addLog(feikemon_player.nome .. " usou " .. ataque .. "!")
     if mult > 1 then
@@ -247,6 +332,10 @@ function BattleManager.executarTurno(ataque)
 
     if feikemon_enemy.hp_atual <= 0 then
         BattleManager.addLog(feikemon_enemy.nome .. " desmaiou!")
+
+        -- Da XP para a equipe
+        local xpGanho = feikedex.calcularXpGanho(feikemon_enemy)
+        BattleManager.distribuirXp(xpGanho, BattleManager.id_feikemon)
 
         if BattleManager.tipoBatalha == "treinador" then
             BattleManager.inimigoAtualIndex = BattleManager.inimigoAtualIndex + 1
@@ -270,7 +359,7 @@ function BattleManager.executarTurno(ataque)
     -- Turno do Inimigo
     local atkInimigo = feikemon_enemy.ataques[math.random(1, #feikemon_enemy.ataques)]
     local dadosAtkInimigo = feikedex.ataques[atkInimigo]
-    local danoInimigo, multInimigo = BattleManager.calcularDano(dadosAtkInimigo.dano, dadosAtkInimigo.tipo, feikemon_player.tipo)
+    local danoInimigo, multInimigo = BattleManager.calcularDano(dadosAtkInimigo.dano, dadosAtkInimigo.tipo, feikemon_player.tipo, feikemon_enemy.level)
     feikemon_player.hp_atual = math.max(0, feikemon_player.hp_atual - danoInimigo)
     BattleManager.addLog("Inimigo usou " .. atkInimigo .. "!")
     if multInimigo > 1 then
@@ -286,7 +375,8 @@ function BattleManager.executarTurno(ataque)
             BattleManager.imgPlayer = love.graphics.newImage(BattleManager.player.equipe[proximo].foto_verso)
             BattleManager.addLog("Vai, " .. BattleManager.player.equipe[proximo].nome .. "!")
         else
-            BattleManager.addLog("Você foi derrotado...")
+            BattleManager.addLog("Voce foi derrotado...")
+            BattleManager.teleportarMacFEI()
             BattleManager.encerrarComSom("derrota")
         end
     end
@@ -309,6 +399,29 @@ function BattleManager.desenharBadgeTipo(tipo, x, y, escala)
     return largura
 end
 
+function BattleManager.desenharBarraHp(hpAtual, hpMax, x, y, largura, altura)
+    -- Fundo da barra
+    love.graphics.setColor(0.3, 0.3, 0.3)
+    love.graphics.rectangle("fill", x, y, largura, altura)
+
+    -- Cor baseada na porcentagem
+    local pct = hpAtual / hpMax
+    if pct > 0.5 then
+        love.graphics.setColor(0.2, 0.8, 0.2)
+    elseif pct > 0.2 then
+        love.graphics.setColor(0.9, 0.9, 0.2)
+    else
+        love.graphics.setColor(0.9, 0.2, 0.2)
+    end
+
+    local fillW = math.max(0, largura * pct)
+    love.graphics.rectangle("fill", x, y, fillW, altura)
+
+    -- Borda
+    love.graphics.setColor(0.1, 0.1, 0.1)
+    love.graphics.rectangle("line", x, y, largura, altura)
+end
+
 function BattleManager.draw()
     local w, h = love.graphics.getWidth(), love.graphics.getHeight()
     local MARGIN = 15
@@ -326,38 +439,48 @@ function BattleManager.draw()
     -- 2. Quadros de Status
     love.graphics.setFont(BattleManager.fonte)
 
-    -- Status do Player (Inferior Esquerdo)
-    local pStatusW, pStatusH = 280, 90
-    local pStatusX, pStatusY = MARGIN, h - pStatusH - MARGIN - 160
+    -- Status do Player (Superior Esquerdo)
+    local pStatusW, pStatusH = 300, 110
+    local pStatusX, pStatusY = MARGIN, MARGIN
     love.graphics.setColor(BattleManager.corBorda)
     love.graphics.rectangle("fill", pStatusX, pStatusY, pStatusW, pStatusH)
     love.graphics.setColor(BattleManager.corFundo)
     love.graphics.rectangle("fill", pStatusX + 4, pStatusY + 4, pStatusW - 8, pStatusH - 8)
     love.graphics.setColor(BattleManager.corTexto)
-    love.graphics.print(pAtivo.nome, pStatusX + 12, pStatusY + 10)
-    love.graphics.print("HP: " .. pAtivo.hp_atual .. "/" .. pAtivo.hp_max, pStatusX + 12, pStatusY + 36)
+
+    local pLevel = pAtivo.level or 1
+    love.graphics.print(pAtivo.nome .. "  Lv." .. pLevel, pStatusX + 12, pStatusY + 10)
+    love.graphics.print(pAtivo.hp_atual .. " / " .. pAtivo.hp_max, pStatusX + pStatusW - 100, pStatusY + 36)
+
+    -- Barra de HP do Player
+    BattleManager.desenharBarraHp(pAtivo.hp_atual, pAtivo.hp_max, pStatusX + 12, pStatusY + 36, pStatusW - 120, 18)
 
     -- Tipos do Player
     local tx = pStatusX + 12
     for _, tipo in ipairs(pAtivo.tipo) do
-        tx = tx + BattleManager.desenharBadgeTipo(tipo, tx, pStatusY + 62, 0.8) + 6
+        tx = tx + BattleManager.desenharBadgeTipo(tipo, tx, pStatusY + 72, 0.8) + 6
     end
 
     -- Status do Inimigo (Superior Direito)
-    local eStatusW, eStatusH = 280, 90
+    local eStatusW, eStatusH = 300, 110
     local eStatusX, eStatusY = w - eStatusW - MARGIN, MARGIN
     love.graphics.setColor(BattleManager.corBorda)
     love.graphics.rectangle("fill", eStatusX, eStatusY, eStatusW, eStatusH)
     love.graphics.setColor(BattleManager.corFundo)
     love.graphics.rectangle("fill", eStatusX + 4, eStatusY + 4, eStatusW - 8, eStatusH - 8)
     love.graphics.setColor(BattleManager.corTexto)
-    love.graphics.print(eAtivo.nome, eStatusX + 12, eStatusY + 10)
-    love.graphics.print("HP: " .. eAtivo.hp_atual .. "/" .. eAtivo.hp_max, eStatusX + 12, eStatusY + 36)
+
+    local eLevel = eAtivo.level or 1
+    love.graphics.print(eAtivo.nome .. "  Lv." .. eLevel, eStatusX + 12, eStatusY + 10)
+    love.graphics.print(eAtivo.hp_atual .. " / " .. eAtivo.hp_max, eStatusX + eStatusW - 100, eStatusY + 36)
+
+    -- Barra de HP do Inimigo
+    BattleManager.desenharBarraHp(eAtivo.hp_atual, eAtivo.hp_max, eStatusX + 12, eStatusY + 36, eStatusW - 120, 18)
 
     -- Tipos do Inimigo
     tx = eStatusX + 12
     for _, tipo in ipairs(eAtivo.tipo) do
-        tx = tx + BattleManager.desenharBadgeTipo(tipo, tx, eStatusY + 62, 0.8) + 6
+        tx = tx + BattleManager.desenharBadgeTipo(tipo, tx, eStatusY + 72, 0.8) + 6
     end
 
     -- 3. Desenho dos FeiKemons
@@ -370,7 +493,7 @@ function BattleManager.draw()
     if BattleManager.imgInimigo then
         local img = BattleManager.imgInimigo
         local s = (portraitSize / img:getWidth()) * mult
-        love.graphics.draw(img, w - (img:getWidth() * s) - MARGIN - 300, MARGIN + 110, 0, s, s)
+        love.graphics.draw(img, w - (img:getWidth() * s) - MARGIN - 300, MARGIN + 130, 0, s, s)
     end
 
     if BattleManager.imgPlayer then

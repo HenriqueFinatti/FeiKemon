@@ -357,4 +357,13 @@ function feikedex.obterCorTipo(nomeTipo)
     return {1, 1, 1}
 end
 
+function feikedex.xpParaUpar(level)
+    return level * 100
+end
+
+function feikedex.calcularXpGanho(feikemonDerrotado)
+    -- XP base = metade do HP maximo do derrotado
+    return math.floor(feikemonDerrotado.hp_max * 0.5)
+end
+
 return feikedex

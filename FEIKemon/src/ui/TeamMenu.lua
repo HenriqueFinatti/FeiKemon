@@ -24,7 +24,7 @@ function TeamMenu.draw(equipe)
 
     local borderSize = 8
     local paddingY = 80
-    local spacing = 50
+    local spacing = 70
 
     love.graphics.setColor(TeamMenu.corBorda)
     love.graphics.rectangle("fill", 0, 0, w, h)
@@ -39,9 +39,12 @@ function TeamMenu.draw(equipe)
 
     for i, feikemon in ipairs(equipe) do
         local yPos = paddingY + (i - 1) * spacing
+        local level = feikemon.level or 1
+        local xp = feikemon.xp or 0
+        local xpNecessario = require('src/utils/Feikedex').xpParaUpar(level)
 
         love.graphics.setColor(TeamMenu.corTexto)
-        love.graphics.print(i .. ". " .. feikemon.nome, 25, yPos)
+        love.graphics.print(i .. ". " .. feikemon.nome .. " Lv." .. level, 25, yPos)
 
         if feikemon.hp_atual <= 0 then
             love.graphics.setColor(0.8, 0.1, 0.1)
@@ -50,6 +53,19 @@ function TeamMenu.draw(equipe)
         end
 
         love.graphics.print("HP: " .. feikemon.hp_atual .. "/" .. feikemon.hp_max, 45, yPos + 22)
+
+        -- XP bar
+        local barX = 45
+        local barY = yPos + 44
+        local barW = w - 90
+        local barH = 8
+        love.graphics.setColor(0.3, 0.3, 0.3)
+        love.graphics.rectangle("fill", barX, barY, barW, barH)
+        love.graphics.setColor(0.2, 0.6, 1.0)
+        local xpPct = math.min(1, xp / xpNecessario)
+        love.graphics.rectangle("fill", barX, barY, barW * xpPct, barH)
+        love.graphics.setColor(0.1, 0.1, 0.1)
+        love.graphics.rectangle("line", barX, barY, barW, barH)
     end
 
     love.graphics.setColor(1, 1, 1, 1)

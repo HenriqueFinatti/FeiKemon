@@ -13,15 +13,17 @@ function SaveManager.salvar(gameplay)
             currentMap = gameplay.player.currentMap,
         }
 
-        -- Equipe do jogador
-        data.equipe = {}
-        for _, f in ipairs(gameplay.player.equipe) do
-            table.insert(data.equipe, {
-                nome = f.nome,
-                hp_atual = f.hp_atual,
-                ataques = f.ataques,
-            })
-        end
+    -- Equipe do jogador
+    data.equipe = {}
+    for _, f in ipairs(gameplay.player.equipe) do
+        table.insert(data.equipe, {
+            nome = f.nome,
+            hp_atual = f.hp_atual,
+            ataques = f.ataques,
+            level = f.level or 1,
+            xp = f.xp or 0,
+        })
+    end
 
         -- Estado dos treinadores
         data.trainers = {}
@@ -90,14 +92,16 @@ function SaveManager.carregar(gameplay)
                         break
                     end
                 end
-                if baseId then
-                    local f = BattleManager.montaFeiKemon(baseId)
-                    f.hp_atual = math.min(savedF.hp_atual or f.hp_max, f.hp_max)
-                    if savedF.ataques then
-                        f.ataques = savedF.ataques
-                    end
-                    table.insert(gameplay.player.equipe, f)
+            if baseId then
+                local level = savedF.level or 1
+                local f = BattleManager.montaFeiKemon(baseId, level)
+                f.hp_atual = math.min(savedF.hp_atual or f.hp_max, f.hp_max)
+                f.xp = savedF.xp or 0
+                if savedF.ataques then
+                    f.ataques = savedF.ataques
                 end
+                table.insert(gameplay.player.equipe, f)
+            end
             end
         end
 
