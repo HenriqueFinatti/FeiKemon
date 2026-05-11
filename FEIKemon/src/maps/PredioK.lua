@@ -7,7 +7,7 @@ local PredioK = Class {}
 
 function PredioK:init()
     self.map = sti('assets/maps/predio_k/predio_k.lua')
-    self.name = "predio k"
+    self.name = "k"
 
     local function montarTime(ids)
         local time = {}
@@ -25,6 +25,8 @@ function PredioK:init()
             spritePath = 'assets/characters/Charles.png',
             retratoPath = 'assets/professores/CharlesPerfil.png',
             time = montarTime({8, 9, 10, 7}),
+            timeIds = {8, 9, 10, 7},
+            timeLevel = 1,
             falasPre = {
                 {nome="Charles", texto="Bem-vindo ao Predio K! Vamos ver se voce entende de hardware."},
                 {nome="Charles", texto="Meus FeiKemons vao te mostrar o poder dos componentes!"},
@@ -37,6 +39,8 @@ function PredioK:init()
             spritePath = 'assets/characters/Luciano.png',
             retratoPath = 'assets/professores/LucianoPerfil.png',
             time = montarTime({3, 4, 5, 2}),
+            timeIds = {3, 4, 5, 2},
+            timeLevel = 1,
             falasPre = {
                 {nome="Luciano", texto="Software e a alma da computacao. Preparado para codar?"},
             }
@@ -48,6 +52,8 @@ function PredioK:init()
             spritePath = 'assets/characters/Leo.png',
             retratoPath = 'assets/professores/LeoPerfil.png',
             time = montarTime({6, 7, 10, 2}),
+            timeIds = {6, 7, 10, 2},
+            timeLevel = 1,
             falasPre = {
                 {nome="Leo", texto="A rede conecta tudo. Voce nao vai escapar da minha conexao!"},
             }
@@ -59,17 +65,21 @@ function PredioK:init()
             spritePath = 'assets/characters/Plinio.png',
             retratoPath = 'assets/professores/PlinioPerfil.png',
             time = montarTime({11, 13, 15, 12}),
+            timeIds = {11, 13, 15, 12},
+            timeLevel = 1,
             falasPre = {
                 {nome="Plinio", texto="Energia e o que mantem o codigo rodando. Vamos la!"},
             }
         },
         Trainer {
             nome = "Leila",
-            x = 225, y = -350,
+            x = 16, y = -376,
             ordem = 5,
             spritePath = 'assets/characters/Leila.png',
             retratoPath = 'assets/professores/LeilaPerfil.png',
             time = montarTime({1, 6, 11, 15}),
+            timeIds = {1, 6, 11, 15},
+            timeLevel = 1,
             falasPre = {
                 {nome="Leila", texto="Sou a chefe do departamento. So passa quem me derrotar!"},
                 {nome="Leila", texto="Mostre todo o seu potencial!"},

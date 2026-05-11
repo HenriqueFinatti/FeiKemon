@@ -4,7 +4,7 @@ local smallFont = nil
 local background
 local clickSound
 
-local buttonPlay, buttonExit
+local buttonPlay, buttonLoad, buttonExit
 
 function Menu.load()
     background = love.graphics.newImage("assets/images/BackgroundInicial.png")
@@ -14,25 +14,32 @@ function Menu.load()
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
 
-    local buttonWidth = 150
+    local buttonWidth = 200
     local buttonHeight = 50
     local spacing = 20
 
-    local totalWidth = buttonWidth * 2 + spacing
-    local startX = (screenWidth - totalWidth) / 2
-    local posY = (screenHeight - buttonHeight) / 2 + screenHeight / 4
+    local startX = (screenWidth - buttonWidth) / 2
+    local baseY = (screenHeight) / 2 + screenHeight / 6
 
     buttonPlay = {
         x = startX,
-        y = posY,
+        y = baseY,
         w = buttonWidth,
         h = buttonHeight,
-        text = "Jogar"
+        text = "Novo Jogo"
+    }
+
+    buttonLoad = {
+        x = startX,
+        y = baseY + buttonHeight + spacing,
+        w = buttonWidth,
+        h = buttonHeight,
+        text = "Carregar Jogo"
     }
 
     buttonExit = {
-        x = startX + buttonWidth + spacing,
-        y = posY,
+        x = startX,
+        y = baseY + (buttonHeight + spacing) * 2,
         w = buttonWidth,
         h = buttonHeight,
         text = "Sair"
@@ -72,6 +79,11 @@ function Menu.mousepressed(x, y, button)
             return "jogar"
         end
 
+        if x >= buttonLoad.x and x <= buttonLoad.x + buttonLoad.w and
+           y >= buttonLoad.y and y <= buttonLoad.y + buttonLoad.h then
+            return "carregar"
+        end
+
         if x >= buttonExit.x and x <= buttonExit.x + buttonExit.w and
            y >= buttonExit.y and y <= buttonExit.y + buttonExit.h then
             love.event.quit()
@@ -83,6 +95,7 @@ function Menu.draw()
     Menu.setup()
 
     drawButton(buttonPlay)
+    drawButton(buttonLoad)
     drawButton(buttonExit)
 end
 

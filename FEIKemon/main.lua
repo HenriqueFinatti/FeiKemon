@@ -3,7 +3,8 @@ local wf = require 'src/libs/windfield'
 local Menu      = require 'src.states.Menu'
 local Transition = require 'src.states.Transition'
 Gameplay  = require 'src.states.Gameplay'
-local gameState = "Jogo"
+local Creditos = require 'src/scenes/Creditos'
+GameState = "Menu"
 local BattleManager = require 'src/managers/BattleManager'
 local TeamMenu = require 'src/ui/TeamMenu'
 local PauseMenu = require 'src/ui/PauseMenu'
@@ -23,31 +24,58 @@ function love.load()
 
     Menu.load()
     Transition.load()
-    Gameplay.load()
     TeamMenu.load()
     PauseMenu.load()
+    Creditos.load()
     music()
 end
 
+local _creditosStarted = false
 function love.update(dt)
-    if gameState == "Transition" then
+    if GameState == "Creditos" and not _creditosStarted then
+        _creditosStarted = true
+        Creditos.start()
+    elseif GameState ~= "Creditos" then
+        _creditosStarted = false
+    end
+
+    if GameState == "Transition" then
         Transition.update(dt)
-    elseif gameState == "Jogo" then
+    elseif GameState == "Jogo" then
         Gameplay.update(dt)
+    elseif GameState == "Creditos" then
+        Creditos.update(dt)
     end
     PauseMenu.update(dt)
 end
 
 function love.mousepressed(x, y, button)
-    if gameState == "Menu" then
+    if GameState == "Menu" then
         local action = Menu.mousepressed(x, y, button)
         if action == "jogar" then
-            gameState = "Transition"
+            Gameplay.load()
+            GameState = "Transition"
+        elseif action == "carregar" then
+            local SaveManager = require 'src/managers/SaveManager'
+            if SaveManager.existeSave() then
+                Gameplay.loadFromSave()
+                GameState = "Jogo"
+                music()
+            else
+                -- Sem save: comeca novo jogo
+                Gameplay.load()
+                GameState = "Transition"
+            end
         end
     end
 end
 
 function love.keypressed(key)
+    if GameState == "Creditos" then
+        Creditos.keypressed(key)
+        return
+    end
+
     if GamePhase == "Battle" then
         BattleManager.controles(key)
     end
@@ -77,22 +105,24 @@ function love.keypressed(key)
         Gameplay.tentarInteragir()
     end
 
-    if gameState == "Transition" then
+    if GameState == "Transition" then
         local action = Transition.keypressed(key)
         if action == "iniciar_gameplay" then
             music()
-            gameState = "Jogo"
+            GameState = "Jogo"
         end
     end
 end
 
 function love.draw()
-    if gameState == "Menu" then
+    if GameState == "Menu" then
         Menu.draw()
-    elseif gameState == "Transition" then
+    elseif GameState == "Transition" then
         Transition.draw()
-    elseif gameState == "Jogo" then
+    elseif GameState == "Jogo" then
         Gameplay.draw()
+    elseif GameState == "Creditos" then
+        Creditos.draw()
     end
 
     PauseMenu.draw()

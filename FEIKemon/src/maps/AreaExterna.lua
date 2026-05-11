@@ -38,10 +38,23 @@ function AreaExterna:setColliders()
     end
 end
 
+function AreaExterna:update(dt)
+    if self.trainers then
+        for _, trainer in ipairs(self.trainers) do
+            trainer:update(dt)
+        end
+    end
+end
+
 function AreaExterna:draw()
     self.map:drawLayer(self.map.layers["Base"])
     self.map:drawLayer(self.map.layers["Predios"])
     self.map:drawLayer(self.map.layers["Decoracao"])
+    if self.trainers then
+        for _, trainer in ipairs(self.trainers) do
+            trainer:draw()
+        end
+    end
 end
 
 function AreaExterna:removeColliders()

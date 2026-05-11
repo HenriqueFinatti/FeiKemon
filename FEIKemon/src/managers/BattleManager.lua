@@ -143,6 +143,16 @@ function BattleManager.check(dt, gameplay)
                 end
             end
 
+            -- Flags de progressao da historia
+            if BattleManager.trainer then
+                if BattleManager.trainer.nome == "Leila" then
+                    gameplay.leilaDerrotada = true
+                end
+                if BattleManager.trainer.nome == "Maua" then
+                    gameplay.posJogo = true
+                end
+            end
+
             BattleManager.battleEnd = false
             BattleManager.battleHappening = false
             BattleManager.somAtivo = nil
@@ -154,10 +164,19 @@ function BattleManager.check(dt, gameplay)
             GamePhase = "Gameplay"
 
             SaveManager.salvar(gameplay)
+
+            if gameplay.posJogo and not gameplay._creditosExibidos then
+                gameplay._creditosExibidos = true
+                GameState = "Creditos"
+                return
+            end
+
             BackgroundMusic:play()
         end
         return
     end
+
+    if not gameplay.mapaAtual then return end
 
     if gameplay.mapaAtual.name == "area externa" and not BattleManager.battleHappening then
         local vx, vy = gameplay.player.collider:getLinearVelocity()

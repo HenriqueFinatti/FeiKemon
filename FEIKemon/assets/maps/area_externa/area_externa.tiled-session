@@ -8,11 +8,11 @@
             "expandedObjectLayers": [
                 7
             ],
-            "scale": 0.957421875,
+            "scale": 2,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": -0.52223582211343,
-                "y": -128.47001223990208
+                "x": 8.75,
+                "y": -143.5
             }
         },
         "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/igreja/igreja_fei.tmx#Craftables": {
@@ -69,11 +69,11 @@
             "expandedObjectLayers": [
                 5
             ],
-            "scale": 2,
+            "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 89.75,
-                "y": -217.5
+                "x": 841.6666666666666,
+                "y": -112
             }
         },
         "area_externa.tmx#Craftables": {

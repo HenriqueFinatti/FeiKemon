@@ -6,6 +6,10 @@ function SaveManager.salvar(gameplay)
     local ok, err = pcall(function()
         local data = {}
 
+        -- Flags globais
+        data.leilaDerrotada = gameplay.leilaDerrotada or false
+        data.posJogo = gameplay.posJogo or false
+
         -- Player
         data.player = {
             x = gameplay.player.x,
@@ -72,6 +76,17 @@ function SaveManager.carregar(gameplay)
     local ok, err = pcall(function()
         local data = SaveManager.carregarRaw()
         if not data then return false, "Nenhum save encontrado" end
+
+        print("[SAVE LOAD] Dados carregados:")
+        print("[SAVE LOAD]   Mapa:", tostring(data.player and data.player.currentMap))
+        print("[SAVE LOAD]   X:", tostring(data.player and data.player.x))
+        print("[SAVE LOAD]   Y:", tostring(data.player and data.player.y))
+        print("[SAVE LOAD]   Leila derrotada:", tostring(data.leilaDerrotada))
+        print("[SAVE LOAD]   Pos-jogo:", tostring(data.posJogo))
+
+        -- Flags globais
+        gameplay.leilaDerrotada = data.leilaDerrotada or false
+        gameplay.posJogo = data.posJogo or false
 
         -- Player posicao e mapa
         if data.player then

@@ -19,6 +19,10 @@ function Gameplay.load()
     Gameplay.loadCamera()
     Gameplay.onboarding = Onboarding()
 
+    Gameplay.leilaDerrotada = false
+    Gameplay.posJogo = false
+    Gameplay._creditosExibidos = false
+
     local inicial = BattleManager.montaFeiKemon(1)
     local portaInicial = {
         destino = "sala de estudos",
@@ -29,6 +33,38 @@ function Gameplay.load()
     Gameplay.player = Player()
     Gameplay.player:captura(inicial)
     MapManager.mudarMapa(portaInicial, Gameplay)
+end
+
+function Gameplay.loadFromSave()
+    love.graphics.setDefaultFilter("nearest", "nearest")
+    Gameplay.loadCamera()
+    Gameplay.onboarding = Onboarding()
+
+    Gameplay.leilaDerrotada = false
+    Gameplay.posJogo = false
+    Gameplay._creditosExibidos = false
+
+    local SaveManager = require 'src/managers/SaveManager'
+    if SaveManager.existeSave() then
+        Gameplay.player = Player()
+        local ok = SaveManager.carregar(Gameplay)
+        if ok then
+            return true
+        end
+    end
+
+    -- Fallback: novo jogo se nao houver save
+    local inicial = BattleManager.montaFeiKemon(1)
+    local portaInicial = {
+        destino = "sala de estudos",
+        x = -16,
+        y = 165
+    }
+
+    Gameplay.player = Player()
+    Gameplay.player:captura(inicial)
+    MapManager.mudarMapa(portaInicial, Gameplay)
+    return false
 end
 
 function Gameplay.update(dt)
@@ -114,8 +150,27 @@ function Gameplay.tentarInteragir()
                 TeamMenu.toggle()
             end
 
+            -- NPCs so conversam
+            if trainer.isNpc then
+                GamePhase = "Dialogo"
+                TextBoxManagerGlobal:setFalas(trainer.falasPre, #trainer.falasPre, trainer.onComplete)
+                TextBoxManagerGlobal.dialogoAtivo = true
+                return
+            end
+
             if trainer.derrotado then
-                if trainer.falasPos and #trainer.falasPos > 0 then
+                -- Modo pos-jogo: oferece revanche
+                if Gameplay.posJogo and not trainer.isNpc then
+                    GamePhase = "Dialogo"
+                    TextBoxManagerGlobal:setFalas({
+                        {nome=trainer.nome, texto="Quer uma revanche? Desta vez meus FeiKemons estarao no seu nivel!", retrato=trainer.retrato}
+                    }, 1, function()
+                        local melhorLevel = BattleManager.obterMelhorLevelEquipe(Gameplay.player)
+                        trainer:rebuildTime(melhorLevel)
+                        BattleManager.startTrainerBattle(Gameplay.player, trainer)
+                    end)
+                    TextBoxManagerGlobal.dialogoAtivo = true
+                elseif trainer.falasPos and #trainer.falasPos > 0 then
                     GamePhase = "Dialogo"
                     TextBoxManagerGlobal:setFalas(trainer.falasPos, #trainer.falasPos)
                     TextBoxManagerGlobal.dialogoAtivo = true
