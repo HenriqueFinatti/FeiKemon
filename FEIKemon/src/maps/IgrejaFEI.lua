@@ -22,7 +22,7 @@ function IgrejaFEI:init()
         self.trainers = {
             Trainer {
                 nome = "Reitoria",
-                x = -50, y = -100,
+                x = 24, y = 23,
                 ordem = 1,
                 spritePath = 'assets/characters/Danilo.png',
                 retratoPath = 'assets/professores/DaniloPerfil.png',
@@ -39,7 +39,7 @@ function IgrejaFEI:init()
             },
             Trainer {
                 nome = "Padre",
-                x = 100, y = -100,
+                x = 24, y = -23,
                 ordem = 2,
                 spritePath = 'assets/characters/Padre.png',
                 retratoPath = 'assets/professores/FagnerPerfil.png',
@@ -56,7 +56,7 @@ function IgrejaFEI:init()
             },
             Trainer {
                 nome = "Samir",
-                x = 250, y = -100,
+                x = 25, y = 70,
                 ordem = 3,
                 spritePath = 'assets/characters/Samir.png',
                 retratoPath = 'assets/professores/SamirPerfil.png',
@@ -73,7 +73,7 @@ function IgrejaFEI:init()
             },
             Trainer {
                 nome = "Maua",
-                x = 100, y = -200,
+                x = 18, y = -216,
                 ordem = 4,
                 spritePath = 'assets/characters/Maua.png',
                 retratoPath = 'assets/professores/DaniloPerfil.png',

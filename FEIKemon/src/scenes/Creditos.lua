@@ -16,8 +16,8 @@ local nomes = {
 }
 
 local tempoPorLinha = 1.5
-local tempoTotal
-local alpha
+local tempoTotal = 0
+local alpha = 0
 
 function Creditos.load()
     fonte = love.graphics.newFont('assets/fonts/8bitoperator.ttf', 32)
