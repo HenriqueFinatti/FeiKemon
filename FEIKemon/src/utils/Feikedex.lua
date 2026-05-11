@@ -24,35 +24,35 @@ local feikedex = {
     ataques = {
 
         -- [ SOFTWARE ]
-        ["Compilar"]           = { dano = 20,  tipo = {"Software"} },
+        ["Compilar"]           = { dano = 30,  tipo = {"Software"} },
         ["Bug Critico"]        = { dano = 35,  tipo = {"Software"} },
-        ["Stack Overflow"]     = { dano = 50,  tipo = {"Software"} },
-        ["Segmentation Fault"] = { dano = 65,  tipo = {"Software", "Hardware"} },
-        ["Deploy em Producao"] = { dano = 80,  tipo = {"Software", "Rede"} },
-        ["Kernel Panic"]       = { dano = 100, tipo = {"Software", "Hardware"} },
+        ["Stack Overflow"]     = { dano = 30,  tipo = {"Software"} },
+        ["Segmentation Fault"] = { dano = 35,  tipo = {"Software", "Hardware"} },
+        ["Deploy em Producao"] = { dano = 40,  tipo = {"Software", "Rede"} },
+        ["Kernel Panic"]       = { dano = 50, tipo = {"Software", "Hardware"} },
 
         -- [ HARDWARE ]
-        ["Clique Duplo"]       = { dano = 20,  tipo = {"Hardware"} },
-        ["Curto Circuito"]     = { dano = 40,  tipo = {"Hardware"} },
-        ["Overclocking"]       = { dano = 65,  tipo = {"Hardware", "Energia"} },
+        ["Clique Duplo"]       = { dano = 10,  tipo = {"Hardware"} },
+        ["Curto Circuito"]     = { dano = 20,  tipo = {"Hardware"} },
+        ["Overclocking"]       = { dano = 35,  tipo = {"Hardware", "Energia"} },
         ["Tela Azul"]          = { dano = 55,  tipo = {"Hardware", "Software"} },
 
         -- [ REDE ]
         ["Ping Flood"]         = { dano = 35,  tipo = {"Rede"} },
         ["Pacote Perdido"]     = { dano = 30,  tipo = {"Rede"} },
         ["Latencia Alta"]      = { dano = 45,  tipo = {"Rede"} },
-        ["DDoS"]               = { dano = 75,  tipo = {"Rede", "Software"} },
+        ["DDoS"]               = { dano = 55,  tipo = {"Rede", "Software"} },
         ["Efeito Cascata"]     = { dano = 60,  tipo = {"Rede", "Energia"} },
 
         -- [ ENERGIA ]
-        ["Rush de Cafeina"]    = { dano = 25,  tipo = {"Energia"} },
-        ["Tremor Nervoso"]     = { dano = 40,  tipo = {"Energia"} },
-        ["Zero Caloria"]       = { dano = 45,  tipo = {"Energia"} },
-        ["Overdose Energetica"]= { dano = 70,  tipo = {"Energia"} },
-        ["Pico de Adrenalina"] = { dano = 95,  tipo = {"Energia"} },
-        ["Molho Especial"]     = { dano = 20,  tipo = {"Energia"} },
-        ["Empanado Crocante"]  = { dano = 50,  tipo = {"Energia"} },
-        ["Indigestao"]         = { dano = 80,  tipo = {"Energia"} },
+        ["Rush de Cafeina"]    = { dano = 15,  tipo = {"Energia"} },
+        ["Tremor Nervoso"]     = { dano = 20,  tipo = {"Energia"} },
+        ["Zero Caloria"]       = { dano = 35,  tipo = {"Energia"} },
+        ["Overdose Energetica"]= { dano = 40,  tipo = {"Energia"} },
+        ["Pico de Adrenalina"] = { dano = 45,  tipo = {"Energia"} },
+        ["Molho Especial"]     = { dano = 40,  tipo = {"Energia"} },
+        ["Empanado Crocante"]  = { dano = 57,  tipo = {"Energia"} },
+        ["Indigestao"]         = { dano = 60,  tipo = {"Energia"} },
     },
 
     -- ---------------------------------------------------------
@@ -108,6 +108,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/LinuxCostas.png",
             hp_max      = 120,
             hp_atual    = 120,
+            xpMultiplier = 1.2,
             ataques = {
                 "Compilar",
                 "Kernel Panic",
@@ -124,6 +125,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/WindowsCostas.png",
             hp_max      = 110,
             hp_atual    = 110,
+            xpMultiplier = 1.0,
             ataques = {
                 "Compilar",
                 "Tela Azul",
@@ -140,6 +142,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/JavaCostas.png",
             hp_max      = 100,
             hp_atual    = 100,
+            xpMultiplier = 1.1,
             ataques = {
                 "Compilar",
                 "Bug Critico",
@@ -156,6 +159,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/PythonCostas.png",
             hp_max      = 95,
             hp_atual    = 95,
+            xpMultiplier = 1.3,
             ataques = {
                 "Compilar",
                 "Stack Overflow",
@@ -172,6 +176,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/CCostas.png",
             hp_max      = 90,
             hp_atual    = 90,
+            xpMultiplier = 1.0,
             ataques = {
                 "Compilar",
                 "Segmentation Fault",
@@ -188,6 +193,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/IphoneCostas.png",
             hp_max      = 105,
             hp_atual    = 105,
+            xpMultiplier = 1.0,
             ataques = {
                 "Clique Duplo",
                 "Ping Flood",
@@ -204,6 +210,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/VRCostas.png",
             hp_max      = 100,
             hp_atual    = 100,
+            xpMultiplier = 1.1,
             ataques = {
                 "Clique Duplo",
                 "Compilar",
@@ -220,6 +227,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/TecladoCostas.png",
             hp_max      = 85,
             hp_atual    = 85,
+            xpMultiplier = 0.9,
             ataques = {
                 "Clique Duplo",
                 "Curto Circuito",
@@ -235,6 +243,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/MouseCostas.png",
             hp_max      = 80,
             hp_atual    = 80,
+            xpMultiplier = 0.9,
             ataques = {
                 "Clique Duplo",
                 "Curto Circuito",
@@ -250,6 +259,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/MonitorCostas.png",
             hp_max      = 95,
             hp_atual    = 95,
+            xpMultiplier = 1.0,
             ataques = {
                 "Clique Duplo",
                 "Bug Critico",
@@ -266,6 +276,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/MonsterCostas.png",
             hp_max      = 110,
             hp_atual    = 110,
+            xpMultiplier = 1.0,
             ataques = {
                 "Rush de Cafeina",
                 "Tremor Nervoso",
@@ -282,6 +293,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/MonsterZeroCostas.png",
             hp_max      = 100,
             hp_atual    = 100,
+            xpMultiplier = 1.1,
             ataques = {
                 "Zero Caloria",
                 "Rush de Cafeina",
@@ -298,6 +310,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/RedbullCostas.png",
             hp_max      = 115,
             hp_atual    = 115,
+            xpMultiplier = 1.0,
             ataques = {
                 "Rush de Cafeina",
                 "Tremor Nervoso",
@@ -314,6 +327,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/RedbullZeroCostas.png",
             hp_max      = 105,
             hp_atual    = 105,
+            xpMultiplier = 1.1,
             ataques = {
                 "Zero Caloria",
                 "Rush de Cafeina",
@@ -330,6 +344,7 @@ local feikedex = {
             foto_verso  = "assets/PixelArtsFeiKemon/ParmegianaCostas.png",
             hp_max      = 130,
             hp_atual    = 130,
+            xpMultiplier = 0.8,
             ataques = {
                 "Molho Especial",
                 "Empanado Crocante",
@@ -358,12 +373,17 @@ function feikedex.obterCorTipo(nomeTipo)
 end
 
 function feikedex.xpParaUpar(level)
-    return level * 100
+    -- Quanto maior o nivel, mais XP eh necessario (crescimento quadrático)
+    return math.floor(50 * (level ^ 1.5))
 end
 
-function feikedex.calcularXpGanho(feikemonDerrotado)
-    -- XP base = metade do HP maximo do derrotado
-    return math.floor(feikemonDerrotado.hp_max * 0.5)
+function feikedex.calcularXpGanho(feikemonDerrotado, levelDerrotado)
+    -- XP base = HP maximo do derrotado (dobrado para facilitar)
+    levelDerrotado = levelDerrotado or 1
+    local xpBase = feikemonDerrotado.hp_max
+    -- Bonus de level: 20% a mais por nivel acima do 1
+    local multLevel = 1 + (levelDerrotado - 1) * 0.2
+    return math.floor(xpBase * multLevel)
 end
 
 return feikedex

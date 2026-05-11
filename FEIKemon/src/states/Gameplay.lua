@@ -6,6 +6,7 @@ local Transition = require 'src/utils/Transition'
 local BattleManager = require 'src/managers/BattleManager'
 local MapManager = require 'src/managers/MapManager'
 local TeamMenu = require 'src/ui/TeamMenu'
+local PCMenu = require 'src/ui/PCMenu'
 
 Gameplay = {}
 
@@ -82,7 +83,7 @@ function Gameplay.update(dt)
             Gameplay.mapaAtual:update(dt)
         end
 
-        if GamePhase == "Gameplay" then
+        if GamePhase == "Gameplay" and not PCMenu.isVisible() then
             local collider = Gameplay.player.collider
             if Transition.state == "none" and collider:enter('Portas') then
                 local porta = collider:getEnterCollisionData('Portas').collider

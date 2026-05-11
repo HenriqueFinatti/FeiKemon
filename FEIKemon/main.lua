@@ -8,6 +8,7 @@ GameState = "Menu"
 local BattleManager = require 'src/managers/BattleManager'
 local TeamMenu = require 'src/ui/TeamMenu'
 local PauseMenu = require 'src/ui/PauseMenu'
+local PCMenu = require 'src/ui/PCMenu'
 TextBoxManagerGlobal = nil
 TextBoxManager = require 'src/managers/TextBoxManager'
 
@@ -26,6 +27,7 @@ function love.load()
     Transition.load()
     TeamMenu.load()
     PauseMenu.load()
+    PCMenu.load()
     Creditos.load()
     music()
 end
@@ -53,6 +55,9 @@ function love.mousepressed(x, y, button)
     if GameState == "Menu" then
         local action = Menu.mousepressed(x, y, button)
         if action == "jogar" then
+            -- Deleta save antigo para garantir jogo limpo
+            local SaveManager = require 'src/managers/SaveManager'
+            SaveManager.deletar()
             Gameplay.load()
             GameState = "Transition"
         elseif action == "carregar" then
@@ -82,6 +87,16 @@ function love.keypressed(key)
 
     if key == "e" and (GamePhase == "Gameplay" or GamePhase == "Dialogo") then
         TeamMenu.toggle()
+    end
+
+    if PCMenu.isVisible() then
+        PCMenu.controles(key, Gameplay.player)
+        return
+    end
+
+    if key == "t" and GamePhase == "Gameplay" then
+        PCMenu.toggle()
+        return
     end
 
     if key == "escape" then
@@ -126,6 +141,9 @@ function love.draw()
     end
 
     PauseMenu.draw()
+    if GameState == "Jogo" and Gameplay.player then
+        PCMenu.draw(Gameplay.player)
+    end
 end
 
 function music()

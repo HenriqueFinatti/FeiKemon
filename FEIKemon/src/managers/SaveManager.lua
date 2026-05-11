@@ -23,9 +23,25 @@ function SaveManager.salvar(gameplay)
         table.insert(data.equipe, {
             nome = f.nome,
             hp_atual = f.hp_atual,
+            hpBase = f.hpBase,
             ataques = f.ataques,
             level = f.level or 1,
             xp = f.xp or 0,
+            xpMultiplier = f.xpMultiplier or 1.0,
+        })
+    end
+
+    -- Computador do jogador
+    data.computador = {}
+    for _, f in ipairs(gameplay.player.computador) do
+        table.insert(data.computador, {
+            nome = f.nome,
+            hp_atual = f.hp_atual,
+            hpBase = f.hpBase,
+            ataques = f.ataques,
+            level = f.level or 1,
+            xp = f.xp or 0,
+            xpMultiplier = f.xpMultiplier or 1.0,
         })
     end
 
@@ -112,10 +128,43 @@ function SaveManager.carregar(gameplay)
                 local f = BattleManager.montaFeiKemon(baseId, level)
                 f.hp_atual = math.min(savedF.hp_atual or f.hp_max, f.hp_max)
                 f.xp = savedF.xp or 0
+                f.xpMultiplier = savedF.xpMultiplier or f.xpMultiplier or 1.0
+                if savedF.hpBase then
+                    f.hpBase = savedF.hpBase
+                end
                 if savedF.ataques then
                     f.ataques = savedF.ataques
                 end
                 table.insert(gameplay.player.equipe, f)
+            end
+            end
+        end
+
+        -- Computador
+        if data.computador and #data.computador > 0 then
+            gameplay.player.computador = {}
+            local BattleManager = require 'src/managers/BattleManager'
+            for _, savedF in ipairs(data.computador) do
+                local baseId = nil
+                for i, base in ipairs(require('src/utils/Feikedex').feikemons) do
+                    if base.nome == savedF.nome then
+                        baseId = i
+                        break
+                    end
+                end
+            if baseId then
+                local level = savedF.level or 1
+                local f = BattleManager.montaFeiKemon(baseId, level)
+                f.hp_atual = math.min(savedF.hp_atual or f.hp_max, f.hp_max)
+                f.xp = savedF.xp or 0
+                f.xpMultiplier = savedF.xpMultiplier or f.xpMultiplier or 1.0
+                if savedF.hpBase then
+                    f.hpBase = savedF.hpBase
+                end
+                if savedF.ataques then
+                    f.ataques = savedF.ataques
+                end
+                table.insert(gameplay.player.computador, f)
             end
             end
         end
@@ -224,6 +273,14 @@ function SaveManager.fromJson(str)
         print("[EXEC ERROR] " .. tostring(result))
         return nil
     end
+end
+
+function SaveManager.deletar()
+    if love.filesystem.getInfo(SAVE_FILE) then
+        love.filesystem.remove(SAVE_FILE)
+        print("[SAVE] Arquivo deletado.")
+    end
+    SaveManager._trainerState = nil
 end
 
 return SaveManager

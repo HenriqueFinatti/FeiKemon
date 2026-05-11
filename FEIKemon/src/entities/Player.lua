@@ -15,6 +15,7 @@ function Player:init()
     self.healTimer = 0
 
     self.equipe = {}
+    self.computador = {}
     self.maxEquipe = 6
 
     self.currentMap = "sala de estudos"
@@ -48,20 +49,26 @@ function Player:obterPrimeiroVivo()
 end
 
 function Player:captura(feikemon)
+    local destino
     if #self.equipe < self.maxEquipe then
-        local copia = {
-            nome = feikemon.nome,
-            tipo = feikemon.tipo,
-            foto_frente = feikemon.foto_frente,
-            foto_verso = feikemon.foto_verso,
-            hp_max = feikemon.hp_max,
-            hp_atual = feikemon.hp_atual,
-            ataques = feikemon.ataques,
-            level = feikemon.level or 1,
-            xp = feikemon.xp or 0,
-        }
-        table.insert(self.equipe, copia)
+        destino = self.equipe
+    else
+        destino = self.computador
     end
+
+    local copia = {
+        nome = feikemon.nome,
+        tipo = feikemon.tipo,
+        foto_frente = feikemon.foto_frente,
+        foto_verso = feikemon.foto_verso,
+        hp_max = feikemon.hp_max,
+        hp_atual = feikemon.hp_atual,
+        ataques = feikemon.ataques,
+        level = feikemon.level or 1,
+        xp = feikemon.xp or 0,
+        xpMultiplier = feikemon.xpMultiplier or 1.0,
+    }
+    table.insert(destino, copia)
 end
 
 function Player:healTeam(dt)

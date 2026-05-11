@@ -61,11 +61,13 @@ function BattleManager.montaFeiKemon(id, level)
         tipo = base.tipo,
         hp_max = hp_max,
         hp_atual = hp_max,
+        hpBase = base.hp_max,
         ataques = base.ataques,
         foto_frente = base.foto_frente,
         foto_verso = base.foto_verso,
         level = level,
         xp = 0,
+        xpMultiplier = base.xpMultiplier or 1.0,
     }
 end
 
@@ -87,8 +89,8 @@ function BattleManager.gerarLevelSelvagem(player)
 end
 
 function BattleManager.distribuirXp(xpBase, idVencedor)
-    local xpParticipante = xpBase * 3
-    local xpEquipe = xpBase
+    local xpParticipante = math.floor(xpBase * 1.5)
+    local xpEquipe = math.floor(xpBase * 0.8)
 
     for i, f in ipairs(BattleManager.player.equipe) do
         if f.hp_atual > 0 then
@@ -96,6 +98,9 @@ function BattleManager.distribuirXp(xpBase, idVencedor)
             if i == idVencedor then
                 xpGanho = xpParticipante
             end
+            -- Aplica multiplicador de XP individual
+            local mult = f.xpMultiplier or 1.0
+            xpGanho = math.floor(xpGanho * mult)
             f.xp = f.xp + xpGanho
             BattleManager.addLog(f.nome .. " ganhou " .. xpGanho .. " XP!")
             BattleManager.tentarLevelUp(f)
@@ -108,8 +113,8 @@ function BattleManager.tentarLevelUp(feikemon)
     while feikemon.xp >= xpNecessario do
         feikemon.xp = feikemon.xp - xpNecessario
         feikemon.level = feikemon.level + 1
-        -- Aumenta HP max em 10%
-        local hpBonus = math.floor(feikemon.hp_max * 0.1)
+        -- Aumenta HP max de forma linear (10% do HP base original)
+        local hpBonus = math.floor((feikemon.hpBase or feikemon.hp_max) * 0.1)
         feikemon.hp_max = feikemon.hp_max + hpBonus
         -- Cura o HP bonus ganho
         feikemon.hp_atual = feikemon.hp_atual + hpBonus
@@ -285,7 +290,7 @@ function BattleManager.controles(key)
                     BattleManager.player:captura(inimigo)
                     BattleManager.addLog("Capturado com sucesso!")
                     -- Da XP pela captura (mesmo que derrotar)
-                    local xpGanho = feikedex.calcularXpGanho(inimigo)
+                    local xpGanho = feikedex.calcularXpGanho(inimigo, inimigo.level)
                     BattleManager.distribuirXp(xpGanho, BattleManager.id_feikemon)
                     BattleManager.encerrarComSom("captura")
                 else
@@ -317,6 +322,8 @@ function BattleManager.controles(key)
                     end
                 end
             end
+        elseif key == "4" then
+            BattleManager.menuAberto = "troca"
         end
     elseif BattleManager.menuAberto == "golpes" then
         local num = tonumber(key)
@@ -327,16 +334,67 @@ function BattleManager.controles(key)
         elseif key == "5" then
             BattleManager.menuAberto = "principal"
         end
+    elseif BattleManager.menuAberto == "troca" then
+        local num = tonumber(key)
+        if num and num >= 1 and num <= #BattleManager.player.equipe then
+            if num ~= BattleManager.id_feikemon and BattleManager.player.equipe[num].hp_atual > 0 then
+                BattleManager.executarTroca(num)
+            elseif num == BattleManager.id_feikemon then
+                BattleManager.addLog("Este FeiKemon ja esta em batalha!")
+            else
+                BattleManager.addLog("Este FeiKemon nao pode batalhar!")
+            end
+        elseif key == "5" then
+            BattleManager.menuAberto = "principal"
+        end
     end
 end
 
 function BattleManager.calcularDano(danoBase, tiposAtaque, tiposAlvo, levelAtacante)
     levelAtacante = levelAtacante or 1
     local multTipo = feikedex.calcularMultiplicador(tiposAtaque, tiposAlvo)
-    -- Bonus de level: 5% por nivel acima do 1
-    local multLevel = 1 + (levelAtacante - 1) * 0.05
-    local danoTotal = math.floor(danoBase * multTipo * multLevel)
+    -- Dano base escala com level (10% por nivel acima do 1)
+    local danoPorLevel = danoBase * (1 + (levelAtacante - 1) * 0.1)
+    local danoTotal = math.floor(danoPorLevel * multTipo)
     return danoTotal, multTipo
+end
+
+function BattleManager.executarTroca(novoId)
+    local feikemon_enemy = BattleManager.inimigo
+    local antigo = BattleManager.player.equipe[BattleManager.id_feikemon]
+    local novo = BattleManager.player.equipe[novoId]
+
+    BattleManager.id_feikemon = novoId
+    BattleManager.imgPlayer = love.graphics.newImage(novo.foto_verso)
+    BattleManager.addLog("Volta, " .. antigo.nome .. "!")
+    BattleManager.addLog("Vai, " .. novo.nome .. "!")
+
+    -- Turno do Inimigo (a troca gasta um turno)
+    local atkInimigo = feikemon_enemy.ataques[math.random(1, #feikemon_enemy.ataques)]
+    local dadosAtkInimigo = feikedex.ataques[atkInimigo]
+    local danoInimigo, multInimigo = BattleManager.calcularDano(dadosAtkInimigo.dano, dadosAtkInimigo.tipo, novo.tipo, feikemon_enemy.level)
+    novo.hp_atual = math.max(0, novo.hp_atual - danoInimigo)
+    BattleManager.addLog("Inimigo usou " .. atkInimigo .. "!")
+    if multInimigo > 1 then
+        BattleManager.addLog("Foi super efetivo!")
+    elseif multInimigo < 1 then
+        BattleManager.addLog("Nao foi muito efetivo...")
+    end
+
+    if novo.hp_atual <= 0 then
+        local proximo = BattleManager.player:obterPrimeiroVivo()
+        if proximo then
+            BattleManager.id_feikemon = proximo
+            BattleManager.imgPlayer = love.graphics.newImage(BattleManager.player.equipe[proximo].foto_verso)
+            BattleManager.addLog("Vai, " .. BattleManager.player.equipe[proximo].nome .. "!")
+        else
+            BattleManager.addLog("Voce foi derrotado...")
+            BattleManager.teleportarMacFEI()
+            BattleManager.encerrarComSom("derrota")
+        end
+    end
+
+    BattleManager.menuAberto = "principal"
 end
 
 function BattleManager.executarTurno(ataque)
@@ -358,7 +416,7 @@ function BattleManager.executarTurno(ataque)
         BattleManager.addLog(feikemon_enemy.nome .. " desmaiou!")
 
         -- Da XP para a equipe
-        local xpGanho = feikedex.calcularXpGanho(feikemon_enemy)
+        local xpGanho = feikedex.calcularXpGanho(feikemon_enemy, feikemon_enemy.level)
         BattleManager.distribuirXp(xpGanho, BattleManager.id_feikemon)
 
         if BattleManager.tipoBatalha == "treinador" then
@@ -546,9 +604,10 @@ function BattleManager.draw()
     if not BattleManager.battleEnd then
         local menuX = meiaTela + 30
         if BattleManager.menuAberto == "principal" then
-            love.graphics.print("1. LUTAR", menuX, uiY + 30)
-            love.graphics.print("2. FUGIR", menuX, uiY + 60)
-            love.graphics.print("3. CAPTURAR", menuX, uiY + 90)
+            love.graphics.print("1. LUTAR", menuX, uiY + 20)
+            love.graphics.print("2. FUGIR", menuX, uiY + 45)
+            love.graphics.print("3. CAPTURAR", menuX, uiY + 70)
+            love.graphics.print("4. TROCAR", menuX, uiY + 95)
         elseif BattleManager.menuAberto == "golpes" then
             for i, atk in ipairs(pAtivo.ataques) do
                 if i <= 4 then
@@ -569,6 +628,23 @@ function BattleManager.draw()
                     end
                 end
             end
+            love.graphics.print("5. VOLTAR", menuX, uiY + uiH - 35)
+        elseif BattleManager.menuAberto == "troca" then
+            love.graphics.print("Escolha um FeiKemon:", menuX, uiY + 15)
+            for i, f in ipairs(BattleManager.player.equipe) do
+                local corTexto = {1, 1, 1}
+                local prefixo = i .. ". "
+                if i == BattleManager.id_feikemon then
+                    corTexto = {0.5, 0.5, 0.5}
+                    prefixo = i .. ". [ATUAL] "
+                elseif f.hp_atual <= 0 then
+                    corTexto = {0.6, 0.2, 0.2}
+                    prefixo = i .. ". [DESMAIADO] "
+                end
+                love.graphics.setColor(corTexto)
+                love.graphics.print(prefixo .. f.nome .. " Lv." .. f.level .. "  HP:" .. f.hp_atual .. "/" .. f.hp_max, menuX, uiY + 40 + (i-1)*25)
+            end
+            love.graphics.setColor(BattleManager.corTexto)
             love.graphics.print("5. VOLTAR", menuX, uiY + uiH - 35)
         end
     end
