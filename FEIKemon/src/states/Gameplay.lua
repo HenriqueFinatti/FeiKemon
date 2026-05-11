@@ -12,7 +12,7 @@ Gameplay = {}
 local VIRTUAL_WIDTH = 512
 local VIRTUAL_HEIGHT = 216
 
-GamePhase = "Onboarding"
+GamePhase = "Gameplay"
 
 function Gameplay.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
