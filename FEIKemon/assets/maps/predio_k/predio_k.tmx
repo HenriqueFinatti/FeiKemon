@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1-8-g449813058" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="11">
+ <editorsettings>
+  <export target="predio_k.lua" format="lua"/>
+ </editorsettings>
  <tileset firstgid="1" name="mercado_pierri" tilewidth="16" tileheight="16" tilecount="1344" columns="42">
   <image source="mercado_pierri.png" width="672" height="512"/>
  </tileset>
@@ -115,4 +118,23 @@
 </chunk>
   </data>
  </layer>
+ <objectgroup id="2" name="Collision">
+  <object id="1" x="-100" y="-468" width="12" height="308"/>
+  <object id="2" x="-88" y="-160" width="96" height="16"/>
+  <object id="3" x="8" y="-144" width="80" height="16"/>
+  <object id="4" x="88" y="-160" width="424" height="16"/>
+  <object id="5" x="500" y="-364" width="12" height="208"/>
+  <object id="6" x="120" y="-496" width="376" height="136"/>
+  <object id="7" x="-104" y="-512" width="224" height="24"/>
+  <object id="8" x="-100" y="-488" width="12" height="20"/>
+ </objectgroup>
+ <objectgroup id="3" name="Porta">
+  <object id="10" x="12" y="-164" width="72" height="24">
+   <properties>
+    <property name="destino" value="area externa"/>
+    <property name="x" type="int" value="880"/>
+    <property name="y" type="int" value="-221"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

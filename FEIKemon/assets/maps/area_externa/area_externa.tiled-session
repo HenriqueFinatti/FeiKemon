@@ -1,7 +1,83 @@
 {
-    "last.exportedFilePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/area_externa",
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
+    "fileStates": {
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/predio_k/predio_k.tmx": {
+            "expandedObjectLayers": [
+                3,
+                2
+            ],
+            "scale": 1.2876953125,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 161.14060367055964,
+                "y": -238.4104353101775
+            }
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/predio_k/predio_k.tmx#mercado_pierri": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sala_de_estudos/sala_estudos.tmx": {
+            "expandedObjectLayers": [
+                11
+            ],
+            "scale": 4,
+            "selectedLayer": 8,
+            "viewCenter": {
+                "x": -30.625,
+                "y": 173.75
+            }
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sala_de_estudos/sala_estudos.tmx#bar_guss": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sala_de_estudos/sala_estudos.tmx#crafttables": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sala_de_estudos/sala_estudos.tmx#estadio": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sala_de_estudos/sala_estudos.tmx#ilha": {
+            "scaleInDock": 1
+        },
+        "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sala_de_estudos/sala_estudos.tmx#interiors": {
+            "scaleInDock": 1
+        },
+        "area_externa.tmx": {
+            "expandedObjectLayers": [
+                5
+            ],
+            "scale": 2,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 979.25,
+                "y": -153.5
+            }
+        },
+        "area_externa.tmx#Craftables": {
+            "scaleInDock": 1
+        },
+        "area_externa.tmx#ilha": {
+            "scaleInDock": 1
+        },
+        "area_externa.tmx#piso_igreja": {
+            "scaleInDock": 1
+        },
+        "area_externa.tmx#vila_pelicano": {
+            "scaleInDock": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/predio_k",
     "last.imagePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sprites/images",
     "map.lastUsedExportFilter": "Arquivos Lua (*.lua)",
+    "openFiles": [
+    ],
+    "project": "",
+    "property.type": "int",
+    "recentFiles": [
+    ],
     "tileset.embedInMap": true,
     "tileset.tileSize": {
         "height": 16,

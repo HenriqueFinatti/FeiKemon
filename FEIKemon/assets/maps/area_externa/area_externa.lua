@@ -1,7 +1,7 @@
 return {
   version = "1.10",
   luaversion = "5.1",
-  tiledversion = "1.12.1-8-g449813058",
+  tiledversion = "1.12.1",
   class = "",
   orientation = "orthogonal",
   renderorder = "right-down",
@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 88,
+  nextobjectid = 90,
   properties = {},
   tilesets = {
     {
@@ -3930,6 +3930,24 @@ return {
             ["destino"] = "macfei",
             ["x"] = "-50",
             ["y"] = "186"
+          }
+        },
+        {
+          id = 88,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 840,
+          y = -228,
+          width = 80,
+          height = 12,
+          rotation = 0,
+          opacity = 1,
+          visible = true,
+          properties = {
+            ["destino"] = "k",
+            ["x"] = 48,
+            ["y"] = -164
           }
         }
       }
