@@ -72,8 +72,8 @@
             "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 841.6666666666666,
-                "y": -112
+                "x": -115,
+                "y": -115
             }
         },
         "area_externa.tmx#Craftables": {
@@ -89,7 +89,7 @@
             "scaleInDock": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/igreja",
+    "last.exportedFilePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/predio_k",
     "last.imagePath": "C:/Users/Giovanni/Documents/FACULDADE/SEMESTRE 7/DESENVOLVIMENTO DE JOGOS/FeiKemon/FEIKemon/assets/maps/sprites/images",
     "map.lastUsedExportFilter": "Arquivos Lua (*.lua)",
     "openFiles": [

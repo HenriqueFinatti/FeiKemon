@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="11">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="4" nextobjectid="13">
  <editorsettings>
   <export target="predio_k.lua" format="lua"/>
  </editorsettings>
@@ -127,6 +127,8 @@
   <object id="6" x="120" y="-496" width="376" height="136"/>
   <object id="7" x="-104" y="-512" width="224" height="24"/>
   <object id="8" x="-100" y="-488" width="12" height="20"/>
+  <object id="11" x="-84" y="-484" width="204" height="52"/>
+  <object id="12" x="112" y="-364" width="396" height="56"/>
  </objectgroup>
  <objectgroup id="3" name="Portas">
   <object id="10" x="12" y="-164" width="72" height="24">
